@@ -1,5 +1,4 @@
 # Managed DismApi Wrapper
-===
 
 [![NuGet](https://img.shields.io/nuget/v/Microsoft.Dism.svg?maxAge=2592000)]()
 
