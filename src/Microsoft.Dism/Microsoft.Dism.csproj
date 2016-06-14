@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{E6831090-F1C2-4619-9AB2-01D29272357A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.props))\build.props" />
+  <PropertyGroup>
+    <DocumentationFile>$(OutputPath)\$(TargetName).xml</DocumentationFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DismFeatureInfo.cs" />
+    <Compile Include="DismLanguage.cs" />
+    <Compile Include="DismPackageInfo.cs" />
+    <Compile Include="DismProgress.cs" />
+    <Compile Include="DismProgressCallback.cs" />
+    <Compile Include="DismString.cs" />
+    <Compile Include="DismCollection.cs" />
+    <Compile Include="DismException.cs" />
+    <Compile Include="DismSession.cs" />
+    <Compile Include="DismCustomProperty.cs" />
+    <Compile Include="DismDriver.cs" />
+    <Compile Include="DismDriverPackage.cs" />
+    <Compile Include="DismFeature.cs" />
+    <Compile Include="DismImageInfo.cs" />
+    <Compile Include="DismMountedImageInfo.cs" />
+    <Compile Include="DismPackage.cs" />
+    <Compile Include="DismWimCustomizedInfo.cs" />
+    <Compile Include="DismApi.cs" />
+    <Compile Include="NativeConstants.cs" />
+    <Compile Include="NativeEnums.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Microsoft.Dism.nuspec" />
+    <None Include="project.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

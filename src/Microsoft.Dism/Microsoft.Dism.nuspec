@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://manageddism.codeplex.com/license</licenseUrl>
+    <projectUrl>https://manageddism.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Fix Microsoft.Win32Ex dependency</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Dism</tags>
+     <dependencies>
+        <dependency id="Microsoft.Win32Ex" version="[1.2,)" />
+     </dependencies>
+  </metadata>
+</package>
