@@ -6,7 +6,7 @@
     "Shouldly": "2.7.0"
   },
   "frameworks": {
-    "net45": {}
+    "net40": {}
   },
   "runtimes": {
     "win": {}

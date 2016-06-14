@@ -3,7 +3,7 @@
     "Microsoft.Win32Ex": "1.2.0.0"
   },
   "frameworks": {
-    "net45": {}
+    "net40": {}
   },
   "runtimes": {
     "win": {}

@@ -124,8 +124,6 @@ namespace Microsoft.Dism.Tests
 
         protected override void VerifyProperties(DismImageInfo item)
         {
-            IList<CultureInfo> languages = _languages.Select(i => new CultureInfo(i.Value)).ToList();
-
             item.Architecture.ShouldBe(_imageInfo.Architecture);
             item.Bootable.ShouldBe(_imageInfo.Bootable);
             item.ProductVersion.Build.ShouldBe((int)_imageInfo.Build);
