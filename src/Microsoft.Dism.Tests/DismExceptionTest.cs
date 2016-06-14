@@ -59,8 +59,6 @@ namespace Microsoft.Dism.Tests
                 exception.ShouldBeOfType<DivideByZeroException>();
 
                 exception.Message.ShouldBe(errorMessage);
-
-                exception.HResult.ShouldBe(errorCode);
             }
         }
 
@@ -68,7 +66,6 @@ namespace Microsoft.Dism.Tests
         public void OperationCanceledExceptionTest()
         {
             const int errorCode = unchecked((int)0x800704D3);
-            const int hresult = unchecked((int) 0x8013153B);
 
             const string errorMessage = "The operation was canceled.";
 
@@ -81,8 +78,6 @@ namespace Microsoft.Dism.Tests
                 exception.ShouldBeOfType<OperationCanceledException>();
 
                 exception.Message.ShouldBe(errorMessage);
-
-                exception.HResult.ShouldBe(hresult);
             }
         }
 
@@ -97,7 +92,6 @@ namespace Microsoft.Dism.Tests
             exception.Message.ShouldBe(message);
 
             dismException.ErrorCode.ShouldBe((int)errorCode);
-            dismException.HResult.ShouldBe((int)errorCode);
             dismException.NativeErrorCode.ShouldBe((int)errorCode);
         }
     }

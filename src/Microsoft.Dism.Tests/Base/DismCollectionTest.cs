@@ -5,7 +5,6 @@ using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public abstract class DismCollectionTest<TCollection, TItem> : TestBase
         where TCollection : DismCollection<TItem>
         where TItem : class
