@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{B117C151-941D-4158-AAA2-0B058380988E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.props))\build.props" />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <ItemGroup>
+    <Reference Include="FakesAssemblies\Microsoft.Dism.Fakes.dll">
+      <Name>Microsoft.Dism.Fakes</Name>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\DismCollectionTest.cs" />
+    <Compile Include="DismCustomPropertyTest.cs" />
+    <Compile Include="Base\DismStructTest.cs" />
+    <Compile Include="DismDriverPackageTest.cs" />
+    <Compile Include="DismExceptionTest.cs" />
+    <Compile Include="DismFeatureInfoTest.cs" />
+    <Compile Include="DismFeatureTest.cs" />
+    <Compile Include="DismImageInfoTest.cs" />
+    <Compile Include="DismMountedImageInfoTest.cs" />
+    <Compile Include="DismPackageInfoTest.cs" />
+    <Compile Include="DismPackageTest.cs" />
+    <Compile Include="DismWimCustomizedInfoTest.cs" />
+    <Compile Include="LambdaComparer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Base\TestBase.cs" />
+    <Compile Include="DismDriverTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Dism\Microsoft.Dism.csproj">
+      <Project>{E6831090-F1C2-4619-9AB2-01D29272357A}</Project>
+      <Name>Microsoft.Dism</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Fakes Include="Fakes\Microsoft.Dism.fakes" />
+    <None Include="project.json" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
