@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable ArrangeStaticMemberQualifier
 // ReSharper disable RedundantNameQualifier
@@ -20,15 +21,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void AddDriver(DismSession session, string driverPath, bool forceUnsigned)
         {
-            // Call the native function
-            var hr = NativeMethods.DismAddDriver(session, driverPath, forceUnsigned);
-
-            // See if it failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismAddDriver(session, driverPath, forceUnsigned));
         }
 
         /// <summary>
@@ -75,15 +68,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
@@ -94,15 +79,7 @@ namespace Microsoft.Dism
         /// <param name="singleSession">Specifies whether the packages that are listed in an answer file will be processed in a single session or in multiple sessions.</param>
         public static void ApplyUnattend(DismSession session, string unattendFile, bool singleSession)
         {
-            // Call the native function
-            var hr = NativeMethods.DismApplyUnattend(session, unattendFile, singleSession);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismApplyUnattend(session, unattendFile, singleSession));
         }
 
         /// <summary>
@@ -144,20 +121,12 @@ namespace Microsoft.Dism
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Stores the output of the native function
-            DismImageHealthState imageHealthState;
+            DismImageHealthState imageHealthState = DismImageHealthState.Healthy;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out imageHealthState);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out imageHealthState));
 
             return imageHealthState;
         }
@@ -168,15 +137,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CleanupMountpoints()
         {
-            // Call the native function
-            var hr = NativeMethods.DismCleanupMountpoints();
-
-            // See if it failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(NativeMethods.DismCleanupMountpoints);
         }
 
         /// <summary>
@@ -186,15 +147,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CloseSession(DismSession session)
         {
-            // Call the native function
-            var hr = NativeMethods.DismCloseSession(session.DangerousGetHandle());
-
-            // See if it failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismCloseSession(session.DangerousGetHandle()));
         }
 
         /// <summary>
@@ -238,15 +191,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismCommitImage(session, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismCommitImage(session, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
@@ -302,15 +247,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0 && hr != Win32Error.ERROR_SUCCESS_REBOOT_REQUIRED)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero), Win32Error.ERROR_SUCCESS, Win32Error.ERROR_SUCCESS_REBOOT_REQUIRED, Win32Error.ERROR_SUCCESS_RESTART_REQUIRED);
         }
 
         /// <summary>
@@ -460,21 +397,13 @@ namespace Microsoft.Dism
             var driverInfos = new DismDriverCollection();
 
             // Used for the native call
-            IntPtr driverInfoPtr;
-            UInt32 driverInfoCount;
-            IntPtr driverPackagePtr;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetDriverInfo(session, driverPath, out driverInfoPtr, out driverInfoCount, out driverPackagePtr);
+            IntPtr driverInfoPtr = IntPtr.Zero;
+            UInt32 driverInfoCount = 0;
+            IntPtr driverPackagePtr = IntPtr.Zero;
 
             try
             {
-                // See if the function failed
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetDriverInfo(session, driverPath, out driverInfoPtr, out driverInfoCount, out driverPackagePtr));
 
                 // Add the items
                 driverInfos.AddRange<DismApi.DismDriver_>(driverInfoPtr, (int)driverInfoCount, i => new DismDriver(i));
@@ -501,20 +430,12 @@ namespace Microsoft.Dism
             var driverPackages = new DismDriverPackageCollection();
 
             // Used for the native call
-            IntPtr driverPackagePtr;
-            UInt32 driverPackageCount;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetDrivers(session, allDrivers, out driverPackagePtr, out driverPackageCount);
+            IntPtr driverPackagePtr = IntPtr.Zero;
+            UInt32 driverPackageCount = 0;
 
             try
             {
-                // See if the function failed
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetDrivers(session, allDrivers, out driverPackagePtr, out driverPackageCount));
 
                 // Add the items
                 driverPackages.AddRange<DismApi.DismDriverPackage_>(driverPackagePtr, (int)driverPackageCount, i => new DismDriverPackage(i));
@@ -638,20 +559,12 @@ namespace Microsoft.Dism
             var imageInfos = new DismImageInfoCollection();
 
             // Used for the native call
-            IntPtr imageInfoPtr;
-            UInt32 imageInfoCount;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetImageInfo(imageFilePath, out imageInfoPtr, out imageInfoCount);
+            IntPtr imageInfoPtr = IntPtr.Zero;
+            UInt32 imageInfoCount = 0;
 
             try
             {
-                // See if the function failed
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetImageInfo(imageFilePath, out imageInfoPtr, out imageInfoCount));
 
                 // Add the items
                 imageInfos.AddRange<DismApi.DismImageInfo_>(imageInfoPtr, (int)imageInfoCount, i => new DismImageInfo(i));
@@ -676,18 +589,19 @@ namespace Microsoft.Dism
 
             try
             {
-                // Call the native function and see if it succeeded
-                if (NativeMethods.DismGetLastErrorMessage(out errorMessagePtr) == 0)
+                if (NativeMethods.DismGetLastErrorMessage(out errorMessagePtr) != Win32Error.ERROR_SUCCESS)
                 {
-                    // Get a string from the pointer
-                    string dismString = errorMessagePtr.ToStructure<DismApi.DismString>();
+                    return null;
+                }
 
-                    // See if the string has a value
-                    if (String.IsNullOrEmpty(dismString) == false)
-                    {
-                        // Return the trimmed value
-                        return dismString.Trim();
-                    }
+                // Get a string from the pointer
+                string dismString = errorMessagePtr.ToStructure<DismApi.DismString>();
+
+                // See if the string has a value
+                if (String.IsNullOrEmpty(dismString) == false)
+                {
+                    // Return the trimmed value
+                    return dismString.Trim();
                 }
             }
             finally
@@ -710,20 +624,12 @@ namespace Microsoft.Dism
             var mountedImageInfos = new DismMountedImageInfoCollection();
 
             // Used for the native call
-            IntPtr mountedImageInfoPtr;
-            UInt32 mountedImageInfoCount;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetMountedImageInfo(out mountedImageInfoPtr, out mountedImageInfoCount);
+            IntPtr mountedImageInfoPtr = IntPtr.Zero;
+            UInt32 mountedImageInfoCount = 0;
 
             try
             {
-                // See if the function failed
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetMountedImageInfo(out mountedImageInfoPtr, out mountedImageInfoCount));
 
                 // Add the items
                 mountedImageInfos.AddRange<DismApi.DismMountedImageInfo_>(mountedImageInfoPtr, (int)mountedImageInfoCount, i => new DismMountedImageInfo(i));
@@ -772,20 +678,12 @@ namespace Microsoft.Dism
             var packages = new DismPackageCollection();
 
             // Used for the native call
-            IntPtr packagePtr;
-            UInt32 packageCount;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetPackages(session, out packagePtr, out packageCount);
+            IntPtr packagePtr = IntPtr.Zero;
+            UInt32 packageCount = 0;
 
             try
             {
-                // See if the call failed
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetPackages(session, out packagePtr, out packageCount));
 
                 // Add the items
                 packages.AddRange<DismApi.DismPackage_>(packagePtr, (int)packageCount, i => new DismPackage(i));
@@ -829,15 +727,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string logFilePath, string scratchDirectory)
         {
-            // Call the native function
-            var hr = NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory);
-
-            // See if it failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory));
         }
 
         /// <summary>
@@ -1089,15 +979,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void RemountImage(string mountPath)
         {
-            // Call the native function
-            var hr = NativeMethods.DismRemountImage(mountPath);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismRemountImage(mountPath));
         }
 
         /// <summary>
@@ -1108,15 +990,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void RemoveDriver(DismSession session, string driverPath)
         {
-            // Call the native function
-            var hr = NativeMethods.DismRemoveDriver(session, driverPath);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismRemoveDriver(session, driverPath));
         }
 
         /// <summary>
@@ -1250,15 +1124,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
@@ -1267,15 +1133,7 @@ namespace Microsoft.Dism
         /// <returns></returns>
         public static void Shutdown()
         {
-            // Call the native function
-            var hr = NativeMethods.DismShutdown();
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(NativeMethods.DismShutdown);
         }
 
         /// <summary>
@@ -1319,15 +1177,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
@@ -1339,6 +1189,35 @@ namespace Microsoft.Dism
         {
             // Call the native function
             NativeMethods.DismDelete(handle);
+        }
+
+        /// <summary>
+        /// Throws an exception if the specified function fails.
+        /// </summary>
+        /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
+        private static void ThrowIfFail(Func<int> func)
+        {
+            ThrowIfFail(func, Win32Error.ERROR_SUCCESS);
+        }
+
+        /// <summary>
+        /// Throws an exception if the specified function fails.
+        /// </summary>
+        /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
+        /// <param name="successCodes">A list of one or more codes to consider as success for the function.</param>
+        private static void ThrowIfFail(Func<int> func, params int[] successCodes)
+        {
+            if (successCodes == null)
+            {
+                throw new ArgumentNullException(nameof(successCodes));
+            }
+
+            int hresult = func();
+
+            if (!successCodes.Any(code => code.Equals(hresult)))
+            {
+                throw DismException.GetDismExceptionForHResult(hresult);
+            }
         }
 
         /// <summary>
@@ -1364,15 +1243,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismEnableFeature(session, featureName, identifier, identifier == null ? DismPackageIdentifier.None : packageIdentifier, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, enableAll, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismEnableFeature(session, featureName, identifier, identifier == null ? DismPackageIdentifier.None : packageIdentifier, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, enableAll, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
@@ -1387,18 +1258,11 @@ namespace Microsoft.Dism
         private static DismFeatureInfo GetFeatureInfo(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier)
         {
             // Stores the output from DismGetFeatureInfo
-            IntPtr featureInfoPtr;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetFeatureInfo(session, featureName, identifier, packageIdentifier, out featureInfoPtr);
+            IntPtr featureInfoPtr = IntPtr.Zero;
 
             try
             {
-                // See if an error occurred
-                if (hr != 0)
-                {
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetFeatureInfo(session, featureName, identifier, packageIdentifier, out featureInfoPtr));
 
                 // Return a new DismFeatureInfo from the native pointer
                 return new DismFeatureInfo(featureInfoPtr);
@@ -1424,19 +1288,12 @@ namespace Microsoft.Dism
             var features = new DismFeatureCollection();
 
             // Used for the native call
-            IntPtr featurePtr;
-            UInt32 featureCount;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetFeatureParent(session, featureName, identifier, packageIdentifier, out featurePtr, out featureCount);
+            IntPtr featurePtr = IntPtr.Zero;
+            UInt32 featureCount = 0;
 
             try
             {
-                // See if an error occurred
-                if (hr != 0)
-                {
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetFeatureParent(session, featureName, identifier, packageIdentifier, out featurePtr, out featureCount));
 
                 // Add the items
                 features.AddRange<DismApi.DismFeature_>(featurePtr, (int)featureCount, i => new DismFeature(i));
@@ -1462,20 +1319,12 @@ namespace Microsoft.Dism
         {
             var features = new DismFeatureCollection();
 
-            IntPtr featurePtr;
-            UInt32 featureCount;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetFeatures(session, identifier, packageIdentifier, out featurePtr, out featureCount);
+            IntPtr featurePtr = IntPtr.Zero;
+            UInt32 featureCount = 0;
 
             try
             {
-                // See if the function failed
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetFeatures(session, identifier, packageIdentifier, out featurePtr, out featureCount));
 
                 // Add the items
                 features.AddRange<DismApi.DismFeature_>(featurePtr, (int)featureCount, i => new DismFeature(i));
@@ -1500,19 +1349,11 @@ namespace Microsoft.Dism
         private static DismPackageInfo GetPackageInfo(DismSession session, string identifier, DismPackageIdentifier packageIdentifier)
         {
             // Used for the native call
-            IntPtr packageInfoPtr;
-
-            // Call the native function
-            var hr = NativeMethods.DismGetPackageInfo(session, identifier, packageIdentifier, out packageInfoPtr);
+            IntPtr packageInfoPtr = IntPtr.Zero;
 
             try
             {
-                // See if an error occurred
-                if (hr != 0)
-                {
-                    // Throw an exception
-                    throw DismException.GetDismExceptionForHResult(hr);
-                }
+                ThrowIfFail(() => NativeMethods.DismGetPackageInfo(session, identifier, packageIdentifier, out packageInfoPtr));
 
                 // Return a new DismPackageInfo object with a reference to the pointer
                 return new DismPackageInfo(packageInfoPtr);
@@ -1546,15 +1387,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
@@ -1567,17 +1400,9 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive)
         {
-            DismSession session;
+            DismSession session = null;
 
-            // Call the native function
-            int ret = NativeMethods.DismOpenSession(imagePath, windowsDirectory, systemDrive, out session);
-
-            // See if the call failed
-            if (ret != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(ret);
-            }
+            ThrowIfFail(() => NativeMethods.DismOpenSession(imagePath, windowsDirectory, systemDrive, out session));
 
             return session;
         }
@@ -1597,15 +1422,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            // Call the native function
-            var hr = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            // See if the call failed
-            if (hr != 0)
-            {
-                // Throw an exception
-                throw DismException.GetDismExceptionForHResult(hr);
-            }
+            ThrowIfFail(() => NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
     }
 }
