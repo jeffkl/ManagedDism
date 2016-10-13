@@ -17,6 +17,34 @@ namespace Microsoft.Dism
             private const CharSet DismCharacterSet = CharSet.Unicode;
 
             /// <summary>
+            /// Add a capability to an image.
+            /// </summary>
+            /// <param name="Session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the DismOpenSession.</param>
+            /// <param name="Name">The name of the capability that is being added.</param>
+            /// <param name="LimitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
+            /// <param name="SourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
+            /// <param name="SourcePathCount">The count of entries in SourcePaths.</param>
+            /// <param name="CancelEvent">This is a handle to an event for cancellation.</param>
+            /// <param name="Progress">Pointer to a client defined callback function to report progress.</param>
+            /// <param name="UserData">User defined custom data. This will be passed back to the user through the callback.</param>
+            /// <returns>Returns S_OK on success.</returns>
+            /// <remarks>
+            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684919.aspx"/>
+            /// HRESULT WINAPI DismAddCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_ BOOL LimitAccess, _In_ PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
+            /// </remarks>
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int DismAddCapability(
+                DismSession Session,
+                string Name,
+                [MarshalAs(UnmanagedType.Bool)] bool LimitAccess,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] SourcePaths,
+                UInt32 SourcePathCount,
+                SafeWaitHandle CancelEvent,
+                DismProgressCallback Progress,
+                IntPtr UserData);
+
+            /// <summary>
             /// Adds a third party driver (.inf) to an offline Windows® image.
             /// </summary>
             /// <param name="Session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
@@ -193,6 +221,21 @@ namespace Microsoft.Dism
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismEnableFeature(DismSession Session, string FeatureName, string Identifier, DismPackageIdentifier PackageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool LimitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] SourcePaths, UInt32 SourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool EnableAll, SafeWaitHandle CancelEvent, DismProgressCallback Progress, IntPtr UserData);
+
+            /// <summary>
+            /// Gets DISM capabilities.
+            /// </summary>
+            /// <param name="Session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the DismOpenSession.</param>
+            /// <param name="Capability">Pointer that will receive the info of capability.</param>
+            /// <param name="Count">The number of DismCapability structures that were returned.</param>
+            /// <returns>Returns S_OK on success.</returns>
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int DismGetCapabilities(DismSession Session, out IntPtr Capability, out UInt32 Count);
+
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int DismGetCapabilityInfo(DismSession Session, string Name, out IntPtr Info);
 
             /// <summary>
             /// Gets information about an .inf file in a specified image.
@@ -471,6 +514,23 @@ namespace Microsoft.Dism
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismRemountImage(string MountPath);
+
+            /// <summary>
+            /// Add a capability to an image.
+            /// </summary>
+            /// <param name="Session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the DismOpenSession.</param>
+            /// <param name="Name">The name of the capability that is being removed</param>
+            /// <param name="CancelEvent">This is a handle to an event for cancellation.</param>
+            /// <param name="Progress">Pointer to a client defined callback function to report progress.</param>
+            /// <param name="UserData">User defined custom data. This will be passed back to the user through the callback.</param>
+            /// <returns>Returns S_OK on success.</returns>
+            /// <remarks>
+            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684925.aspx"/>
+            /// HRESULT WINAPI DismRemoveCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
+            /// </remarks>
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int DismRemoveCapability(DismSession Session, string Name, SafeWaitHandle CancelEvent, DismProgressCallback Progress, IntPtr UserData);
 
             /// <summary>
             /// Removes an out-of-box driver from an offline image.
