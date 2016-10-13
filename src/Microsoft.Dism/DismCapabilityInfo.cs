@@ -8,18 +8,63 @@ namespace Microsoft.Dism
 {
     public static partial class DismApi
     {
+        /// <summary>
+        /// Describes information about a capability.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684922.aspx"/>
+        /// typedef struct _DismCapabilityInfo {
+        ///     PCWSTR Name;
+        ///     DismPackageFeatureState State;
+        ///     PCWSTR DisplayName;
+        ///     PCWSTR Description;
+        ///     DWORD DownloadSize;
+        ///     DWORD InstallSize;
+        /// } DismCapabilityInfo;
+        /// </remarks>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
         internal struct DismCapabilityInfo_
         {
+            /// <summary>
+            /// The name of the capability.
+            /// </summary>
             public string Name;
+
+
+            /// <summary>
+            /// The state of the capability.
+            /// </summary>
             public DismPackageFeatureState State;
+
+
+            /// <summary>
+            /// The display name of the capability.
+            /// </summary>
             public string DisplayName;
+
+
+            /// <summary>
+            /// The description of the capability.
+            /// </summary>
             public string Description;
+
+
+            /// <summary>
+            /// The download size of the capability in bytes.
+            /// </summary>
             public UInt32 DownloadSize;
+
+
+            /// <summary>
+            /// The install size of the capability in bytes.
+            /// </summary>
             public UInt32 InstallSize;
         }
     }
 
+    /// <summary>
+    /// Describes information about a capability.
+    /// </summary>
     public sealed class DismCapabilityInfo : IEquatable<DismCapabilityInfo>
     {
         private readonly DismApi.DismCapabilityInfo_ _capabilityInfo;
@@ -34,16 +79,34 @@ namespace Microsoft.Dism
             _capabilityInfo = capabilityInfo;
         }
 
+        /// <summary>
+        /// Gets the name of the capability.
+        /// </summary>
         public string Name => _capabilityInfo.Name;
 
+        /// <summary>
+        /// Gets the state of the capability.
+        /// </summary>
         public DismPackageFeatureState State => _capabilityInfo.State;
 
+        /// <summary>
+        /// Gets the display name of the capability.
+        /// </summary>
         public string DisplayName => _capabilityInfo.DisplayName;
 
+        /// <summary>
+        /// Gets the description of the capability.
+        /// </summary>
         public string Description => _capabilityInfo.Description;
 
+        /// <summary>
+        /// Gets the download size of the capability in bytes.
+        /// </summary>
         public int DownloadSize => (int)_capabilityInfo.DownloadSize;
 
+        /// <summary>
+        /// Gets the install size of the capability in bytes.
+        /// </summary>
         public int InstallSize => (int)_capabilityInfo.InstallSize;
 
         /// <summary>
