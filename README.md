@@ -10,10 +10,13 @@ Reference to the native DismApi on MSDN: Deployment Image Servicing and Manageme
 
 This managed wrapper works as similarly to the native API as possible with a few managed wrappers to make it more like a .NET API.
 
-
-
 ``` C#
 DismApi.Initialize(DismLogLevel.LogErrors);
 
 DismApi.Shutdown();
 ```
+
+See the [wiki](https://github.com/josemesona/ManagedDism/wiki) for more examples on using the API.
+
+# Contributing
+Please read the [Contributing doc](CONTRIBUTING.md) for information on building the code and contributing to the project.
