@@ -10,10 +10,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
-    <Reference Include="FakesAssemblies\Microsoft.Dism.Fakes.dll">
-      <Name>Microsoft.Dism.Fakes</Name>
-    </Reference>
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes" />
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -43,9 +39,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\Microsoft.Dism.fakes" />
     <None Include="project.json" />
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

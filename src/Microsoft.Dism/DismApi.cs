@@ -684,6 +684,13 @@ namespace Microsoft.Dism
         /// <returns>An error message if one is found, otherwise null.</returns>
         public static string GetLastErrorMessage()
         {
+            // Allow this method to be overridden by an internal test hook
+            //
+            if (GetLastErrorMessageTestHook != null)
+            {
+                return GetLastErrorMessageTestHook();
+            }
+
             // Used for the native call
             IntPtr errorMessagePtr = IntPtr.Zero;
 
