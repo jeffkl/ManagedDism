@@ -120,7 +120,7 @@ namespace Microsoft.Dism
     public sealed class DismCustomPropertyCollection : DismCollection<DismCustomProperty>
     {
         /// <summary>
-        /// Initializes a new instance of the TextWriter class.
+        /// Initializes a new instance of the DismCustomPropertyCollection class.
         /// </summary>
         internal DismCustomPropertyCollection()
             : base(new List<DismCustomProperty>())
@@ -128,7 +128,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the TextWriter class.
+        /// Initializes a new instance of the DismCustomPropertyCollection class.
         /// </summary>
         /// <param name="list"></param>
         internal DismCustomPropertyCollection(IList<DismCustomProperty> list)

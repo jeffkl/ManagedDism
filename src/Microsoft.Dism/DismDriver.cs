@@ -172,7 +172,7 @@ namespace Microsoft.Dism
     public sealed class DismDriverCollection : DismCollection<DismDriver>
     {
         /// <summary>
-        /// Initializes a new instance of the TextWriter class.
+        /// Initializes a new instance of the DismDriverCollection class.
         /// </summary>
         internal DismDriverCollection()
             : base(new List<DismDriver>())
@@ -180,7 +180,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the TextWriter class.
+        /// Initializes a new instance of the DismDriverCollection class.
         /// </summary>
         /// <param name="list"></param>
         internal DismDriverCollection(IList<DismDriver> list)
