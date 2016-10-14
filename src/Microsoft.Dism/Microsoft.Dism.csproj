@@ -25,6 +25,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DismAppxPackage.cs" />
     <Compile Include="DismCapability.cs" />
     <Compile Include="DismCapabilityInfo.cs" />
     <Compile Include="DismFeatureInfo.cs" />
