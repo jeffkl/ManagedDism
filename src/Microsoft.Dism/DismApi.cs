@@ -13,6 +13,51 @@ namespace Microsoft.Dism
     public static partial class DismApi
     {
         /// <summary>
+        /// Add a capability to an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="capabilityName">The name of the capability that is being added.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void AddCapability(DismSession session, string capabilityName)
+        {
+            DismApi.AddCapability(session, capabilityName, false, null, null, null);
+        }
+
+        /// <summary>
+        /// Add a capability to an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="capabilityName">The name of the capability that is being added.</param>
+        /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
+        /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths)
+        {
+            DismApi.AddCapability(session, capabilityName, limitAccess, sourcePaths, null, null);
+        }
+
+        /// <summary>
+        /// Add a capability to an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="capabilityName">The name of the capability that is being added.</param>
+        /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
+        /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        {
+            // Get the list of source paths as an array
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+
+            // Create a DismProgress object to wrap the callback and allow cancellation
+            var progress = new DismProgress(progressCallback, userData);
+
+            ThrowIfFail(() => NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+        }
+
+        /// <summary>
         /// Adds a third party driver (.inf) to an offline Windows® image.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
@@ -383,6 +428,61 @@ namespace Microsoft.Dism
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             DismApi.EnableFeature(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progressCallback, userData);
+        }
+
+        /// <summary>
+        /// Gets DISM capabilities.
+        /// </summary>
+        /// <param name="session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <returns>A <see cref="DismCapabilityCollection"/> object containing a collection of <see cref="DismCapability"/> objects.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static DismCapabilityCollection GetCapabilities(DismSession session)
+        {
+            DismCapabilityCollection capabilities = new DismCapabilityCollection();
+
+            // Used for the native call
+            IntPtr capabilityPtr = IntPtr.Zero;
+            UInt32 capabilityCount = 0;
+
+            try
+            {
+                ThrowIfFail(() => NativeMethods.DismGetCapabilities(session, out capabilityPtr, out capabilityCount));
+
+                // Add the items
+                capabilities.AddRange<DismCapability_>(capabilityPtr, (int)capabilityCount, c => new DismCapability(c));
+            }
+            finally
+            {
+                DismApi.Delete(capabilityPtr);
+            }
+
+            return capabilities;
+        }
+
+        /// <summary>
+        /// Gets DISM capability info.
+        /// </summary>
+        /// <param name="session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="capabilityName">The name of the specified capability.</param>
+        /// <returns>A <see cref="DismCapabilityInfo"/> object.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static DismCapabilityInfo GetCapabilityInfo(DismSession session, string capabilityName)
+        {
+            // Stores the output from DismGetCapabilityInfo
+            IntPtr capabilityInfoPtr = IntPtr.Zero;
+
+            try
+            {
+                ThrowIfFail(() => NativeMethods.DismGetCapabilityInfo(session, capabilityName, out capabilityInfoPtr));
+
+                // Return a new DismCapabilityInfo from the native pointer
+                return new DismCapabilityInfo(capabilityInfoPtr);
+            }
+            finally
+            {
+                // Clean up the native pointer
+                DismApi.Delete(capabilityInfoPtr);
+            }
         }
 
         /// <summary>
@@ -980,6 +1080,34 @@ namespace Microsoft.Dism
         public static void RemountImage(string mountPath)
         {
             ThrowIfFail(() => NativeMethods.DismRemountImage(mountPath));
+        }
+
+        /// <summary>
+        /// Removes the capability from an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="capabilityName">The name of the capability that is being removed</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void RemoveCapability(DismSession session, string capabilityName)
+        {
+            DismApi.RemoveCapability(session, capabilityName, null, null);
+        }
+
+        /// <summary>
+        /// Removes the capability from an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="capabilityName">The name of the capability that is being removed</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        public static void RemoveCapability(DismSession session, string capabilityName, Dism.DismProgressCallback progressCallback, object userData)
+        {
+            // Create a DismProgress object to wrap the callback and allow cancellation
+            var progress = new DismProgress(progressCallback, userData);
+
+            ThrowIfFail(() => NativeMethods.DismRemoveCapability(session, capabilityName, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
         /// <summary>
