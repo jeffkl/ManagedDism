@@ -1,7 +1,5 @@
 ﻿using System;
-using Microsoft.Dism.Fakes;
 using Microsoft.Dism.Properties;
-using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.Win32;
 using NUnit.Framework;
 using Shouldly;
@@ -35,12 +33,9 @@ namespace Microsoft.Dism.Tests
         {
             const string message = "Hello World";
 
-            using(ShimsContext.Create())
-            {
-                ShimDismApi.GetLastErrorMessage = () => message;
+            DismApi.GetLastErrorMessageTestHook = () => message;
 
-                VerifyDismException<DismException>(Win32Error.ERROR_OUTOFMEMORY, message);
-            }
+            VerifyDismException<DismException>(Win32Error.ERROR_OUTOFMEMORY, message);
         }
 
         [Test]
@@ -50,35 +45,29 @@ namespace Microsoft.Dism.Tests
 
             const string errorMessage = "Attempted to divide by zero.";
 
-            using (ShimsContext.Create())
-            {
-                ShimDismApi.GetLastErrorMessage = () => null;
+            DismApi.GetLastErrorMessageTestHook = () => null;
 
-                Exception exception = DismException.GetDismExceptionForHResult(errorCode);
+            Exception exception = DismException.GetDismExceptionForHResult(errorCode);
 
-                exception.ShouldBeOfType<DivideByZeroException>();
+            exception.ShouldBeOfType<DivideByZeroException>();
 
-                exception.Message.ShouldBe(errorMessage);
-            }
+            exception.Message.ShouldBe(errorMessage);
         }
 
         [Test]
         public void OperationCanceledExceptionTest()
         {
-            const int errorCode = unchecked((int)0x800704D3);
+            const int errorCode = unchecked((int) 0x800704D3);
 
             const string errorMessage = "The operation was canceled.";
 
-            using (ShimsContext.Create())
-            {
-                ShimDismApi.GetLastErrorMessage = () => null;
+            DismApi.GetLastErrorMessageTestHook = () => null;
 
-                Exception exception = DismException.GetDismExceptionForHResult(errorCode);
+            Exception exception = DismException.GetDismExceptionForHResult(errorCode);
 
-                exception.ShouldBeOfType<OperationCanceledException>();
+            exception.ShouldBeOfType<OperationCanceledException>();
 
-                exception.Message.ShouldBe(errorMessage);
-            }
+            exception.Message.ShouldBe(errorMessage);
         }
 
         private void VerifyDismException<T>(uint errorCode, string message)
