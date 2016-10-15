@@ -289,7 +289,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// The image contains the AMD64 architecture.
         /// </summary>
-        AMD64 = 9
+        AMD64 = 9,
+
+        /// <summary>
+        /// A neutral processor architecture.
+        /// </summary>
+        Neutral = 11,
     }
 
     /// <summary>

@@ -624,6 +624,22 @@ namespace Microsoft.Dism
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismUnmountImage(string MountPath, UInt32 Flags, SafeWaitHandle CancelEvent, DismProgressCallback Progress, IntPtr UserData);
+
+            #region Undocumented functions found in the DISM PowerShell module
+
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int _DismAddProvisionedAppxPackage(DismSession Session, [MarshalAs(UnmanagedType.LPWStr)] string AppPath, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 3)] string[] DependencyPackages, UInt32 DependencyPackageCount, [MarshalAs(UnmanagedType.LPWStr)] string LicensePath, bool SkipLicense, [MarshalAs(UnmanagedType.LPWStr)] string CustomDataPath);
+
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int _DismGetProvisionedAppxPackages(DismSession Session, out IntPtr PackageBufPtr, out UInt32 PackageCount);
+
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            [return: MarshalAs(UnmanagedType.Error)]
+            public static extern int _DismRemoveProvisionedAppxPackage(DismSession Session, [MarshalAs(UnmanagedType.LPWStr)] string PackageName);
+
+            #endregion Undocumented functions found in the DISM PowerShell module
         }
     }
 }
