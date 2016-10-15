@@ -1324,11 +1324,12 @@ namespace Microsoft.Dism
         /// <param name="appPath">Specifies the location of the app package (.appx) to add to the Windows image.</param>
         /// <param name="dependencyPackages">Specifies the location of dependency packages.</param>
         /// <param name="licensePath">Specifies the location of the .xml file containing your application license.</param>
-        /// <param name="skipLicense">Specifies the location of the .xml file containing your application license.</param>
         /// <param name="customDataPath">Specifies the location of a custom data file. The custom data file will be renamed custom.data and saved in the app data store.</param>
-        public static void _AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, string licensePath, bool skipLicense, string customDataPath)
+        public static void _AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, string licensePath, string customDataPath)
         {
             string[] dependencyPackagesArray = dependencyPackages?.ToArray() ?? new string[0];
+
+            bool skipLicense = String.IsNullOrEmpty(licensePath);
 
             ThrowIfFail(() => NativeMethods._DismAddProvisionedAppxPackage(session, appPath, dependencyPackagesArray, (uint)dependencyPackagesArray.Length, licensePath, skipLicense, customDataPath));
         }
