@@ -7,7 +7,8 @@
     <BaseIntermediateOutputPath Condition=" '$(BaseIntermediateOutputPath)'=='' ">$(EnlistmentRoot)\obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath Condition=" '$(IntermediateOutputPath)'=='' ">$(BaseIntermediateOutputPath)\$(Configuration)\$(Platform)\$(MSBuildProjectFile)</IntermediateOutputPath>
     <OutputPath Condition=" '$(OutputPath)' == '' ">$(EnlistmentRoot)\bin\$(Configuration)\$(Platform)\$(MSBuildProjectName)</OutputPath>
-    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.0</TargetFrameworkVersion>
+    <NuGetPackagesPath Condition=" '$(NuGetPackagesPath)' == '' ">$(EnlistmentRoot)\packages</NuGetPackagesPath>
+    <CBTIntermediateOutputPath Condition=" '$(CBTIntermediateOutputPath)' == '' ">$(BaseIntermediateOutputPath)\CBT</CBTIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -44,5 +45,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+
+  <Import Project="$(EnlistmentRoot)\.build\CBT\build.props" />
   
 </Project>
