@@ -78,7 +78,49 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the version of the package.
         /// </summary>
-        public Version Version { get; private set; }
+        public Version Version { get; }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            return obj != null && Equals(obj as DismAppxPackage);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="DismAppxPackage"/> is equal to the current <see cref="DismAppxPackage"/>.
+        /// </summary>
+        /// <param name="appxPackage">The <see cref="DismAppxPackage"/> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismAppxPackage"/> is equal to the current <see cref="DismAppxPackage"/>; otherwise, false.</returns>
+        public bool Equals(DismAppxPackage appxPackage)
+        {
+            return appxPackage != null
+                   && Architecture == appxPackage.Architecture
+                   && DisplayName == appxPackage.DisplayName
+                   && InstallLocation == appxPackage.InstallLocation
+                   && PackageName == appxPackage.PackageName
+                   && PublisherId == appxPackage.PublisherId
+                   && ResourceId == appxPackage.ResourceId
+                   && Version == appxPackage.Version;
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        public override int GetHashCode()
+        {
+            return Architecture.GetHashCode()
+                   ^ DisplayName?.GetHashCode() ?? 0
+                   ^ InstallLocation?.GetHashCode() ?? 0
+                   ^ PackageName?.GetHashCode() ?? 0
+                   ^ PublisherId?.GetHashCode() ?? 0
+                   ^ ResourceId?.GetHashCode() ?? 0
+                   ^ Version.GetHashCode();
+        }
     }
 
     /// <summary>
