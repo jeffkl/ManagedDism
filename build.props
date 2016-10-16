@@ -46,6 +46,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(MSBuildProjectExtension)' != '.nuproj' And !Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.targets\ImportAfter\Microsoft.Common.NuProj.targets') " >
+    <EnableNuProj_Common Condition=" '$(EnableNuProj_Common)' == '' ">true</EnableNuProj_Common>
+  </PropertyGroup>
+
   <Import Project="$(EnlistmentRoot)\.build\CBT\build.props" />
-  
+
+  <PropertyGroup Condition=" '$(MSBuildProjectExtension)' == '.nuproj'" >
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(CBTModule_NuProj)\tools</NuProjPath>
+  </PropertyGroup>
+
 </Project>
