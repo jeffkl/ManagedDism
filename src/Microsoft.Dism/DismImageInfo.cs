@@ -163,7 +163,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents the metadata of an image.
     /// </summary>
-    public sealed class DismImageInfo
+    public sealed class DismImageInfo : IEquatable<DismImageInfo>
     {
         private readonly DismApi.DismImageInfo_ _imageInfo;
         private readonly List<CultureInfo> _languages = new List<CultureInfo>();

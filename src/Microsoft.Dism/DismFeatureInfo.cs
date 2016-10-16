@@ -65,7 +65,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents advanced feature information, such as installed state and whether a restart is required after installation.
     /// </summary>
-    public sealed class DismFeatureInfo
+    public sealed class DismFeatureInfo : IEquatable<DismFeatureInfo>
     {
         private readonly DismCustomPropertyCollection _customProperties = new DismCustomPropertyCollection();
         private readonly DismApi.DismFeatureInfo_ _featureInfo;

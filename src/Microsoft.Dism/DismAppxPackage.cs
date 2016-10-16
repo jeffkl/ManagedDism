@@ -28,7 +28,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents information about an Appx package.
     /// </summary>
-    public sealed class DismAppxPackage
+    public sealed class DismAppxPackage : IEquatable<DismAppxPackage>
     {
         private readonly DismApi.DismAppxPackage_ _appxPackage;
 
