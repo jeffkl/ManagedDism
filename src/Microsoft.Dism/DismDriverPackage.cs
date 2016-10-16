@@ -114,7 +114,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents basic information for the driver that is associated with the .inf file.
     /// </summary>
-    public sealed class DismDriverPackage
+    public sealed class DismDriverPackage : IEquatable<DismDriverPackage>
     {
         private readonly DismApi.DismDriverPackage_ _driverPackage;
 

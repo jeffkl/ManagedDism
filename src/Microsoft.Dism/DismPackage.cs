@@ -48,7 +48,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents basic information about a package, including the date and time that the package was installed.
     /// </summary>
-    public sealed class DismPackage
+    public sealed class DismPackage : IEquatable<DismPackage>
     {
         private readonly DismApi.DismPackage_ _package;
 

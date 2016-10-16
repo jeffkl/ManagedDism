@@ -35,7 +35,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Describes basic information about a feature, such as the feature name and feature state.
     /// </summary>
-    public sealed class DismFeature
+    public sealed class DismFeature : IEquatable<DismFeature>
     {
         private readonly DismApi.DismFeature_ _feature;
 

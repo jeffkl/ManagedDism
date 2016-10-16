@@ -53,7 +53,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents a mounted image.
     /// </summary>
-    public sealed class DismMountedImageInfo
+    public sealed class DismMountedImageInfo : IEquatable<DismMountedImageInfo>
     {
         private readonly DismApi.DismMountedImageInfo_ _mountedImageInfo;
 

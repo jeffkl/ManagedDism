@@ -53,7 +53,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents a Windows® Imaging Format (WIM) file.
     /// </summary>
-    public sealed class DismWimCustomizedInfo
+    public sealed class DismWimCustomizedInfo : IEquatable<DismWimCustomizedInfo>
     {
         private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo;
 

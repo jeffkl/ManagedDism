@@ -65,7 +65,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Describes the architecture and hardware that the driver supports.
     /// </summary>
-    public sealed class DismDriver
+    public sealed class DismDriver : IEquatable<DismDriver>
     {
         private readonly DismApi.DismDriver_ _driver;
 

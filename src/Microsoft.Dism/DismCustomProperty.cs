@@ -41,7 +41,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents the custom properties of a package. Custom properties are any properties that are not found in <see cref="DismPackage"/> or <see cref="DismFeature"/>.
     /// </summary>
-    public class DismCustomProperty
+    public class DismCustomProperty : IEquatable<DismCustomProperty>
     {
         private readonly DismApi.DismCustomProperty_ _customProperty;
 
