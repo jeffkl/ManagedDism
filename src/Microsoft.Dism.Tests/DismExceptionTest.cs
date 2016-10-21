@@ -12,7 +12,7 @@ namespace Microsoft.Dism.Tests
         [Test]
         public void DismRebootRequiredExceptionTest()
         {
-            VerifyDismException<DismRebootRequiredException>(Win32Error.ERROR_SUCCESS_REBOOT_REQUIRED, Resources.DismExceptionMessageRebootRequired);
+            VerifyDismException<DismRebootRequiredException>(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, Resources.DismExceptionMessageRebootRequired);
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Microsoft.Dism.Tests
 
             DismApi.GetLastErrorMessageTestHook = () => message;
 
-            VerifyDismException<DismException>(Win32Error.ERROR_OUTOFMEMORY, message);
+            VerifyDismException<DismException>(DismApi.ERROR_OUTOFMEMORY, message);
         }
 
         [Test]

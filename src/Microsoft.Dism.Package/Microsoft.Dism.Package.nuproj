@@ -33,11 +33,6 @@
     <Tags>Dism</Tags>
   </PropertyGroup>
   <ItemGroup>
-    <Dependency Include="Microsoft.Win32Ex">
-      <Version>[1.2,)</Version>
-    </Dependency>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Microsoft.Dism\Microsoft.Dism.csproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" Condition="Exists('$(NuProjPath)\NuProj.targets')" />

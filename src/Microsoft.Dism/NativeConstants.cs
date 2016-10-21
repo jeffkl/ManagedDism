@@ -141,5 +141,30 @@ namespace Microsoft.Dism
         /// The feature is not present in the package.
         /// </summary>
         public const uint DISMAPI_E_UNKNOWN_FEATURE = 0x800f080c;
+
+        /// <summary>
+        /// The operation completed successfully.
+        /// </summary>
+        internal const int ERROR_SUCCESS = 0x00000000;
+
+        /// <summary>
+        /// Not enough storage is available to complete this operation.
+        /// </summary>
+        internal const int ERROR_OUTOFMEMORY = 0x0000000E;  // 14
+
+        /// <summary>
+        /// The request was aborted.
+        /// </summary>
+        internal const int ERROR_REQUEST_ABORTED = 0x000004D3;  // 1235
+
+        /// <summary>
+        /// The requested operation is successful. Changes will not be effective until the system is rebooted.
+        /// </summary>
+        internal const int ERROR_SUCCESS_REBOOT_REQUIRED = 0x00000BC2;  // 3010
+
+        /// <summary>
+        /// The requested operation is successful. Changes will not be effective until the service is restarted.
+        /// </summary>
+        internal const int ERROR_SUCCESS_RESTART_REQUIRED = 0x00000BC3;  // 3011
     }
 }

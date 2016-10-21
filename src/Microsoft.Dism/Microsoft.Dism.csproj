@@ -41,9 +41,11 @@
     <Compile Include="DismPackage.cs" />
     <Compile Include="DismWimCustomizedInfo.cs" />
     <Compile Include="DismApi.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="NativeConstants.cs" />
     <Compile Include="NativeEnums.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="NativeStructs.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

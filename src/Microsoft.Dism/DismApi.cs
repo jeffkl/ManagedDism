@@ -292,7 +292,7 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero), Win32Error.ERROR_SUCCESS, Win32Error.ERROR_SUCCESS_REBOOT_REQUIRED, Win32Error.ERROR_SUCCESS_RESTART_REQUIRED);
+            ThrowIfFail(() => NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero), DismApi.ERROR_SUCCESS, DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, DismApi.ERROR_SUCCESS_RESTART_REQUIRED);
         }
 
         /// <summary>
@@ -696,7 +696,7 @@ namespace Microsoft.Dism
 
             try
             {
-                if (NativeMethods.DismGetLastErrorMessage(out errorMessagePtr) != Win32Error.ERROR_SUCCESS)
+                if (NativeMethods.DismGetLastErrorMessage(out errorMessagePtr) != DismApi.ERROR_SUCCESS)
                 {
                     return null;
                 }
@@ -1389,7 +1389,7 @@ namespace Microsoft.Dism
         /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
         private static void ThrowIfFail(Func<int> func)
         {
-            ThrowIfFail(func, Win32Error.ERROR_SUCCESS);
+            ThrowIfFail(func, DismApi.ERROR_SUCCESS);
         }
 
         /// <summary>
