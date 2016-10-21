@@ -1,6 +1,5 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Win32Ex": "1.2.0.0",
     "NUnit": "3.2.1",
     "NUnit3TestAdapter": "3.2.0",
     "Shouldly": "2.7.0"

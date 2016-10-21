@@ -33,11 +33,11 @@ namespace Microsoft.Dism
             // Look for known error codes
             switch ((uint)errorCode)
             {
-                case Win32Error.ERROR_REQUEST_ABORTED:
-                case 0x80070000 | Win32Error.ERROR_REQUEST_ABORTED:
+                case DismApi.ERROR_REQUEST_ABORTED:
+                case 0x80070000 | DismApi.ERROR_REQUEST_ABORTED:
                     return new OperationCanceledException();
 
-                case Win32Error.ERROR_SUCCESS_REBOOT_REQUIRED:
+                case DismApi.ERROR_SUCCESS_REBOOT_REQUIRED:
                     return new DismRebootRequiredException(errorCode);
 
                 case DismApi.DISMAPI_E_DISMAPI_NOT_INITIALIZED:
