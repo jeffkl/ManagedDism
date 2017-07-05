@@ -40,6 +40,9 @@ namespace Microsoft.Dism
                 case DismApi.ERROR_SUCCESS_REBOOT_REQUIRED:
                     return new DismRebootRequiredException(errorCode);
 
+                case DismApi.ERROR_SUCCESS_RELOAD_IMAGE_SESSION_REQUIRED:
+                    return new DismReloadImageSessionRequiredException(errorCode);
+
                 case DismApi.DISMAPI_E_DISMAPI_NOT_INITIALIZED:
                     // User has not called DismApi.Initialize()
                     return new DismNotInitializedException(errorCode);
@@ -98,4 +101,17 @@ namespace Microsoft.Dism
         {
         }
     }
+
+    /// <summary>
+    /// The exception that is thrown when the previous operations requires a reload of image session.
+    /// </summary>
+    [Serializable]
+    public class DismReloadImageSessionRequiredException : DismException
+    {
+        internal DismReloadImageSessionRequiredException(int errorCode)
+            : base(errorCode, Resources.DismExceptionMessageReloadImageSessionRequired)
+        {
+        }
+    }
 }
+
