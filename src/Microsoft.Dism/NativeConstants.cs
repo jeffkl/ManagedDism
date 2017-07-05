@@ -170,6 +170,6 @@ namespace Microsoft.Dism
         /// <summary>
         /// The requested operation is successful. The DISM session needs to be reloaded.
         /// </summary>
-        internal const int ERROR_SUCCESS_RELOAD_IMAGE_SESSION_REQUIRED = 0x00000001;  // 1
+        internal const int DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED = 0x00000001;  // 1
     }
 }

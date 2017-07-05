@@ -40,7 +40,7 @@ namespace Microsoft.Dism
                 case DismApi.ERROR_SUCCESS_REBOOT_REQUIRED:
                     return new DismRebootRequiredException(errorCode);
 
-                case DismApi.ERROR_SUCCESS_RELOAD_IMAGE_SESSION_REQUIRED:
+                case DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED:
                     return new DismReloadImageSessionRequiredException(errorCode);
 
                 case DismApi.DISMAPI_E_DISMAPI_NOT_INITIALIZED:
