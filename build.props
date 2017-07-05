@@ -9,6 +9,8 @@
     <OutputPath Condition=" '$(OutputPath)' == '' ">$(EnlistmentRoot)\bin\$(Configuration)\$(Platform)\$(MSBuildProjectName)</OutputPath>
     <NuGetPackagesPath Condition=" '$(NuGetPackagesPath)' == '' ">$(EnlistmentRoot)\packages</NuGetPackagesPath>
     <CBTIntermediateOutputPath Condition=" '$(CBTIntermediateOutputPath)' == '' ">$(BaseIntermediateOutputPath)\CBT</CBTIntermediateOutputPath>
+    <!-- Temporarily pin to version 3.5 -->
+    <CBTNuGetDownloaderArguments>https://dist.nuget.org/win-x86-commandline/v3.5.0/nuget.exe</CBTNuGetDownloaderArguments>
   </PropertyGroup>
 
   <PropertyGroup>
