@@ -166,5 +166,10 @@ namespace Microsoft.Dism
         /// The requested operation is successful. Changes will not be effective until the service is restarted.
         /// </summary>
         internal const int ERROR_SUCCESS_RESTART_REQUIRED = 0x00000BC3;  // 3011
+
+        /// <summary>
+        /// The requested operation is successful. The DISM session needs to be reloaded.
+        /// </summary>
+        internal const int DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED = 0x00000001;  // 1
     }
 }

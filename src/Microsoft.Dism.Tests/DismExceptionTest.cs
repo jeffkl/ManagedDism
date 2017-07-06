@@ -27,6 +27,11 @@ namespace Microsoft.Dism.Tests
             VerifyDismException<DismOpenSessionsException>(DismApi.DISMAPI_E_OPEN_SESSION_HANDLES, Resources.DismExceptionMessageOpenSessions);
         }
 
+        [Test]
+        public void DismReloadImageSessionRequiredExceptionTest()
+        {
+            VerifyDismException<DismReloadImageSessionRequiredException>(DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED, Resources.DismExceptionMessageReloadImageSessionRequired);
+        }
 
         [Test]
         public void GetLastErrorMessageTest()

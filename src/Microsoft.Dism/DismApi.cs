@@ -1427,6 +1427,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        /// <exception cref="DismReloadImageSessionRequiredException">When the operation requires a reload image session.</exception>
         private static void EnableFeature(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Get the list of source paths as an array

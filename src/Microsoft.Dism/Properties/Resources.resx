@@ -129,4 +129,8 @@
     <value>A restart is required to complete the operation.</value>
     <comment>Exception message when an operation requires a reboot.</comment>
   </data>
+  <data name="DismExceptionMessageReloadImageSessionRequired" xml:space="preserve">
+    <value>A reload of image session is required.</value>
+    <comment>Exception message when an operation requires a reload of image session.</comment>
+  </data>
 </root>
