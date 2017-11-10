@@ -231,7 +231,7 @@ namespace Microsoft.Dism
         public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create the flags
-            UInt32 flags = discardChanges ? DismApi.DISM_DISCARD_IMAGE : DismApi.DISM_COMMIT_MASK;
+            UInt32 flags = discardChanges ? DismApi.DISM_DISCARD_IMAGE : DismApi.DISM_COMMIT_IMAGE;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
@@ -1307,7 +1307,7 @@ namespace Microsoft.Dism
         public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Determine flags
-            var flags = commitChanges ? DismApi.DISM_COMMIT_MASK : DismApi.DISM_DISCARD_IMAGE;
+            var flags = commitChanges ? DismApi.DISM_COMMIT_IMAGE : DismApi.DISM_DISCARD_IMAGE;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);

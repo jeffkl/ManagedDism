@@ -21,7 +21,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Indicates to the DismUnmountImage Function that all changes should be saved. This flag is equivalent to using DISM_COMMIT_IMAGE, DISM_COMMIT_GENERATE_INTEGRITY, and DISM_COMMIT_APPEND.
         /// </summary>
-        public const uint DISM_COMMIT_MASK = DISM_COMMIT_IMAGE | DISM_COMMIT_GENERATE_INTEGRITY | DISM_COMMIT_APPEND;
+        public const uint DISM_COMMIT_MASK = 0xFFFF0000;
 
         /// <summary>
         /// Indicates to the DismCommitImage Function or the DismUnmountImage Function that changes to the image should not be saved.
