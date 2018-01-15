@@ -61,7 +61,42 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
 {
-    public static class DismUtilities
+    /// <summary>
+    /// Represents "generational" versions of Deployment Imaging and Servicing Management.
+    /// </summary>
+    public enum DismGeneration
+    {
+        /// <summary>
+        /// DISM libraries associated with WAIK and/or WADK were not found.
+        /// </summary>
+        NotFound = 0,
+
+        /// <summary>
+        /// DISM associated with the Windows 7 or Windows 7 Service Pack 1 version of the Windows Assessment and Installation Kit (WAIK).
+        /// With respect to Windows PE, this would be 3.0 (Windows 7) or 3.1 (Service Pack 1).
+        /// </summary>
+        Win7,
+
+        /// <summary>
+        /// DISM associated with the Windows 8 version of the Windows Assessment and Deployment Kit (WADK).
+        /// With respect to Windows PE, this would be 4.0 (Windows 8.0).
+        /// </summary>
+        Win8,
+
+        /// <summary>
+        /// DISM associated with the Windows 8.1 version of the Windows Assessment and Deployment Kit (WADK).
+        /// With respect to Windows PE, this would be 5.0 (Windows 8.1).
+        /// </summary>
+        Win8_1,
+
+        /// <summary>
+        /// DISM associated with the Windows 10 version of the Windows Assessment and Deployment Kit (WADK).
+        /// With respect to Windows PE, this would be 10.x (Windows 10.x).
+        /// </summary>
+        Win10,
+    }
+
+    internal static class DismUtilities
     {
         /// <summary>
         /// Native methods necessary for manually loading and unloading a specific DISM API library.
@@ -73,41 +108,6 @@ namespace Microsoft.Dism
 
             [DllImport("kernel32.dll")]
             public static extern bool FreeLibrary(IntPtr hModule);
-        }
-
-        /// <summary>
-        /// Represents "generational" versions of Deployment Imaging and Servicing Management.
-        /// </summary>
-        public enum DismGeneration
-        {
-            /// <summary>
-            /// DISM libraries associated with WAIK and/or WADK were not found.
-            /// </summary>
-            NotFound = 0,
-
-            /// <summary>
-            /// DISM associated with the Windows 7 or Windows 7 Service Pack 1 version of the Windows Assessment and Installation Kit (WAIK).
-            /// With respect to Windows PE, this would be 3.0 (Windows 7) or 3.1 (Service Pack 1).
-            /// </summary>
-            Win7,
-
-            /// <summary>
-            /// DISM associated with the Windows 8 version of the Windows Assessment and Deployment Kit (WADK).
-            /// With respect to Windows PE, this would be 4.0 (Windows 8.0).
-            /// </summary>
-            Win8,
-
-            /// <summary>
-            /// DISM associated with the Windows 8.1 version of the Windows Assessment and Deployment Kit (WADK).
-            /// With respect to Windows PE, this would be 5.0 (Windows 8.1).
-            /// </summary>
-            Win8_1,
-
-            /// <summary>
-            /// DISM associated with the Windows 10 version of the Windows Assessment and Deployment Kit (WADK).
-            /// With respect to Windows PE, this would be 10.x (Windows 10.x).
-            /// </summary>
-            Win10
         }
 
         /// <summary>
@@ -205,24 +205,6 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Returns a DismGeneration enumeration indicating the latest DISM generation installed and available on the local system.
-        /// </summary>
-        /// <returns></returns>
-        public static DismGeneration GetLatestDismGeneration()
-        {
-            if (!String.IsNullOrEmpty(WADK10DISMAPIPath))
-                return DismGeneration.Win10;
-            else if (!String.IsNullOrEmpty(WADK81DISMAPIPath))
-                return DismGeneration.Win8_1;
-            else if (!String.IsNullOrEmpty(WADK80DISMAPIPath))
-                return DismGeneration.Win8;
-            else if (!String.IsNullOrEmpty(WADK80DISMAPIPath))
-                return DismGeneration.Win7;
-            else
-                return DismGeneration.NotFound;
-        }
-
-        /// <summary>
         /// Loads the DISM API library associated with the provided DismGeneration. 
         /// NOTE: This must be called before calling DismApi.Initialize(), as the initialization takes precedence based on Dynamic Link Library loading.
         /// If a DismGeneration library has already been loaded when initialize() is called, that version of the DISM generation library is utilized. If no DISM API library
@@ -264,10 +246,27 @@ namespace Microsoft.Dism
                 case DismGeneration.NotFound:
                 default:
                     return false;
-                    break;
             }
 
             return ((hDismApi = NativeMethods.LoadLibrary(dismApiPath)) != IntPtr.Zero ? true : false);
+        }
+
+        /// <summary>
+        /// Returns a DismGeneration enumeration indicating the latest DISM generation installed and available on the local system.
+        /// </summary>
+        /// <returns></returns>
+        public static DismGeneration GetLatestDismGeneration()
+        {
+            if (!String.IsNullOrEmpty(WADK10DISMAPIPath))
+                return DismGeneration.Win10;
+            else if (!String.IsNullOrEmpty(WADK81DISMAPIPath))
+                return DismGeneration.Win8_1;
+            else if (!String.IsNullOrEmpty(WADK80DISMAPIPath))
+                return DismGeneration.Win8;
+            else if (!String.IsNullOrEmpty(WADK80DISMAPIPath))
+                return DismGeneration.Win7;
+            else
+                return DismGeneration.NotFound;
         }
 
         /// <summary>
