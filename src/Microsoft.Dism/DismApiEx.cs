@@ -57,14 +57,18 @@ namespace Microsoft.Dism
         public static void InitializeEx(DismLogLevel logLevel, string logFilePath, string scratchDirectory, DismGeneration dismGeneration)
         {
             if (CurrentDismGeneration != DismGeneration.NotFound)
-                throw new Exception(String.Format("A DISM Generation library is already loaded ({0}). Please call Shutdown() first to release the existing library.", dismGeneration.ToString()));
+            {
+                throw new Exception($"A DISM Generation library is already loaded ({dismGeneration}). Please call Shutdown() first to release the existing library.");
+            }
 
             if (dismGeneration != DismGeneration.NotFound && !DismUtilities.LoadDismGenerationLibrary(dismGeneration))
-                throw new Exception(String.Format("Loading the latest DISM Generation library ({0}) failed.", dismGeneration.ToString()));
-
-            CurrentDismGeneration = dismGeneration;
+            {
+                throw new Exception($"Loading the latest DISM Generation library ({dismGeneration}) failed.");
+            }
 
             DismApi.Initialize(logLevel, logFilePath, scratchDirectory);
+
+            CurrentDismGeneration = dismGeneration;
         }
     }
 }
