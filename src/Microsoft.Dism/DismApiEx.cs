@@ -7,7 +7,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Represents the DISM Generational Library initialized for use with the DismApi Wrapper (via InitializeEx()). Returns the specific DismGeneration in use; otherwise, returns DismGeneration.NotFound.
         /// </summary>
-        private static DismGeneration DismGenerationInitialized { get; set; } = DismGeneration.NotFound;
+        private static DismGeneration CurrentDismGeneration { get; set; } = DismGeneration.NotFound;
 
         /// <summary>
         /// Initializes DISM API, using the latest installed DISM Generation. Initialize must be called once per process before calling any other DISM API functions.
@@ -56,13 +56,13 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel, string logFilePath, string scratchDirectory, DismGeneration dismGeneration)
         {
-            if (DismGenerationInitialized != DismGeneration.NotFound)
+            if (CurrentDismGeneration != DismGeneration.NotFound)
                 throw new Exception(String.Format("A DISM Generation library is already loaded ({0}). Please call Shutdown() first to release the existing library.", dismGeneration.ToString()));
 
             if (dismGeneration != DismGeneration.NotFound && !DismUtilities.LoadDismGenerationLibrary(dismGeneration))
                 throw new Exception(String.Format("Loading the latest DISM Generation library ({0}) failed.", dismGeneration.ToString()));
 
-            DismGenerationInitialized = dismGeneration;
+            CurrentDismGeneration = dismGeneration;
 
             DismApi.Initialize(logLevel, logFilePath, scratchDirectory);
         }
