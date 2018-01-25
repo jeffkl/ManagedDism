@@ -14,23 +14,10 @@ namespace Microsoft.Dism
     {
         #region Properties
 
-        private static DismGeneration dismGenerationInitialized;
-
         /// <summary>
         /// Represents the DISM Generational Library initialized for use with the DismApi Wrapper (via InitializeEx()). Returns the specific DismGeneration in use; otherwise, returns DismGeneration.NotFound.
         /// </summary>
-        public static DismGeneration DismGenerationInitialized
-        {
-            get
-            {
-                return DismGenerationInitialized;
-            }
-
-            private set
-            {
-                dismGenerationInitialized = value;
-            }
-        }
+        private static DismGeneration DismGenerationInitialized { get; set; } = DismGeneration.NotFound;
 
         #endregion
 
@@ -833,8 +820,6 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel)
         {
-            DismGenerationInitialized = DismGeneration.NotFound;
-
             DismApi.Initialize(logLevel, null);
         }
 
@@ -846,8 +831,6 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string logFilePath)
         {
-            DismGenerationInitialized = DismGeneration.NotFound;
-
             DismApi.Initialize(logLevel, logFilePath, null);
         }
 
@@ -860,8 +843,6 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string logFilePath, string scratchDirectory)
         {
-            DismGenerationInitialized = DismGeneration.NotFound;
-
             ThrowIfFail(() => NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory));
         }
 
@@ -873,14 +854,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel)
         {
-            DismGeneration dismGeneration = DismUtilities.GetLatestDismGeneration();
-
-            if (dismGeneration != DismGeneration.NotFound && !DismUtilities.LoadDismGenerationLibrary(dismGeneration))
-                throw new Exception(String.Format("Loading the latest DISM Generation Library ({0}) failed.", dismGeneration.ToString()));
-
-            DismGenerationInitialized = dismGeneration;
-
-            DismApi.Initialize(logLevel);
+            InitializeEx(logLevel, String.Empty, String.Empty, DismUtilities.GetLatestDismGeneration());
         }
 
         /// <summary>
@@ -892,14 +866,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel, string logFilePath)
         {
-            DismGeneration dismGeneration = DismUtilities.GetLatestDismGeneration();
-
-            if (dismGeneration != DismGeneration.NotFound && !DismUtilities.LoadDismGenerationLibrary(dismGeneration))
-                throw new Exception(String.Format("Loading the latest DISM Generation Library ({0}) failed.", dismGeneration.ToString()));
-
-            DismGenerationInitialized = dismGeneration;
-
-            DismApi.Initialize(logLevel, logFilePath);
+            InitializeEx(logLevel, logFilePath, String.Empty, DismUtilities.GetLatestDismGeneration());
         }
 
         /// <summary>
@@ -912,14 +879,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel, string logFilePath, string scratchDirectory)
         {
-            DismGeneration dismGeneration = DismUtilities.GetLatestDismGeneration();
-
-            if (dismGeneration != DismGeneration.NotFound && !DismUtilities.LoadDismGenerationLibrary(dismGeneration))
-                throw new Exception(String.Format("Loading the latest DISM Generation Library ({0}) failed.", dismGeneration.ToString()));
-
-            DismGenerationInitialized = dismGeneration;
-
-            DismApi.Initialize(logLevel, logFilePath, scratchDirectory);
+            InitializeEx(logLevel, logFilePath, scratchDirectory, DismUtilities.GetLatestDismGeneration());
         }
 
         /// <summary>
@@ -933,8 +893,11 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel, string logFilePath, string scratchDirectory, DismGeneration dismGeneration)
         {
+            if (DismGenerationInitialized != DismGeneration.NotFound)
+                throw new Exception(String.Format("A DISM Generation library is already loaded ({0}). Please call Shutdown() first to release the existing library.", dismGeneration.ToString()));
+
             if (dismGeneration != DismGeneration.NotFound && !DismUtilities.LoadDismGenerationLibrary(dismGeneration))
-                throw new Exception(String.Format("Loading the latest DISM Generation Library ({0}) failed.", dismGeneration.ToString()));
+                throw new Exception(String.Format("Loading the latest DISM Generation library ({0}) failed.", dismGeneration.ToString()));
 
             DismGenerationInitialized = dismGeneration;
 
@@ -1375,7 +1338,7 @@ namespace Microsoft.Dism
             if (DismGenerationInitialized != DismGeneration.NotFound)
             {
                 DismUtilities.UnloadDismGenerationLibrary();
-                dismGenerationInitialized = DismGeneration.NotFound;
+                DismGenerationInitialized = DismGeneration.NotFound;
             }
 
             ThrowIfFail(NativeMethods.DismShutdown);
