@@ -1,4 +1,4 @@
-﻿///
+﻿/*
 /// OVERVIEW:
 /// 
 /// This class was written to hold non-DISM-specific data structures that are useful to a DISM API user, but do not neatly fit
@@ -52,7 +52,7 @@
 /// 4.  In this fashion, one could load DISM from WADK 10, unload it, load DISM from WAIK, unload it, load DISM from the System, etc.
 /// 
 /// 5.  This method of loading/unloading DISM generation libraries supports ANYCPU, X86, and AMD64, and also supports the CLR "Prefer 32-bit" setting.
-/// 
+*/
 
 using Microsoft.Win32;
 using System;
