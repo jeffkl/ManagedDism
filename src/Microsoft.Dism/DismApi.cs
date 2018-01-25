@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1268,6 +1267,12 @@ namespace Microsoft.Dism
         /// <returns></returns>
         public static void Shutdown()
         {
+            if (CurrentDismGeneration != DismGeneration.NotFound)
+            {
+                DismUtilities.UnloadDismGenerationLibrary();
+                CurrentDismGeneration = DismGeneration.NotFound;
+            }
+
             ThrowIfFail(NativeMethods.DismShutdown);
         }
 
