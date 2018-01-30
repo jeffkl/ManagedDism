@@ -20,6 +20,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DismApiEx.cs" />
     <Compile Include="DismAppxPackage.cs" />
     <Compile Include="DismCapability.cs" />
     <Compile Include="DismCapabilityInfo.cs" />
@@ -39,6 +40,7 @@
     <Compile Include="DismImageInfo.cs" />
     <Compile Include="DismMountedImageInfo.cs" />
     <Compile Include="DismPackage.cs" />
+    <Compile Include="DismUtilities.cs" />
     <Compile Include="DismWimCustomizedInfo.cs" />
     <Compile Include="DismApi.cs" />
     <Compile Include="ExtensionMethods.cs" />
