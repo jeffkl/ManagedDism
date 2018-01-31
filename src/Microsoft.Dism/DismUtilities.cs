@@ -73,7 +73,7 @@ namespace Microsoft.Dism
 
         /// <summary>
         /// DISM associated with the Windows 7 or Windows 7 Service Pack 1 version of the Windows Assessment and Installation Kit (WAIK).
-        /// With respect to Windows PE, this would be 3.0 (Windows 7) or 3.1 (Service Pack 1).
+        /// With respect to Windows PE, this would be 3.0 (Windows 7) or 3.1 (Windows 7 Service Pack 1).
         /// </summary>
         Win7,
 
@@ -93,13 +93,13 @@ namespace Microsoft.Dism
         /// DISM associated with the Windows 10 version of the Windows Assessment and Deployment Kit (WADK).
         /// With respect to Windows PE, this would be 10.x (Windows 10.x).
         /// </summary>
-        Win10,
+        Win10
     }
 
     internal static class DismUtilities
     {
         /// <summary>
-        /// Native methods necessary for manually loading and unloading a specific DISM API library.
+        /// Native methods necessary for manually loading and unloading Win32 libraries.
         /// </summary>
         internal static class NativeMethods
         {
