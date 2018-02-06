@@ -277,10 +277,17 @@ namespace Microsoft.Dism
         /// </returns>
         public static bool UnloadDismGenerationLibrary()
         {
-            if (hDismApi != IntPtr.Zero)
-                NativeMethods.FreeLibrary(hDismApi);
+            if (hDismApi == IntPtr.Zero)
+                return true;
 
-            return hDismApi == IntPtr.Zero ? true : false;
+            if (!NativeMethods.FreeLibrary(hDismApi))
+                return false;
+
+            // Reset the handle once the library has been successfully freed, as it does not reset itself automatically
+            // as part of FreeLibrary().
+            hDismApi = IntPtr.Zero;
+
+            return true;
         }
     }
 }

@@ -1267,13 +1267,13 @@ namespace Microsoft.Dism
         /// <returns></returns>
         public static void Shutdown()
         {
+            ThrowIfFail(NativeMethods.DismShutdown);
+            
             if (CurrentDismGeneration != DismGeneration.NotFound)
             {
                 DismUtilities.UnloadDismGenerationLibrary();
                 CurrentDismGeneration = DismGeneration.NotFound;
             }
-
-            ThrowIfFail(NativeMethods.DismShutdown);
         }
 
         /// <summary>
