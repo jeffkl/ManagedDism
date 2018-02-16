@@ -76,9 +76,13 @@ namespace Microsoft.Dism
         /// <param name="ignoreCheck">Specifies whether to ignore the internal applicability checks that are done when a package is added.</param>
         /// <param name="preventPending">Specifies whether to add a package if it has pending online actions.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending)
+        /// <returns>
+        /// DismApi.ERROR_SUCCESS: Adding the Package was successful.
+        /// DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED: Adding the Package was successful, but the image session needs to be reloaded before additional image servicing.
+        /// </returns>
+        public static int AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending)
         {
-            DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, null);
+            return DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, null);
         }
 
         /// <summary>
@@ -91,9 +95,13 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A DismProgressCallback method to call when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback)
+        /// <returns>
+        /// DismApi.ERROR_SUCCESS: Adding the Package was successful.
+        /// DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED: Adding the Package was successful, but the image session needs to be reloaded before additional image servicing.
+        /// </returns>
+        public static int AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, null);
+            return DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, null);
         }
 
         /// <summary>
@@ -107,12 +115,36 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        /// <returns>
+        /// DismApi.ERROR_SUCCESS: Adding the Package was successful.
+        /// DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED: Adding the Package was successful, but the image session needs to be reloaded before additional image servicing.
+        /// </returns>
+        public static int AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int result = ERROR_SUCCESS;
+
+            ThrowIfFail(
+                () => result = NativeMethods.DismAddPackage(
+                    session,
+                    packagePath,
+                    ignoreCheck,
+                    preventPending,
+                    progress.EventHandle,
+                    progress.DismProgressCallbackNative,
+                    IntPtr.Zero
+                    ),
+                    new int[]
+                    {
+                        ERROR_SUCCESS,
+                        DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED
+                    }
+                );
+
+            return result;
+
         }
 
         /// <summary>
