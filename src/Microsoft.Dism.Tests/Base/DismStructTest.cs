@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
+using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
     public abstract class DismStructTest<T> : TestBase
         where T : class
     {
+        protected abstract T Item
+        {
+            get;
+        }
+
         protected IntPtr ItemPtr
         {
             get;
             private set;
-        }
-
-        protected abstract T Item
-        {
-            get;
         }
 
         protected abstract object Struct
@@ -24,13 +24,13 @@ namespace Microsoft.Dism.Tests
             get;
         }
 
-        [Test]
+        [Fact]
         public void PropertyTest()
         {
             VerifyProperties(Item);
         }
 
-        [Test]
+        [Fact]
         public void PropertyTest_IntPtr()
         {
             ItemPtr = Marshal.AllocHGlobal(Marshal.SizeOf(Struct));

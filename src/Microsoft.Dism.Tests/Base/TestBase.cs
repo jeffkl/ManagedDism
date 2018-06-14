@@ -1,5 +1,3 @@
-using NUnit.Framework;
-
 namespace Microsoft.Dism.Tests
 {
     /// <summary>
@@ -7,10 +5,5 @@ namespace Microsoft.Dism.Tests
     /// </summary>
     public abstract class TestBase
     {
-        public TestContext TestContext
-        {
-            get;
-            set;
-        }
     }
 }

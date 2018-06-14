@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
-using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismImageInfoCollectionTest : DismCollectionTest<DismImageInfoCollection, DismImageInfo>
     {
         protected override DismImageInfoCollection CreateCollection(List<DismImageInfo> expectedCollection)
@@ -51,19 +49,9 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [TestFixture]
-    public class DismImageInfoTest : DismStructTest<DismImageInfo>
+    public class DismImageInfoTest : DismStructTest<DismImageInfo>, IDisposable
     {
-        private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo = new DismApi.DismWimCustomizedInfo_
-        {
-            CreatedTime = DateTime.Today.AddDays(-7),
-            DirectoryCount = 1234,
-            FileCount = 5678,
-            ModifiedTime = DateTime.Today,
-            Size = 10,
-        };
-
-        private DismApi.DismImageInfo_ _imageInfo = new DismApi.DismImageInfo_
+        private readonly DismApi.DismImageInfo_ _imageInfo = new DismApi.DismImageInfo_
         {
             Architecture = DismProcessorArchitecture.IA64,
             Bootable = DismImageBootable.ImageBootableYes,
@@ -98,20 +86,16 @@ namespace Microsoft.Dism.Tests
             },
         };
 
-        protected override DismImageInfo Item => ItemPtr != IntPtr.Zero ? new DismImageInfo(ItemPtr) : new DismImageInfo(_imageInfo);
-
-        protected override object Struct => _imageInfo;
-
-        [OneTimeTearDown]
-        public void TestCleanup()
+        private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo = new DismApi.DismWimCustomizedInfo_
         {
-            Marshal.FreeHGlobal(_imageInfo.Language);
+            CreatedTime = DateTime.Today.AddDays(-7),
+            DirectoryCount = 1234,
+            FileCount = 5678,
+            ModifiedTime = DateTime.Today,
+            Size = 10,
+        };
 
-            Marshal.FreeHGlobal(_imageInfo.CustomizedInfo);
-        }
-
-        [OneTimeSetUp]
-        public void TestInitialize()
+        public DismImageInfoTest()
         {
             _imageInfo.Language = ListToPtrArray(_languages);
             _imageInfo.LanguageCount = (uint)_languages.Count;
@@ -120,6 +104,17 @@ namespace Microsoft.Dism.Tests
             _imageInfo.CustomizedInfo = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(DismApi.DismWimCustomizedInfo_)));
 
             Marshal.StructureToPtr(_wimCustomizedInfo, _imageInfo.CustomizedInfo, false);
+        }
+
+        protected override DismImageInfo Item => ItemPtr != IntPtr.Zero ? new DismImageInfo(ItemPtr) : new DismImageInfo(_imageInfo);
+
+        protected override object Struct => _imageInfo;
+
+        public void Dispose()
+        {
+            Marshal.FreeHGlobal(_imageInfo.Language);
+
+            Marshal.FreeHGlobal(_imageInfo.CustomizedInfo);
         }
 
         protected override void VerifyProperties(DismImageInfo item)

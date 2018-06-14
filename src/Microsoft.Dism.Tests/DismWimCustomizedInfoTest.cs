@@ -1,10 +1,8 @@
-﻿using System;
-using NUnit.Framework;
-using Shouldly;
+﻿using Shouldly;
+using System;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismWimCustomizedInfoTest : DismStructTest<DismWimCustomizedInfo>
     {
         private readonly DismApi.DismWimCustomizedInfo_ _customizedInfo = new DismApi.DismWimCustomizedInfo_

@@ -1,15 +1,26 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
-using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
-    public class DismPackageInfoTest : DismStructTest<DismPackageInfo>
+    public class DismFeatureComparer : IComparer<DismFeature>, IComparer
+    {
+        public int Compare(DismFeature x, DismFeature y)
+        {
+            return x?.FeatureName == y?.FeatureName && x?.State == y?.State ? 0 : 1;
+        }
+
+        public int Compare(object x, object y)
+        {
+            return Compare((DismFeature)x, (DismFeature)y);
+        }
+    }
+
+    public class DismPackageInfoTest : DismStructTest<DismPackageInfo>, IDisposable
     {
         private readonly List<DismApi.DismCustomProperty_> _customProperties = new List<DismApi.DismCustomProperty_>
         {
@@ -41,7 +52,7 @@ namespace Microsoft.Dism.Tests
             },
         };
 
-        private DismApi.DismPackageInfo_ _packageInfo = new DismApi.DismPackageInfo_
+        private readonly DismApi.DismPackageInfo_ _packageInfo = new DismApi.DismPackageInfo_
         {
             Applicable = true,
             Company = "Company",
@@ -63,26 +74,24 @@ namespace Microsoft.Dism.Tests
             SupportInformation = "SupportInformation",
         };
 
-        protected override DismPackageInfo Item => new DismPackageInfo(_packageInfo);
-
-        protected override object Struct => _packageInfo;
-
-        [OneTimeTearDown]
-        public void TestCleanup()
-        {
-            Marshal.FreeHGlobal(_packageInfo.CustomProperty);
-
-            Marshal.FreeHGlobal(_packageInfo.Feature);
-        }
-
-        [OneTimeSetUp]
-        public void TestInitialize()
+        public DismPackageInfoTest()
         {
             _packageInfo.CustomProperty = ListToPtrArray(_customProperties);
             _packageInfo.CustomPropertyCount = (uint)_customProperties.Count;
 
             _packageInfo.Feature = ListToPtrArray(_features);
             _packageInfo.FeatureCount = (uint)_features.Count;
+        }
+
+        protected override DismPackageInfo Item => new DismPackageInfo(_packageInfo);
+
+        protected override object Struct => _packageInfo;
+
+        public void Dispose()
+        {
+            Marshal.FreeHGlobal(_packageInfo.CustomProperty);
+
+            Marshal.FreeHGlobal(_packageInfo.Feature);
         }
 
         protected override void VerifyProperties(DismPackageInfo item)
@@ -108,19 +117,6 @@ namespace Microsoft.Dism.Tests
             item.CustomProperties.ShouldBe(new DismCustomPropertyCollection(_customProperties.Select(i => new DismCustomProperty(i)).ToList()));
 
             item.Features.ShouldBe(new DismFeatureCollection(_features.Select(i => new DismFeature(i)).ToList()));
-        }
-    }
-
-    public class DismFeatureComparer : IComparer<DismFeature>, IComparer
-    {
-        public int Compare(DismFeature x, DismFeature y)
-        {
-            return x.FeatureName == y.FeatureName && x.State == y.State ? 0 : 1;
-        }
-
-        public int Compare(object x, object y)
-        {
-            return Compare((DismFeature)x, (DismFeature)y);
         }
     }
 }

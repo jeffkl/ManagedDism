@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
-using Shouldly;
+﻿using Shouldly;
 using System.Collections.Generic;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismCapabilityCollectionTest : DismCollectionTest<DismCapabilityCollection, DismCapability>
     {
         protected override DismCapabilityCollection CreateCollection(List<DismCapability> expectedCollection)
@@ -35,7 +33,6 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [TestFixture]
     public class DismCapabilityTest : DismStructTest<DismCapability>
     {
         private readonly DismApi.DismCapability_ _capability = new DismApi.DismCapability_

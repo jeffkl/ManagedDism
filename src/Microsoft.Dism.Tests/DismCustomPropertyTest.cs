@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismCustomPropertyCollectionTest : DismCollectionTest<DismCustomPropertyCollection, DismCustomProperty>
     {
         protected override DismCustomPropertyCollection CreateCollection(List<DismCustomProperty> expectedCollection)
@@ -38,7 +36,6 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [TestFixture]
     public class DismCustomPropertyTest : DismStructTest<DismCustomProperty>
     {
         private readonly DismApi.DismCustomProperty_ _customPropertyStruct = new DismApi.DismCustomProperty_()
@@ -57,7 +54,6 @@ namespace Microsoft.Dism.Tests
             customProperty.Name.ShouldBe(_customPropertyStruct.Name);
             customProperty.Path.ShouldBe(_customPropertyStruct.Path);
             customProperty.Value.ShouldBe(_customPropertyStruct.Value);
-            
         }
     }
 }

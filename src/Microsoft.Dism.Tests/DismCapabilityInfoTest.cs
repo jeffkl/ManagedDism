@@ -1,13 +1,11 @@
-﻿using NUnit.Framework;
-using Shouldly;
+﻿using Shouldly;
 using System;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismCapabilityInfoTest : DismStructTest<DismCapabilityInfo>
     {
-        private DismApi.DismCapabilityInfo_ _capabilityInfo = new DismApi.DismCapabilityInfo_
+        private readonly DismApi.DismCapabilityInfo_ _capabilityInfo = new DismApi.DismCapabilityInfo_
         {
             Name = "6CDAF47E-B7D8-4A46-9B83-E13CDA1706A7",
             DisplayName = "6411A803-B0CB-4570-9BE7-19644412B3C4",
