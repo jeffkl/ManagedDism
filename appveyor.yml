@@ -1,0 +1,18 @@
+version: 1.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_branch_with_pr: true
+branches:
+  only:
+  - master
+image: Visual Studio 2017
+build_script:
+- cmd: >-
+    IF /I "%APPVEYOR_REPO_TAG%" EQU "TRUE" SET Configuration=Release
+
+    MSBuild /BinaryLogger /Logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+artifacts:
+- path: 'src\**\*.nupkg'
+  name: NuGet Packages
+on_failure:
+- ps: Get-ChildItem .\*log -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
