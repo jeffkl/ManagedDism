@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net40</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
   <PropertyGroup Label="Package properties">
