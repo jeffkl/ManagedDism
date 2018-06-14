@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
-using Shouldly;
+﻿using Shouldly;
+using System.Collections.Generic;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismMountedImageInfoCollectionTest : DismCollectionTest<DismMountedImageInfoCollection, DismMountedImageInfo>
     {
         protected override DismMountedImageInfoCollection CreateCollection(List<DismMountedImageInfo> expectedCollection)
@@ -49,7 +47,6 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [TestFixture]
     public class DismMountedImageInfoTest : DismStructTest<DismMountedImageInfo>
     {
         private readonly DismApi.DismMountedImageInfo_ _mountedImageInfo = new DismApi.DismMountedImageInfo_

@@ -1,39 +1,37 @@
-﻿using System;
-using Microsoft.Dism.Properties;
-using Microsoft.Win32;
-using NUnit.Framework;
+﻿using Microsoft.Dism.Properties;
 using Shouldly;
+using System;
+using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismExceptionTest
     {
-        [Test]
-        public void DismRebootRequiredExceptionTest()
-        {
-            VerifyDismException<DismRebootRequiredException>(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, Resources.DismExceptionMessageRebootRequired);
-        }
-
-        [Test]
+        [Fact]
         public void DismNotInitializedExceptionTest()
         {
             VerifyDismException<DismNotInitializedException>(DismApi.DISMAPI_E_DISMAPI_NOT_INITIALIZED, Resources.DismExceptionMessageNotInitialized);
         }
 
-        [Test]
+        [Fact]
         public void DismOpenSessionsExceptionTest()
         {
             VerifyDismException<DismOpenSessionsException>(DismApi.DISMAPI_E_OPEN_SESSION_HANDLES, Resources.DismExceptionMessageOpenSessions);
         }
 
-        [Test]
+        [Fact]
+        public void DismRebootRequiredExceptionTest()
+        {
+            VerifyDismException<DismRebootRequiredException>(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, Resources.DismExceptionMessageRebootRequired);
+        }
+
+        [Fact]
         public void DismReloadImageSessionRequiredExceptionTest()
         {
             VerifyDismException<DismReloadImageSessionRequiredException>(DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED, Resources.DismExceptionMessageReloadImageSessionRequired);
         }
 
-        [Test]
+        [Fact]
         public void GetLastErrorMessageTest()
         {
             const string message = "Hello World";
@@ -43,7 +41,23 @@ namespace Microsoft.Dism.Tests
             VerifyDismException<DismException>(DismApi.ERROR_OUTOFMEMORY, message);
         }
 
-        [Test]
+        [Fact]
+        public void OperationCanceledExceptionTest()
+        {
+            const int errorCode = unchecked((int)0x800704D3);
+
+            const string errorMessage = "The operation was canceled.";
+
+            DismApi.GetLastErrorMessageTestHook = () => null;
+
+            Exception exception = DismException.GetDismExceptionForHResult(errorCode);
+
+            exception.ShouldBeOfType<OperationCanceledException>();
+
+            exception.Message.ShouldBe(errorMessage);
+        }
+
+        [Fact]
         public void Win32ExceptionTest()
         {
             const int errorCode = unchecked((int)0x80020012);
@@ -55,22 +69,6 @@ namespace Microsoft.Dism.Tests
             Exception exception = DismException.GetDismExceptionForHResult(errorCode);
 
             exception.ShouldBeOfType<DivideByZeroException>();
-
-            exception.Message.ShouldBe(errorMessage);
-        }
-
-        [Test]
-        public void OperationCanceledExceptionTest()
-        {
-            const int errorCode = unchecked((int) 0x800704D3);
-
-            const string errorMessage = "The operation was canceled.";
-
-            DismApi.GetLastErrorMessageTestHook = () => null;
-
-            Exception exception = DismException.GetDismExceptionForHResult(errorCode);
-
-            exception.ShouldBeOfType<OperationCanceledException>();
 
             exception.Message.ShouldBe(errorMessage);
         }

@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismAppxPackageCollectionTest : DismCollectionTest<DismAppxPackageCollection, DismAppxPackage>
     {
         protected override DismAppxPackageCollection CreateCollection(List<DismAppxPackage> expectedCollection)
@@ -39,7 +37,6 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [TestFixture]
     public class DismAppxPackageTest : DismStructTest<DismAppxPackage>
     {
         private readonly DismApi.DismAppxPackage_ _appxPackage = new DismApi.DismAppxPackage_

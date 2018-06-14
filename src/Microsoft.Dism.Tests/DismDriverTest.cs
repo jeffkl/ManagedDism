@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
     public class DismDriverCollectionTest : DismCollectionTest<DismDriverCollection, DismDriver>
     {
         protected override DismDriverCollection CreateCollection(List<DismDriver> expectedCollection)
@@ -36,7 +34,6 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [TestFixture]
     public class DismDriverTest : DismStructTest<DismDriver>
     {
         private readonly DismApi.DismDriver_ _driver = new DismApi.DismDriver_

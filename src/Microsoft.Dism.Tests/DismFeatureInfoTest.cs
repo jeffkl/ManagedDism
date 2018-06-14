@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
-using Shouldly;
 
 namespace Microsoft.Dism.Tests
 {
-    [TestFixture]
-    public class DismFeatureInfoTest : DismStructTest<DismFeatureInfo>
+    public class DismFeatureInfoTest : DismStructTest<DismFeatureInfo>, IDisposable
     {
         private readonly List<DismApi.DismCustomProperty_> _customProperties = new List<DismApi.DismCustomProperty_>
         {
@@ -26,7 +24,7 @@ namespace Microsoft.Dism.Tests
             },
         };
 
-        private DismApi.DismFeatureInfo_ _featureInfo = new DismApi.DismFeatureInfo_
+        private readonly DismApi.DismFeatureInfo_ _featureInfo = new DismApi.DismFeatureInfo_
         {
             Description = "CB45BE3A-10FC-49DC-A273-317ABBED46D9",
             DisplayName = "6411A803-B0CB-4570-9BE7-19644412B3C4",
@@ -35,20 +33,18 @@ namespace Microsoft.Dism.Tests
             RestartRequired = DismRestartType.Possible,
         };
 
-        protected override DismFeatureInfo Item => ItemPtr != IntPtr.Zero ? new DismFeatureInfo(ItemPtr) : new DismFeatureInfo(_featureInfo);
-
-        protected override object Struct => _featureInfo;
-
-        [OneTimeSetUp]
-        public void TestSetup()
+        public DismFeatureInfoTest()
         {
             _featureInfo.CustomProperty = ListToPtrArray(_customProperties);
 
             _featureInfo.CustomPropertyCount = (uint)_customProperties.Count;
         }
 
-        [OneTimeTearDown]
-        public void TestTearDown()
+        protected override DismFeatureInfo Item => ItemPtr != IntPtr.Zero ? new DismFeatureInfo(ItemPtr) : new DismFeatureInfo(_featureInfo);
+
+        protected override object Struct => _featureInfo;
+
+        public void Dispose()
         {
             Marshal.FreeHGlobal(_featureInfo.CustomProperty);
         }

@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using Shouldly;
+using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using Shouldly;
+using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
@@ -9,7 +9,7 @@ namespace Microsoft.Dism.Tests
         where TCollection : DismCollection<TItem>
         where TItem : class
     {
-        [Test]
+        [Fact]
         public void CollectionTest()
         {
             var expectedCollection = GetCollection();
@@ -17,7 +17,7 @@ namespace Microsoft.Dism.Tests
             VerifyCollection(expectedCollection, CreateCollection(expectedCollection));
         }
 
-        [Test]
+        [Fact]
         public void CollectionTest_Empty()
         {
             VerifyCollection(new List<TItem>(), CreateCollection());
