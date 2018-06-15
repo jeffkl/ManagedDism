@@ -1,4 +1,8 @@
-﻿using Microsoft.Dism.Properties;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Dism.Properties;
 using Shouldly;
 using System;
 using Xunit;

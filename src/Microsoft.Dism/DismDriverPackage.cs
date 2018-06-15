@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -119,7 +123,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismDriverPackage_ _driverPackage;
 
         /// <summary>
-        /// Initializes a new instance of the DismDriverPackage class.
+        /// Initializes a new instance of the <see cref="DismDriverPackage"/> class.
         /// </summary>
         /// <param name="driverPackagePtr">A pointer to a native DismDriverPackage_ struct.</param>
         internal DismDriverPackage(IntPtr driverPackagePtr)
@@ -128,7 +132,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismDriverPackage class.
+        /// Initializes a new instance of the <see cref="DismDriverPackage"/> class.
         /// </summary>
         /// <param name="driverPackage">A native DismDriverPackage_ struct.</param>
         internal DismDriverPackage(DismApi.DismDriverPackage_ driverPackage)
@@ -140,7 +144,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Gets a value indicating if the driver is boot-critical.
+        /// Gets a value indicating whether the driver is boot-critical.
         /// </summary>
         public bool BootCritical => _driverPackage.BootCritical;
 
@@ -175,7 +179,7 @@ namespace Microsoft.Dism
         public DismDriverSignature DriverSignature => _driverPackage.DriverSignature;
 
         /// <summary>
-        /// Gets a value indicating if the driver is included on the Windows distribution media and automatically installed as part of Windows®.
+        /// Gets a value indicating whether the driver is included on the Windows distribution media and automatically installed as part of Windows®.
         /// </summary>
         public bool InBox => _driverPackage.InBox;
 
@@ -260,7 +264,7 @@ namespace Microsoft.Dism
     public sealed class DismDriverPackageCollection : DismCollection<DismDriverPackage>
     {
         /// <summary>
-        /// Initializes a new instance of the DismDriverPackageCollection class.
+        /// Initializes a new instance of the <see cref="DismDriverPackageCollection"/> class.
         /// </summary>
         internal DismDriverPackageCollection()
             : base(new List<DismDriverPackage>())
@@ -268,9 +272,9 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismDriverPackageCollection class.
+        /// Initializes a new instance of the <see cref="DismDriverPackageCollection"/> class.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">An <see cref="IList{DismDriverPackage}"/> to wrap.</param>
         internal DismDriverPackageCollection(IList<DismDriverPackage> list)
             : base(list)
         {

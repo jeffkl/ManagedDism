@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Xunit;

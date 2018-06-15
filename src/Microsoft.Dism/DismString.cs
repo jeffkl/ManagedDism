@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -21,16 +25,16 @@ namespace Microsoft.Dism
             /// <summary>
             /// A null-terminated Unicode string.
             /// </summary>
-            private string Value;
+            private string value;
 
             /// <summary>
             /// Converts a DismString class to a String object
             /// </summary>
-            /// <param name="dismString"></param>
-            /// <returns></returns>
+            /// <param name="dismString">The <see cref="DismString"/> object to convert.</param>
+            /// <returns>The current <see cref="DismString"/> as a <see cref="String"/>.</returns>
             public static implicit operator String(DismString dismString)
             {
-                return dismString.Value;
+                return dismString.value;
             }
 
             /// <summary>
@@ -42,7 +46,7 @@ namespace Microsoft.Dism
             {
                 return new DismString
                 {
-                    Value = str
+                    value = str
                 };
             }
         }

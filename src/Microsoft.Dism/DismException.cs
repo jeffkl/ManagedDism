@@ -1,8 +1,11 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
 using Microsoft.Dism.Properties;
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
 
 namespace Microsoft.Dism
 {
@@ -73,6 +76,10 @@ namespace Microsoft.Dism
     [Serializable]
     public sealed class DismNotInitializedException : DismException
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismNotInitializedException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageNotInitialized)
         {
@@ -85,17 +92,26 @@ namespace Microsoft.Dism
     [Serializable]
     public sealed class DismOpenSessionsException : DismException
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismOpenSessionsException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageOpenSessions)
         {
         }
     }
+
     /// <summary>
     /// The exception that is thrown when the previous operations requires a reboot.
     /// </summary>
     [Serializable]
     public class DismRebootRequiredException : DismException
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismRebootRequiredException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageRebootRequired)
         {
@@ -108,10 +124,13 @@ namespace Microsoft.Dism
     [Serializable]
     public class DismReloadImageSessionRequiredException : DismException
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismReloadImageSessionRequiredException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismReloadImageSessionRequiredException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageReloadImageSessionRequired)
         {
         }
     }
 }
-

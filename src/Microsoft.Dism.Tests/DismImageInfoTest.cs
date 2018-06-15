@@ -1,4 +1,8 @@
-﻿using Shouldly;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -76,14 +80,8 @@ namespace Microsoft.Dism.Tests
 
         private readonly List<DismApi.DismLanguage> _languages = new List<DismApi.DismLanguage>
         {
-            new DismApi.DismLanguage
-            {
-                Value = "en-us",
-            },
-            new DismApi.DismLanguage
-            {
-                Value = "es-es",
-            },
+            new DismApi.DismLanguage("en-us"),
+            new DismApi.DismLanguage("es-es")
         };
 
         private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo = new DismApi.DismWimCustomizedInfo_
@@ -139,7 +137,7 @@ namespace Microsoft.Dism.Tests
             item.SpLevel.ShouldBe((int)_imageInfo.SpLevel);
             item.SystemRoot.ShouldBe(_imageInfo.SystemRoot);
             item.DefaultLanguageIndex.ShouldBe((int)_imageInfo.DefaultLanguageIndex);
-            item.Languages.ShouldBe(_languages.Select(i => new CultureInfo(i.Value)));
+            item.Languages.ShouldBe(_languages.Select(i => new CultureInfo(i)));
             item.DefaultLanguage.ShouldBe(new CultureInfo(_languages[(int)_imageInfo.DefaultLanguageIndex]));
 
             item.CustomizedInfo.CreatedTime.ShouldBe((DateTime)_wimCustomizedInfo.CreatedTime);

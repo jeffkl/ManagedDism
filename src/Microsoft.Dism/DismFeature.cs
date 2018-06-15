@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -40,7 +44,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismFeature_ _feature;
 
         /// <summary>
-        /// Initializes a new instance of the DismFeature class.
+        /// Initializes a new instance of the <see cref="DismFeature"/> class.
         /// </summary>
         /// <param name="featurePtr">A native pointer to a DismFeature_ struct.</param>
         internal DismFeature(IntPtr featurePtr)
@@ -49,7 +53,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismFeature class.
+        /// Initializes a new instance of the <see cref="DismFeature"/> class.
         /// </summary>
         /// <param name="feature">A native DismFeature_ struct to copy data from.</param>
         internal DismFeature(DismApi.DismFeature_ feature)
@@ -103,7 +107,7 @@ namespace Microsoft.Dism
     public sealed class DismFeatureCollection : DismCollection<DismFeature>
     {
         /// <summary>
-        /// Initializes a new instance of the DismFeatureCollection class.
+        /// Initializes a new instance of the <see cref="DismFeatureCollection"/> class.
         /// </summary>
         internal DismFeatureCollection()
             : base(new List<DismFeature>())
@@ -111,7 +115,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismFeatureCollection class.
+        /// Initializes a new instance of the <see cref="DismFeatureCollection"/> class.
         /// </summary>
         /// <param name="list">An existing list of DismFeature objects to expose as a read-only collection.</param>
         internal DismFeatureCollection(IList<DismFeature> list)

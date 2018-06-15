@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
@@ -88,7 +92,7 @@ namespace Microsoft.Dism
             /// <param name="SingleSession">A Boolean value that specifies whether the packages that are listed in an answer file will be processed in a single session or in multiple sessions.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>When you use DISM to apply an answer file to an image, the unattended settings in the offlineServicing configuration pass are applied to the Windows image. For more information, see Unattended Servicing Command-Line Options.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825840.aspx"/>
             /// HRESULT WINAPI DismApplyUnattend (_In_ DismSession Session, _In_ PCWSTR UnattendFile, _In_ BOOL SingleSession);
             /// </remarks>
@@ -107,7 +111,7 @@ namespace Microsoft.Dism
             /// <param name="ImageHealth">A pointer to the DismImageHealthState Enumeration. The enumeration value is set during this operation.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>If ScanImage is set to True, this function will take longer to finish.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824769.aspx"/>
             /// HRESULT WINAPI DismCheckImageHealth(_In_ DismSession Session, _In_ BOOL ScanImage, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData, _Out_ DismImageHealthState* ImageHealth);
             /// </remarks>
@@ -150,10 +154,10 @@ namespace Microsoft.Dism
             /// <param name="CancelEvent">Optional. You can set a CancelEvent for this function in order to cancel the operation in progress when signaled by the client. If the CancelEvent is received at a stage when the operation cannot be canceled, the operation will continue and return a success code. If the CancelEvent is received and the operation is canceled, the image state is unknown. You should verify the image state before continuing or discard the changes and start again.</param>
             /// <param name="Progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="UserData">Optional. User defined custom data.</param>
-            /// <returns></returns>
+            /// <returns>Returns S_OK on success.</returns>
             /// <remarks>The DismCommitImage function does not unmount the image.
             /// <para>DismCommitImage can only be used on an image that is mounted within the DISM infrastructure. It does not apply to images mounted by another tool, such as the DiskPart tool, which are serviced using the DismOpenSession Function. You must use the DismMountImage Function to mount an image within the DISM infrastructure.</para>
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825835.aspx"/>
             /// HRESULT WINAPI DismCommitImage(_In_ DismSession Session, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
@@ -167,7 +171,7 @@ namespace Microsoft.Dism
             /// <param name="DismStructure">A pointer to the structure, or array of structures, to be deleted. The structure must have been returned by an earlier call to a DISM API function.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>All structures that are returned by DISM API functions are allocated on the heap. The client must not delete or free these structures directly. Instead, the client should call DismDelete and pass in the pointer that was returned by the earlier DISM API call.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824768.aspx" />
             /// HRESULT WINAPI DismDelete(_In_ VOID* DismStructure);
             /// </remarks>
@@ -186,7 +190,7 @@ namespace Microsoft.Dism
             /// <param name="RemovePayload">A Boolean value specifying whether to remove the files required to enable the feature.</param>
             /// <param name="CancelEvent">Optional. You can set a CancelEvent for this function in order to cancel the operation in progress when signaled by the client. If the CancelEvent is received at a stage when the operation cannot be canceled, the operation will continue and return a success code. If the CancelEvent is received and the operation is canceled, the image state is unknown. You should verify the image state before continuing or discard the changes and start again.</param>
             /// <param name="Progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
-            /// <param name="UserData"></param>
+            /// <param name="UserData">Optional. User specified data.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824766.aspx"/>
@@ -214,7 +218,7 @@ namespace Microsoft.Dism
             /// <remarks>If the feature is present in the foundation package, you do not have to specify any package information. If the feature is in an optional package or feature pack that has already been installed in the image, specify a package name in the Identifier parameter and specify DismPackageName as the PackageIdentifier.If the feature cannot be enabled due to the parent feature not being enabled, a special error code will be returned. You can use EnableAll to enable the parent features when you enable the specified features, or you can use the DismGetFeatureParent Function to enumerate the parent features and enable them first.
             ///
             /// If the feature to be enabled is not a component of the foundation package, you must add the parent optional package with the DismAddPackage Function before you enable the feature. Do not you specify a path to a .cab file of an optional package that has not been added to the image in the Identifier parameter. If you specify a package that has not been added, and you specify DismPackagePath as the PackageIdentifier, the function will complete successfully but the feature will not be enabled.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824737.aspx"/>
             /// HRESULT WINAPI DismEnableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _In_ BOOL LimitAccess, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
@@ -233,6 +237,13 @@ namespace Microsoft.Dism
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetCapabilities(DismSession Session, out IntPtr Capability, out UInt32 Count);
 
+            /// <summary>
+            /// Gets DISM capabilities.
+            /// </summary>
+            /// <param name="Session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+            /// <param name="Name">The name of the specified capability.</param>
+            /// <param name="Info">Pointer that will receive the info of capability.</param>
+            /// <returns>Returns S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetCapabilityInfo(DismSession Session, string Name, out IntPtr Info);
@@ -247,7 +258,7 @@ namespace Microsoft.Dism
             /// <param name="DriverPackage">Optional. A pointer to the address of a DismDriverPackage Structure object.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>This function returns information about the .inf file installed on the image. The driver associated with the .inf file may or may not be installed in the image.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824733.aspx"/>
             /// HRESULT WINAPI DismGetDriverInfo (_In_ DismSession Session, _In_ PCWSTR DriverPath, _Outptr_result_buffer_(*Count) DismDriver** Driver, _Out_ UINT* Count, _Out_opt_ DismDriverPackage** DriverPackage);
             /// </remarks>
@@ -281,7 +292,7 @@ namespace Microsoft.Dism
             /// <param name="FeatureInfo">A pointer to the address of an array of DismFeatureInfo Structure objects.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>You can use this function to get the custom properties of a feature. If the feature has custom properties, they will be stored in the CustomProperty field as an array. Not all features have custom properties.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824735.aspx"/>
             /// HRESULT WINAPI DismGetFeatureInfo (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _Out_ DismFeatureInfo** FeatureInfo);
             /// </remarks>
@@ -300,7 +311,7 @@ namespace Microsoft.Dism
             /// <param name="Count">The number of DismFeature structures that were returned.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>For a feature to be enabled, one or more of its parent features must be enabled. You can use this function to enumerate the parent features and determine which parent needs to be enabled.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824798.aspx"/>
             /// HRESULT WINAPI DismGetFeatureParent (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _Outptr_result_buffer_(*Count) DismFeature** Feature, _Out_ UINT* Count);
             /// </remarks>
@@ -333,7 +344,7 @@ namespace Microsoft.Dism
             /// <remarks>You can retrieve a detailed error message immediately after a DISM API failure. The last error message is maintained on a per-thread basis. An error message on a thread will not overwrite the last error message on another thread.
             ///
             /// DismGetLastErrorMessage does not apply to the DismShutdown function, DismDelete function, or the DismGetLastErrorMessage function.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824754.aspx"/>
             /// HRESULT WINAPI DismGetLastErrorMessage(_Out_ DismString** ErrorMessage);
             /// </remarks>
@@ -352,7 +363,7 @@ namespace Microsoft.Dism
             ///
             /// Important
             /// You must call the DismDelete Function, passing the ImageInfo pointer, to free the resources associated with the DismImageInfo structures.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824767.aspx" />
             /// HRESULT WINAPI DismGetImageInfo(_In_ PCWSTR ImageFilePath, _Outptr_result_buffer_(*Count) DismImageInfo** ImageInfo, _Out_ UINT* Count);
             /// </remarks>
@@ -371,7 +382,7 @@ namespace Microsoft.Dism
             /// The array of DismMountedImageInfo structures are allocated by the DISM API on the heap.
             ///
             /// You must call the DismDelete Function, passing the ImageInfo pointer, to free the resources associated with the DismImageInfo structures.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824745.aspx"/>
             /// HRESULT WINAPI DismGetMountedImageInfo(_Outptr_result_buffer_(*Count) DismMountedImageInfo** MountedImageInfo, _Out_ UINT* Count);
             /// </remarks>
@@ -388,7 +399,7 @@ namespace Microsoft.Dism
             /// <param name="PackageInfo">A pointer to the address of an array of DismPackageInfo Structure objects.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>You can use this function to determine whether a package is applicable to the specified image. The DismPackageInfo Structure contains an Applicable field, which is a Boolean that returns TRUE if the package is applicable and FALSE if the package is not applicable to the specified image.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824801.aspx"/>
             /// HRESULT WINAPI DismGetPackageInfo (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _Out_ DismPackageInfo** PackageInfo);
             /// </remarks>
@@ -406,7 +417,7 @@ namespace Microsoft.Dism
             ///
             /// Package points to an array of DismPackage Structure objects. You can manipulate this array using normal array notation in order to get information about each package in the image.</returns>
             /// <remarks>When you are finished with the Package array, you must remove it by using the DismDelete Function.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824759.aspx"/>
             /// HRESULT WINAPI DismGetPackages (_In_ DismSession Session, _Outptr_result_buffer_(*Count) DismPackage** Package, _Out_ UINT* Count);
             /// </remarks>
@@ -460,7 +471,7 @@ namespace Microsoft.Dism
             /// The MountPath must be a file path that already exists on the computer. Images in WIM and VHD files can be mounted to an empty folder on an NTFS formatted drive. You can also mount an image from a VHD file to an unassigned drive letter. You cannot mount an image to the root of the existing drive.
             ///
             /// When mounting an image in a WIM file, the image can either be identified by the image index number specified by ImageIndex, or the name of the image specified by ImageName. ImageIdentifier specifies whether to use the ImageIndex or ImageName parameter to identify the image.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824731.aspx"/>
             /// HRESULT WINAPI DismMountImage (_In_ PCWSTR ImageFilePath, _In_ PCWSTR MountPath, _In_ UINT ImageIndex, _In_opt_ PCWSTR ImageName, _In_ DismImageIdentifier ImageIdentifier, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
@@ -491,7 +502,7 @@ namespace Microsoft.Dism
             ///
             /// Returns a Win32 error code mapped to an HRESULT for other errors.</returns>
             /// <remarks>The DISMSession can be used to service the image after the DISMOpenSession call is successfully completed. The DISMSession must be shut down by calling the DismCloseSession Function.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824800.aspx"/>
             /// HRESULT WINAPI DismOpenSession(_In_ PCWSTR ImagePath, _In_opt_ PCWSTR WindowsDirectory, _In_opt_ WCHAR* SystemDrive, _Out_ DismSession* Session);
             /// </remarks>
@@ -542,7 +553,7 @@ namespace Microsoft.Dism
             ///
             /// Important
             /// Removing a boot-critical driver can make the offline Windows image unable to boot.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824729.aspx"/>
             /// HRESULT WINAPI DismRemoveDriver (_In_ DismSession Session, _In_ PCWSTR DriverPath);
             /// </remarks>
@@ -572,7 +583,7 @@ namespace Microsoft.Dism
             /// <param name="Session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
             /// <param name="SourcePaths">Optional. A list of source locations to check for repair files.</param>
             /// <param name="SourcePathCount">Optional. The number of source locations specified.</param>
-            /// <param name="LimitAccess">Optional. A list of source locations to check for repair files.</param>
+            /// <param name="LimitAccess">Optional. Indicates if the machine is allows to use remote resources.</param>
             /// <param name="CancelEvent">Optional. You can set a CancelEvent for this function in order to cancel the operation in progress when signaled by the client. If the CancelEvent is received at a stage when the operation cannot be canceled, the operation will continue and return a success code. If the CancelEvent is received and the operation is canceled, the image state is unknown. You should verify the image state before continuing or discard the changes and start again.</param>
             /// <param name="Progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="UserData">Optional. User defined custom data.</param>
@@ -580,7 +591,7 @@ namespace Microsoft.Dism
             /// <remarks>Run the DismCheckImageHealth Function to determine if the image is corrupted and if the image is repairable. If the DismCheckImageHealth Function returns DismImageRepairable, the DismRestoreImageHealth function can repair the image.
             ///
             /// If a repair file is not found in any of the locations specified by the SourcePaths parameter or the location paths in the registry specified by Group Policy, the DismRestoreImageHealth function will contact WU to check for a repair file unless the LimitAccess parameter is set to True.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825836.aspx"/>
             /// HRESULT WINAPI DismRestoreImageHealth(_In_ DismSession Session, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_ BOOL LimitAccess, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
@@ -599,7 +610,7 @@ namespace Microsoft.Dism
             /// <remarks>You must call DismShutdown once per process. Calls to DismShutdown must be matched to an earlier call to the DismInitialize Function. DISM API will serialize concurrent calls to DismShutdown. The first call will succeed and the other calls will fail.
             ///
             /// Before calling DismShutdown, you must close all DISMSession using the DismCloseSession Function. If there are open DismSessions when calling DismShutdown, then the DismShutdown call will fail. For more information, see Using the DISM API.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824773.aspx" />
             /// HRESULT WINAPI DismShutdown( );
             /// </remarks>
@@ -617,7 +628,7 @@ namespace Microsoft.Dism
             /// <param name="UserData">Optional. User defined custom data.</param>
             /// <returns>Returns OK on success.</returns>
             /// <remarks>After you use the DismCloseSession Function to end every active DISMSession, you can unmount the image using the DismUnmountImage function.
-            /// 
+            ///
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824802.aspx"/>
             /// HRESULT WINAPI DismUnmountImage(_In_ PCWSTR MountPath, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
@@ -625,8 +636,9 @@ namespace Microsoft.Dism
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismUnmountImage(string MountPath, UInt32 Flags, SafeWaitHandle CancelEvent, DismProgressCallback Progress, IntPtr UserData);
 
+#pragma warning disable SA1124 // Do not use regions
             #region Undocumented functions found in the DISM PowerShell module
-
+#pragma warning disable SA1600 // Elements must be documented
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismAddProvisionedAppxPackage(DismSession Session, [MarshalAs(UnmanagedType.LPWStr)] string AppPath, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 3)] string[] DependencyPackages, UInt32 DependencyPackageCount, [MarshalAs(UnmanagedType.LPWStr)] string LicensePath, bool SkipLicense, [MarshalAs(UnmanagedType.LPWStr)] string CustomDataPath);
@@ -638,8 +650,9 @@ namespace Microsoft.Dism
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismRemoveProvisionedAppxPackage(DismSession Session, [MarshalAs(UnmanagedType.LPWStr)] string PackageName);
-
+#pragma warning restore SA1600 // Elements must be documented
             #endregion Undocumented functions found in the DISM PowerShell module
+#pragma warning restore SA1124 // Do not use regions
         }
     }
 }

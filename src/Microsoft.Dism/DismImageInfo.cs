@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -169,7 +173,7 @@ namespace Microsoft.Dism
         private readonly List<CultureInfo> _languages = new List<CultureInfo>();
 
         /// <summary>
-        /// Creates an instance of the DismImageInfo class.
+        /// Initializes a new instance of the <see cref="DismImageInfo"/> class.
         /// </summary>
         /// <param name="imageInfoPtr">A native pointer to a DismImageInfo_ structure.</param>
         internal DismImageInfo(IntPtr imageInfoPtr)
@@ -178,6 +182,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DismImageInfo"/> class.
         /// Creates an instance of the DismImageInfo class.
         /// </summary>
         /// <param name="imageInfo">A instance of a DismImageInfo_ structure.</param>
@@ -211,7 +216,7 @@ namespace Microsoft.Dism
         public DismImageBootable Bootable => _imageInfo.Bootable;
 
         /// <summary>
-        /// The customized information for the image file. A <see cref="DismWimCustomizedInfo" /> for a WIM file. null for a VHD image.
+        /// Gets the customized information for the image file. A <see cref="DismWimCustomizedInfo" /> for a WIM file. null for a VHD image.
         /// </summary>
         public DismWimCustomizedInfo CustomizedInfo { get; }
 
@@ -221,7 +226,7 @@ namespace Microsoft.Dism
         public CultureInfo DefaultLanguage => _languages.Count == 0 ? null : _languages[DefaultLanguageIndex];
 
         /// <summary>
-        /// The index number of the default language.
+        /// Gets the index number of the default language.
         /// </summary>
         public int DefaultLanguageIndex => (int)_imageInfo.DefaultLanguageIndex;
 
@@ -288,9 +293,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the version of the operating system contained in the image.
         /// </summary>
-        public Version ProductVersion
-        {
-            get; }
+        public Version ProductVersion { get; }
 
         /// <summary>
         /// Gets the service pack number.
@@ -372,6 +375,7 @@ namespace Microsoft.Dism
     public sealed class DismImageInfoCollection : DismCollection<DismImageInfo>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DismImageInfoCollection"/> class.
         /// Initializes a new instance of the DismImageInfoCollection that is empty.
         /// </summary>
         internal DismImageInfoCollection()
@@ -380,8 +384,10 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DismImageInfoCollection"/> class.
         /// Initializes a new instance of the DismImageInfoCollection based on the specified list.
         /// </summary>
+        /// <param name="list">An <see cref="IList{DismImageInfo}"/> to wrap.</param>
         internal DismImageInfoCollection(IList<DismImageInfo> list)
             : base(list)
         {

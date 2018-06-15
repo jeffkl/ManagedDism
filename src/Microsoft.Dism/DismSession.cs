@@ -1,5 +1,9 @@
-﻿using System.Runtime.ConstrainedExecution;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
 using Microsoft.Win32.SafeHandles;
+using System.Runtime.ConstrainedExecution;
 
 namespace Microsoft.Dism
 {
@@ -9,7 +13,7 @@ namespace Microsoft.Dism
     public sealed class DismSession : SafeHandleZeroOrMinusOneIsInvalid
     {
         /// <summary>
-        /// Initializes a new instance of the DismSessionHandle class.
+        /// Initializes a new instance of the <see cref="DismSession"/> class.
         /// </summary>
         public DismSession()
             : base(true)

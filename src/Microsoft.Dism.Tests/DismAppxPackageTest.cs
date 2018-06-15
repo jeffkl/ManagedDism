@@ -1,4 +1,8 @@
-﻿using Shouldly;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Shouldly;
 using System;
 using System.Collections.Generic;
 
@@ -54,6 +58,7 @@ namespace Microsoft.Dism.Tests
         };
 
         protected override DismAppxPackage Item => ItemPtr != IntPtr.Zero ? new DismAppxPackage(ItemPtr) : new DismAppxPackage(_appxPackage);
+
         protected override object Struct => _appxPackage;
 
         protected override void VerifyProperties(DismAppxPackage item)

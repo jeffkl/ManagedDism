@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,7 +17,7 @@ namespace Microsoft.Dism
         where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the DismCollection class.
+        /// Initializes a new instance of the <see cref="DismCollection{T}"/> class.
         /// </summary>
         internal DismCollection()
             : base(new List<T>())
@@ -21,7 +25,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismCollection class.
+        /// Initializes a new instance of the <see cref="DismCollection{T}"/> class.
         /// </summary>
         /// <param name="list">An existing list of Dism objects to expose as a read-only collection.</param>
         internal DismCollection(IList<T> list)
@@ -39,14 +43,13 @@ namespace Microsoft.Dism
             Items.Add(item);
         }
 
-        internal void AddRange(IEnumerable<T> items)
-        {
-            foreach(var item in items)
-            {
-                Add(item);
-            }
-        }
-
+        /// <summary>
+        /// Adds a list of items to the collection.
+        /// </summary>
+        /// <typeparam name="TStruct">The type of the items.</typeparam>
+        /// <param name="ptr">An <see cref="IntPtr"/> pointing to a array of items.</param>
+        /// <param name="count">The number of items in the array.</param>
+        /// <param name="constructor">A <see cref="Func{TStruct, T}"/> that can create a new instance of the wrapped item.</param>
         internal void AddRange<TStruct>(IntPtr ptr, int count, Func<TStruct, T> constructor)
         {
             // See if an array of pointers was returned

@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -162,7 +165,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismPackageInfo_ _packageInfo;
 
         /// <summary>
-        /// Initializes a new instance of the DismPackageInfo class.
+        /// Initializes a new instance of the <see cref="DismPackageInfo"/> class.
         /// </summary>
         /// <param name="packageInfoPtr">A pointer to a native <see cref="DismApi.DismPackageInfo_"/> struct.</param>
         internal DismPackageInfo(IntPtr packageInfoPtr)
@@ -171,7 +174,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismPackageInfo class.
+        /// Initializes a new instance of the <see cref="DismPackageInfo"/> class.
         /// </summary>
         /// <param name="packageInfo">A <see cref="DismApi.DismPackageInfo_"/> struct containing data for this object.</param>
         internal DismPackageInfo(DismApi.DismPackageInfo_ packageInfo)
@@ -194,102 +197,102 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Gets a value indicating if the package is applicable to the image.
+        /// Gets a value indicating whether the package is applicable to the image.
         /// </summary>
         public bool Applicable => _packageInfo.Applicable;
 
         /// <summary>
-        /// The company that released the package.
+        /// Gets the company that released the package.
         /// </summary>
         public string Company => _packageInfo.Company;
 
         /// <summary>
-        /// The copyright information of the package.
+        /// Gets the copyright information of the package.
         /// </summary>
         public string Copyright => _packageInfo.Copyright;
 
         /// <summary>
-        /// The date and time that the package was created. This field is local time, based on the time zone of the computer that created the package.
+        /// Gets the date and time that the package was created. This field is local time, based on the time zone of the computer that created the package.
         /// </summary>
         public DateTime CreationTime => _packageInfo.CreationTime;
 
         /// <summary>
-        /// An array of DismCustomProperty Structure objects representing the custom properties of the package.
+        /// Gets an array of DismCustomProperty Structure objects representing the custom properties of the package.
         /// </summary>
         public DismCustomPropertyCollection CustomProperties => _customProperties;
 
         /// <summary>
-        /// A description of the purpose of the package.
+        /// Gets a description of the purpose of the package.
         /// </summary>
         public string Description => _packageInfo.Description;
 
         /// <summary>
-        /// The display name of the package.
+        /// Gets the display name of the package.
         /// </summary>
         public string DisplayName => _packageInfo.DisplayName;
 
         /// <summary>
-        /// An array of DismFeature Structure objects representing the features in the package.
+        /// Gets an array of DismFeature Structure objects representing the features in the package.
         /// </summary>
         public DismFeatureCollection Features => _features;
 
         /// <summary>
-        /// A DismFullyOfflineInstallableType Enumeration value describing whether a package can be installed offline without booting the image.
+        /// Gets a DismFullyOfflineInstallableType Enumeration value describing whether a package can be installed offline without booting the image.
         /// </summary>
         public DismFullyOfflineInstallableType FullyOffline => _packageInfo.FullyOffline;
 
         /// <summary>
-        /// The client that installed this package.
+        /// Gets the client that installed this package.
         /// </summary>
         public string InstallClient => _packageInfo.InstallClient;
 
         /// <summary>
-        /// The original file name used for the package during installation.
+        /// Gets the original file name used for the package during installation.
         /// </summary>
         public string InstallPackageName => _packageInfo.InstallPackageName;
 
         /// <summary>
-        /// The date and time that the package was installed.
+        /// Gets the date and time that the package was installed.
         /// </summary>
         public DateTime InstallTime => _packageInfo.InstallTime;
 
         /// <summary>
-        /// The date and time when this package was last updated. This field is local time, based on the servicing host computer.
+        /// Gets the date and time when this package was last updated. This field is local time, based on the servicing host computer.
         /// </summary>
         public DateTime LastUpdateTime => _packageInfo.LastUpdateTime;
 
         /// <summary>
-        /// The name of the package.
+        /// Gets the name of the package.
         /// </summary>
         public string PackageName => _packageInfo.PackageName;
 
         /// <summary>
-        /// The state of the package.
+        /// Gets the state of the package.
         /// </summary>
         public DismPackageFeatureState PackageState => _packageInfo.PackageState;
 
         /// <summary>
-        /// The product name for this package.
+        /// Gets the product name for this package.
         /// </summary>
         public string ProductName => _packageInfo.ProductName;
 
         /// <summary>
-        /// The product version for this package.
+        /// Gets the product version for this package.
         /// </summary>
         public string ProductVersion => _packageInfo.ProductVersion;
 
         /// <summary>
-        /// The release type of the package.
+        /// Gets the release type of the package.
         /// </summary>
         public DismReleaseType ReleaseType => _packageInfo.ReleaseType;
 
         /// <summary>
-        /// A DismRestartType Enumeration value describing whether a restart is required after installing the package on an online image
+        /// Gets a DismRestartType Enumeration value describing whether a restart is required after installing the package on an online image
         /// </summary>
         public DismRestartType RestartRequired => _packageInfo.RestartRequired;
 
         /// <summary>
-        /// A string listing additional support information for this package.
+        /// Gets additional support information for this package.
         /// </summary>
         public string SupportInformation => _packageInfo.SupportInformation;
 
@@ -320,7 +323,7 @@ namespace Microsoft.Dism
         /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
         public override int GetHashCode()
         {
-            return (String.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode());
+            return String.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode();
         }
     }
 }

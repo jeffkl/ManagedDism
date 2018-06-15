@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -31,7 +35,6 @@ namespace Microsoft.Dism
         }
     }
 
-
     /// <summary>
     /// Describes capability basic information.
     /// </summary>
@@ -39,11 +42,19 @@ namespace Microsoft.Dism
     {
         private readonly DismApi.DismCapability_ _capability;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapability"/> class.
+        /// </summary>
+        /// <param name="capabilityPtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismCapability_"/> structure.</param>
         internal DismCapability(IntPtr capabilityPtr)
             : this(capabilityPtr.ToStructure<DismApi.DismCapability_>())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapability"/> class.
+        /// </summary>
+        /// <param name="capability">A <see cref="DismApi.DismCapability_"/> structure.</param>
         internal DismCapability(DismApi.DismCapability_ capability)
         {
             _capability = capability;
@@ -87,7 +98,7 @@ namespace Microsoft.Dism
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {
@@ -100,13 +111,20 @@ namespace Microsoft.Dism
     /// </summary>
     public sealed class DismCapabilityCollection : DismCollection<DismCapability>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapabilityCollection"/> class.
+        /// </summary>
         internal DismCapabilityCollection()
-            :base(new List<DismCapability>())
+            : base(new List<DismCapability>())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapabilityCollection"/> class.
+        /// </summary>
+        /// <param name="list">An <see cref="IList{DismCapability}"/> to wrap.</param>
         internal DismCapabilityCollection(IList<DismCapability> list)
-            :base(list)
+            : base(list)
         {
         }
     }
