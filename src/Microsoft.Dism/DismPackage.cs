@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -53,7 +57,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismPackage_ _package;
 
         /// <summary>
-        /// Initializes a new instance of the DismPackage class.
+        /// Initializes a new instance of the <see cref="DismPackage"/> class.
         /// </summary>
         /// <param name="packagePtr">A pointer to a native DismPackage_ struct.</param>
         internal DismPackage(IntPtr packagePtr)
@@ -62,9 +66,9 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismPackage class.
+        /// Initializes a new instance of the <see cref="DismPackage"/> class.
         /// </summary>
-        /// <param name="package"></param>
+        /// <param name="package">A <see cref="DismApi.DismPackage_"/> structure.</param>
         internal DismPackage(DismApi.DismPackage_ package)
         {
             _package = package;
@@ -133,7 +137,7 @@ namespace Microsoft.Dism
     public sealed class DismPackageCollection : DismCollection<DismPackage>
     {
         /// <summary>
-        /// Initializes a new instance of the DismPackageCollection class.
+        /// Initializes a new instance of the <see cref="DismPackageCollection"/> class.
         /// </summary>
         internal DismPackageCollection()
             : base(new List<DismPackage>())
@@ -141,7 +145,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismPackageCollection class.
+        /// Initializes a new instance of the <see cref="DismPackageCollection"/> class.
         /// </summary>
         /// <param name="list">An existing list of DismPackage objects to expose as a read-only collection.</param>
         internal DismPackageCollection(IList<DismPackage> list)

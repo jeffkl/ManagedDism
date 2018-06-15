@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -46,7 +50,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismCustomProperty_ _customProperty;
 
         /// <summary>
-        /// Initializes a new instance of the DismCustomProperty class.
+        /// Initializes a new instance of the <see cref="DismCustomProperty"/> class.
         /// </summary>
         /// <param name="customPropertyPtr">A native pointer to a <see cref="DismApi.DismCustomProperty_"/> struct.</param>
         internal DismCustomProperty(IntPtr customPropertyPtr)
@@ -55,7 +59,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismCustomProperty class.
+        /// Initializes a new instance of the <see cref="DismCustomProperty"/> class.
         /// </summary>
         /// <param name="customProperty">A native <see cref="DismApi.DismCustomProperty_"/> struct that holds the data of the custom property</param>
         internal DismCustomProperty(DismApi.DismCustomProperty_ customProperty)
@@ -120,7 +124,7 @@ namespace Microsoft.Dism
     public sealed class DismCustomPropertyCollection : DismCollection<DismCustomProperty>
     {
         /// <summary>
-        /// Initializes a new instance of the DismCustomPropertyCollection class.
+        /// Initializes a new instance of the <see cref="DismCustomPropertyCollection"/> class.
         /// </summary>
         internal DismCustomPropertyCollection()
             : base(new List<DismCustomProperty>())
@@ -128,9 +132,9 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismCustomPropertyCollection class.
+        /// Initializes a new instance of the <see cref="DismCustomPropertyCollection"/> class.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">An <see cref="IList{DismCustomProperty}"/> to wrap.</param>
         internal DismCustomPropertyCollection(IList<DismCustomProperty> list)
             : base(list)
         {

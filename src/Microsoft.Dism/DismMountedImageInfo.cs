@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -57,11 +61,19 @@ namespace Microsoft.Dism
     {
         private readonly DismApi.DismMountedImageInfo_ _mountedImageInfo;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismMountedImageInfo"/> class.
+        /// </summary>
+        /// <param name="mountedImageInfoPtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismMountedImageInfo_"/> structure.</param>
         internal DismMountedImageInfo(IntPtr mountedImageInfoPtr)
             : this(mountedImageInfoPtr.ToStructure<DismApi.DismMountedImageInfo_>())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismMountedImageInfo"/> class.
+        /// </summary>
+        /// <param name="mountedImageInfo">A <see cref="DismApi.DismMountedImageInfo_"/> structure.</param>
         internal DismMountedImageInfo(DismApi.DismMountedImageInfo_ mountedImageInfo)
         {
             _mountedImageInfo = mountedImageInfo;
@@ -135,7 +147,7 @@ namespace Microsoft.Dism
     public sealed class DismMountedImageInfoCollection : DismCollection<DismMountedImageInfo>
     {
         /// <summary>
-        /// Initializes a new instance of the DismMountedImageInfoCollection class.
+        /// Initializes a new instance of the <see cref="DismMountedImageInfoCollection"/> class.
         /// </summary>
         internal DismMountedImageInfoCollection()
             : base(new List<DismMountedImageInfo>())
@@ -143,7 +155,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismMountedImageInfoCollection class.
+        /// Initializes a new instance of the <see cref="DismMountedImageInfoCollection"/> class.
         /// </summary>
         /// <param name="list">An existing list of DismMountedImageInfo objects to expose as a read-only collection.</param>
         internal DismMountedImageInfoCollection(IList<DismMountedImageInfo> list)

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -21,7 +25,23 @@ namespace Microsoft.Dism
             /// <summary>
             /// A null-terminated Unicode string.
             /// </summary>
-            public string Value;
+            private string value;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DismLanguage"/> class.
+            /// </summary>
+            public DismLanguage()
+            {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DismLanguage"/> class.
+            /// </summary>
+            /// <param name="value">The language.</param>
+            public DismLanguage(string value)
+            {
+                this.value = value;
+            }
 
             /// <summary>
             /// Converts a DismLanguage class to a String object
@@ -30,7 +50,7 @@ namespace Microsoft.Dism
             /// <returns>The string associated with the DismLanguage</returns>
             public static implicit operator String(DismLanguage language)
             {
-                return language.Value;
+                return language.value;
             }
 
             /// <summary>
@@ -42,7 +62,7 @@ namespace Microsoft.Dism
             {
                 return new DismLanguage
                 {
-                    Value = str
+                    value = str
                 };
             }
         }

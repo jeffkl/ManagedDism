@@ -1,11 +1,17 @@
-﻿// ReSharper disable InconsistentNaming
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
 namespace Microsoft.Dism
 {
     public static partial class DismApi
     {
-        /// <summary>
-        /// Indicates to the DismCommitImage Function or the DismUnmountImage Function that changes to the image should be saved.
-        /// </summary>
+#pragma warning disable SA1310 // Field names must not contain underscore
+                              /// <summary>
+                              /// Indicates to the DismCommitImage Function or the DismUnmountImage Function that changes to the image should be saved.
+                              /// </summary>
         public const uint DISM_COMMIT_APPEND = 0x00020000;
 
         /// <summary>
@@ -171,5 +177,6 @@ namespace Microsoft.Dism
         /// The requested operation is successful. The DISM session needs to be reloaded.
         /// </summary>
         internal const int DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED = 0x00000001;  // 1
+#pragma warning restore SA1310 // Field names must not contain underscore
     }
 }

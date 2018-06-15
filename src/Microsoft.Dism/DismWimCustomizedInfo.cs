@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Win32;
 using System;
 using System.Runtime.InteropServices;
 
@@ -58,7 +62,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo;
 
         /// <summary>
-        /// Initializes a new instance of the DismWimCustomizedInfo class.
+        /// Initializes a new instance of the <see cref="DismWimCustomizedInfo"/> class.
         /// </summary>
         /// <param name="wimCustomizedInfoPtr">A pointer to a native <see cref="DismApi.DismWimCustomizedInfo_"/> struct.</param>
         internal DismWimCustomizedInfo(IntPtr wimCustomizedInfoPtr)
@@ -67,7 +71,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismWimCustomizedInfo class.
+        /// Initializes a new instance of the <see cref="DismWimCustomizedInfo"/> class.
         /// </summary>
         /// <param name="wimCustomizedInfo">A native <see cref="DismApi.DismWimCustomizedInfo_"/> struct to copy data from.</param>
         internal DismWimCustomizedInfo(DismApi.DismWimCustomizedInfo_ wimCustomizedInfo)

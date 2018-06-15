@@ -14,5 +14,5 @@ that the unit tests must be run as Administrator as well.  Please launch Visual 
 Administrator before running the unit tests.  The unit tests can also be run from an elevated
 command-line through vstest.console.exe.
 
-The unit tests use [NUnit](http://www.nunit.org/) as the framework and [Shouldly](http://docs.shouldly-lib.net/) for assertions.  Please consider developing
+The unit tests use [xUnit](https://xunit.github.io/) as the framework and [Shouldly](http://docs.shouldly-lib.net/) for assertions.  Please consider developing
 unit tests for any new functionality or to cover issues found.

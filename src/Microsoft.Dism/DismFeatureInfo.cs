@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -71,7 +75,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismFeatureInfo_ _featureInfo;
 
         /// <summary>
-        /// Initializes a new instance of the DismFeatureInfo class.
+        /// Initializes a new instance of the <see cref="DismFeatureInfo"/> class.
         /// </summary>
         /// <param name="featureInfoPtr">A pointer to a <see cref="DismApi.DismFeatureInfo_"/> struct.</param>
         internal DismFeatureInfo(IntPtr featureInfoPtr)
@@ -80,7 +84,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismFeatureInfo class.
+        /// Initializes a new instance of the <see cref="DismFeatureInfo"/> class.
         /// </summary>
         /// <param name="featureInfo">A <see cref="DismApi.DismFeatureInfo_"/> struct from the native DismApi.</param>
         internal DismFeatureInfo(DismApi.DismFeatureInfo_ featureInfo)
@@ -122,7 +126,7 @@ namespace Microsoft.Dism
         public DismPackageFeatureState FeatureState => _featureInfo.FeatureState;
 
         /// <summary>
-        /// Gets a value indicating if a restart is required when installing or uninstalling the feature.
+        /// Gets a value indicating whether a restart is required when installing or uninstalling the feature.
         /// </summary>
         public DismRestartType RestartRequired => _featureInfo.RestartRequired;
 

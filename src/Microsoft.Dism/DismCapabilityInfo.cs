@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -27,30 +31,25 @@ namespace Microsoft.Dism
             /// </summary>
             public string Name;
 
-
             /// <summary>
             /// The state of the capability.
             /// </summary>
             public DismPackageFeatureState State;
-
 
             /// <summary>
             /// The display name of the capability.
             /// </summary>
             public string DisplayName;
 
-
             /// <summary>
             /// The description of the capability.
             /// </summary>
             public string Description;
 
-
             /// <summary>
             /// The download size of the capability in bytes.
             /// </summary>
             public UInt32 DownloadSize;
-
 
             /// <summary>
             /// The install size of the capability in bytes.
@@ -66,11 +65,19 @@ namespace Microsoft.Dism
     {
         private readonly DismApi.DismCapabilityInfo_ _capabilityInfo;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapabilityInfo"/> class.
+        /// </summary>
+        /// <param name="capabilityPtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismCapabilityInfo_"/> structure.</param>
         internal DismCapabilityInfo(IntPtr capabilityPtr)
             : this(capabilityPtr.ToStructure<DismApi.DismCapabilityInfo_>())
         {
-        } 
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapabilityInfo"/> class.
+        /// </summary>
+        /// <param name="capabilityInfo">A <see cref="DismApi.DismCapabilityInfo_"/> structure.</param>
         internal DismCapabilityInfo(DismApi.DismCapabilityInfo_ capabilityInfo)
         {
             _capabilityInfo = capabilityInfo;
@@ -140,7 +147,7 @@ namespace Microsoft.Dism
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {

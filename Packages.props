@@ -10,4 +10,10 @@
   <ItemGroup>
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="2.1.23" />
   </ItemGroup>
+
+  <ItemGroup Condition=" '$(EnableStyleCop)' != 'false' ">
+    <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+    <Compile Include="..\GlobalSuppressions.cs" />
+    <AdditionalFiles Include="..\..\stylecop.json" Visible="False" />
+  </ItemGroup>
 </Project>

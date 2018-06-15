@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -557,7 +561,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureInfo GetFeatureInfo(DismSession session, string featureName)
         {
-            return DismApi.GetFeatureInfo(session, featureName, "", DismPackageIdentifier.None);
+            return DismApi.GetFeatureInfo(session, featureName, String.Empty, DismPackageIdentifier.None);
         }
 
         /// <summary>
@@ -684,7 +688,6 @@ namespace Microsoft.Dism
         public static string GetLastErrorMessage()
         {
             // Allow this method to be overridden by an internal test hook
-            //
             if (GetLastErrorMessageTestHook != null)
             {
                 return GetLastErrorMessageTestHook();
@@ -1244,8 +1247,8 @@ namespace Microsoft.Dism
         /// Repairs a corrupted image that has been identified as repairable by the CheckImageHealth Function.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="sourcePaths">List of source locations to check for repair files.</param>
         /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
+        /// <param name="sourcePaths">List of source locations to check for repair files.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
@@ -1264,7 +1267,6 @@ namespace Microsoft.Dism
         /// <summary>
         /// Shuts down DISM API. Shutdown must be called once per process. Other DISM API function calls will fail after Shutdown has been called.
         /// </summary>
-        /// <returns></returns>
         public static void Shutdown()
         {
             if (CurrentDismGeneration != DismGeneration.NotFound)
@@ -1320,6 +1322,8 @@ namespace Microsoft.Dism
             ThrowIfFail(() => NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
         }
 
+#pragma warning disable SA1124 // Do not use regions
+#pragma warning disable SA1300 // Element must begin with upper-case letter
         #region Undocumented functions found in the DISM PowerShell module
 
         /// <summary>
@@ -1376,12 +1380,13 @@ namespace Microsoft.Dism
         }
 
         #endregion Undocumented functions found in the DISM PowerShell module
+#pragma warning restore SA1124 // Do not use regions
+#pragma warning restore SA1300 // Element must begin with upper-case letter
 
         /// <summary>
         /// Releases resources held by a structure or an array of structures returned by other DISM API functions.
         /// </summary>
         /// <param name="handle">A pointer to the structure, or array of structures, to be deleted. The structure must have been returned by an earlier call to a DISM API function.</param>
-        /// <returns>A standard HRESULT indication success or failure.</returns>
         private static void Delete(IntPtr handle)
         {
             // Call the native function

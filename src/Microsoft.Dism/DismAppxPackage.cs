@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -6,23 +10,30 @@ namespace Microsoft.Dism
 {
     public static partial class DismApi
     {
+#pragma warning disable SA1600 // Elements must be documented
         /// <summary>
         /// This struct is currently undocumented.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
         internal struct DismAppxPackage_
         {
-            [MarshalAs(UnmanagedType.LPWStr)] public string PackageName;
-            [MarshalAs(UnmanagedType.LPWStr)] public string DisplayName;
-            [MarshalAs(UnmanagedType.LPWStr)] public string PublisherId;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string PackageName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string DisplayName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string PublisherId;
             public UInt32 MajorVersion;
             public UInt32 MinorVersion;
             public UInt32 Build;
             public UInt32 Revision;
             public UInt32 Architecture;
-            [MarshalAs(UnmanagedType.LPWStr)] public string ResourceId;
-            [MarshalAs(UnmanagedType.LPWStr)] public string InstallLocation;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string ResourceId;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string InstallLocation;
         }
+#pragma warning restore SA1600 // Elements must be documented
     }
 
     /// <summary>
@@ -32,23 +43,30 @@ namespace Microsoft.Dism
     {
         private readonly DismApi.DismAppxPackage_ _appxPackage;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismAppxPackage"/> class.
+        /// </summary>
+        /// <param name="appxPackagePtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismAppxPackage_"/> structure.</param>
         internal DismAppxPackage(IntPtr appxPackagePtr)
             : this(appxPackagePtr.ToStructure<DismApi.DismAppxPackage_>())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismAppxPackage"/> class.
+        /// </summary>
+        /// <param name="appxPackage">A <see cref="DismApi.DismAppxPackage_"/> structure.</param>
         internal DismAppxPackage(DismApi.DismAppxPackage_ appxPackage)
         {
             _appxPackage = appxPackage;
 
-            Version = new Version((int) appxPackage.MajorVersion, (int) appxPackage.MinorVersion,
-                (int) appxPackage.Build, (int) appxPackage.Revision);
+            Version = new Version((int)appxPackage.MajorVersion, (int)appxPackage.MinorVersion, (int)appxPackage.Build, (int)appxPackage.Revision);
         }
 
         /// <summary>
-        /// Get the architecture of the package.
+        /// Gets the architecture of the package.
         /// </summary>
-        public DismProcessorArchitecture Architecture => (DismProcessorArchitecture) _appxPackage.Architecture;
+        public DismProcessorArchitecture Architecture => (DismProcessorArchitecture)_appxPackage.Architecture;
 
         /// <summary>
         /// Gets the display name of the package.
@@ -129,7 +147,7 @@ namespace Microsoft.Dism
     public sealed class DismAppxPackageCollection : DismCollection<DismAppxPackage>
     {
         /// <summary>
-        /// Initializes a new instance of the DismDriverPackageCollection class.
+        /// Initializes a new instance of the <see cref="DismAppxPackageCollection"/> class.
         /// </summary>
         internal DismAppxPackageCollection()
             : base(new List<DismAppxPackage>())
@@ -137,9 +155,9 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismDriverPackageCollection class.
+        /// Initializes a new instance of the <see cref="DismAppxPackageCollection"/> class.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">An <see cref="IList{DismAppxPackage}"/> to wrap.</param>
         internal DismAppxPackageCollection(IList<DismAppxPackage> list)
             : base(list)
         {

@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Threading;
 
@@ -21,7 +25,7 @@ namespace Microsoft.Dism
         private readonly EventWaitHandle _eventHandle;
 
         /// <summary>
-        /// Initializes a new instance of the DismProgress class.
+        /// Initializes a new instance of the <see cref="DismProgress"/> class.
         /// </summary>
         /// <param name="callback">A DismProgressCallback to call when progress is made.</param>
         /// <param name="userData">A custom object to pass to the callback.</param>
@@ -38,7 +42,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Gets or sets a value indicating if the operation should be canceled if possible.
+        /// Gets or sets a value indicating whether the operation should be canceled if possible.
         /// </summary>
         public bool Cancel
         {
@@ -90,6 +94,9 @@ namespace Microsoft.Dism
         /// <summary>
         /// Called by the native DISM API during a time-consuming operation.
         /// </summary>
+        /// <param name="current">The current progress value.</param>
+        /// <param name="total">The total progress.</param>
+        /// <param name="userData">Any user data associated with the callback.</param>
         internal void DismProgressCallbackNative(UInt32 current, UInt32 total, IntPtr userData)
         {
             // Save the current progress

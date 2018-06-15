@@ -1,11 +1,25 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
 {
+    /// <summary>
+    /// Provides extension methods.
+    /// </summary>
     internal static class ExtensionMethods
     {
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of objects for the current pointer.
+        /// </summary>
+        /// <typeparam name="T">The type of each element.</typeparam>
+        /// <param name="ptr">The <see cref="IntPtr"/> pointing to the data.</param>
+        /// <param name="count">The number of items that the pointer points to.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of objects.</returns>
         public static IEnumerable<T> AsEnumerable<T>(this IntPtr ptr, int count)
         {
             if (count == 0)
@@ -14,23 +28,18 @@ namespace Microsoft.Dism
             }
 
             // Calculate the size of the struct
-            //
             var structSize = Marshal.SizeOf(typeof(T));
 
             // Get the starting point as a long
-            //
             var startPtr = ptr.ToInt64();
 
             // Loop through each pointer
-            //
             for (int i = 0; i < count; i++)
             {
                 // Get the address of the current structure
-                //
                 var currentPtr = new IntPtr(startPtr + (i * structSize));
 
                 // Return the structure at the current pointer
-                //
                 yield return currentPtr.ToStructure<T>();
             }
         }

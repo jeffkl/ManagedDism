@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -70,7 +74,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismDriver_ _driver;
 
         /// <summary>
-        /// Initializes a new instance of the DismDriver class.
+        /// Initializes a new instance of the <see cref="DismDriver"/> class.
         /// </summary>
         /// <param name="driverPtr">A native pointer to a DismDriver_ struct.</param>
         internal DismDriver(IntPtr driverPtr)
@@ -79,7 +83,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismDriver class.
+        /// Initializes a new instance of the <see cref="DismDriver"/> class.
         /// </summary>
         /// <param name="driver">A native DismDriver_ struct to copy data from.</param>
         internal DismDriver(DismApi.DismDriver_ driver)
@@ -156,7 +160,7 @@ namespace Microsoft.Dism
         /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
         public override int GetHashCode()
         {
-            return (Architecture.GetHashCode())
+            return Architecture.GetHashCode()
                 ^ (String.IsNullOrEmpty(CompatibleIds) ? 0 : CompatibleIds.GetHashCode())
                 ^ (String.IsNullOrEmpty(ExcludeIds) ? 0 : ExcludeIds.GetHashCode())
                 ^ (String.IsNullOrEmpty(HardwareDescription) ? 0 : HardwareDescription.GetHashCode())
@@ -172,7 +176,7 @@ namespace Microsoft.Dism
     public sealed class DismDriverCollection : DismCollection<DismDriver>
     {
         /// <summary>
-        /// Initializes a new instance of the DismDriverCollection class.
+        /// Initializes a new instance of the <see cref="DismDriverCollection"/> class.
         /// </summary>
         internal DismDriverCollection()
             : base(new List<DismDriver>())
@@ -180,9 +184,9 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the DismDriverCollection class.
+        /// Initializes a new instance of the <see cref="DismDriverCollection"/> class.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">An <see cref="IList{DismDriver}"/> to wrap.</param>
         internal DismDriverCollection(IList<DismDriver> list)
             : base(list)
         {

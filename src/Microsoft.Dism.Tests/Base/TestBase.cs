@@ -1,3 +1,7 @@
+// Copyright (c). All rights reserved.
+//
+// Licensed under the MIT license.
+
 namespace Microsoft.Dism.Tests
 {
     /// <summary>
