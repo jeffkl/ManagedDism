@@ -15,19 +15,19 @@ namespace Microsoft.Dism.Tests
 {
     public class TestWimTemplate : IDisposable
     {
-        public const int Architecture = 0;
-        public const string DefaultLangauge = "en-US";
+        public const DismProcessorArchitecture Architecture = DismProcessorArchitecture.AMD64;
         public const string EditionId = "WindowsPE";
         public const int FileCount = 10;
         public const int FileLineCount = 100;
         public const int ImageCount = 2;
         public const string ImageNamePrefix = "Test Image ";
         public const string InstallationType = "WindowsPE";
-        public const string Language = "en-US";
         public const string ProductName = "Microsoft® Windows® Operating System";
         public const string ProductType = "WinNT";
         public const int SpLevel = 0;
         public const string SystemRoot = "WINDOWS";
+        public static readonly CultureInfo DefaultLangauge = new CultureInfo("en-US");
+        public static readonly CultureInfo Language = new CultureInfo("en-US");
         public static readonly Version ProductVersion = new Version(6, 3, 9600, 16384);
 
         private const string TestWimTemplateFilename = @"test_template.wim";
@@ -107,7 +107,7 @@ namespace Microsoft.Dism.Tests
 
                     fragment.InnerXml =
                         $@"<WINDOWS>
-                              <ARCH>{Architecture}</ARCH>
+                              <ARCH>{Architecture:D}</ARCH>
                               <PRODUCTNAME>{ProductName}</PRODUCTNAME>
                               <EDITIONID>{EditionId}</EDITIONID>
                               <INSTALLATIONTYPE>{InstallationType}</INSTALLATIONTYPE>

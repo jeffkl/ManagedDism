@@ -136,8 +136,8 @@ namespace Microsoft.Dism.Tests
 
                 foreach (DismImageInfo imageInfo in imageInfos)
                 {
-                    imageInfo.Architecture.ShouldBe((DismProcessorArchitecture)TestWimTemplate.Architecture);
-                    imageInfo.DefaultLanguage.ShouldBe(new CultureInfo(TestWimTemplate.DefaultLangauge));
+                    imageInfo.Architecture.ShouldBe(TestWimTemplate.Architecture);
+                    imageInfo.DefaultLanguage.ShouldBe(TestWimTemplate.DefaultLangauge);
                     imageInfo.EditionId.ShouldBe(TestWimTemplate.EditionId);
                     imageInfo.ImageDescription.ShouldStartWith(TestWimTemplate.ImageNamePrefix);
                     imageInfo.ImageName.ShouldStartWith(TestWimTemplate.ImageNamePrefix);
