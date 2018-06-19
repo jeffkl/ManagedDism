@@ -292,6 +292,8 @@ namespace Microsoft.Dism
             if (_hDismApi != IntPtr.Zero)
             {
                 NativeMethods.FreeLibrary(_hDismApi);
+
+                _hDismApi = IntPtr.Zero;
             }
 
             return _hDismApi == IntPtr.Zero;
