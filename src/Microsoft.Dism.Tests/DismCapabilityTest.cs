@@ -9,6 +9,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismCapabilityCollectionTest : DismCollectionTest<DismCapabilityCollection, DismCapability>
     {
+        public DismCapabilityCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismCapabilityCollection CreateCollection(List<DismCapability> expectedCollection)
         {
             return new DismCapabilityCollection(expectedCollection);
@@ -44,6 +49,11 @@ namespace Microsoft.Dism.Tests
             Name = "BDC1F89D-EA9D-44AF-AB49-11414B1700D0",
             State = DismPackageFeatureState.Removed
         };
+
+        public DismCapabilityTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismCapability Item => new DismCapability(_capability);
 

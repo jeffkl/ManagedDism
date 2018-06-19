@@ -10,6 +10,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismDriverCollectionTest : DismCollectionTest<DismDriverCollection, DismDriver>
     {
+        public DismDriverCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismDriverCollection CreateCollection(List<DismDriver> expectedCollection)
         {
             return new DismDriverCollection(expectedCollection);
@@ -50,6 +55,11 @@ namespace Microsoft.Dism.Tests
             ManufacturerName = "ManufacturerName",
             ServerName = "ServerName",
         };
+
+        public DismDriverTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismDriver Item => ItemPtr != IntPtr.Zero ? new DismDriver(ItemPtr) : new DismDriver(_driver);
 

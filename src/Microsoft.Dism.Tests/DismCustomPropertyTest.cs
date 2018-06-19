@@ -10,6 +10,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismCustomPropertyCollectionTest : DismCollectionTest<DismCustomPropertyCollection, DismCustomProperty>
     {
+        public DismCustomPropertyCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismCustomPropertyCollection CreateCollection(List<DismCustomProperty> expectedCollection)
         {
             return new DismCustomPropertyCollection(expectedCollection);
@@ -48,6 +53,11 @@ namespace Microsoft.Dism.Tests
             Path = "B86BC312-CF9D-4AA2-85F9-9BFC4A76338B",
             Value = "A5801BF4-2907-4873-84E7-A378BA6712C2",
         };
+
+        public DismCustomPropertyTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismCustomProperty Item => ItemPtr != IntPtr.Zero ? new DismCustomProperty(ItemPtr) : new DismCustomProperty(_customPropertyStruct);
 

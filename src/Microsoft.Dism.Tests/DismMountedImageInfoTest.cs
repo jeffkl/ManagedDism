@@ -9,6 +9,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismMountedImageInfoCollectionTest : DismCollectionTest<DismMountedImageInfoCollection, DismMountedImageInfo>
     {
+        public DismMountedImageInfoCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismMountedImageInfoCollection CreateCollection(List<DismMountedImageInfo> expectedCollection)
         {
             return new DismMountedImageInfoCollection(expectedCollection);
@@ -61,6 +66,11 @@ namespace Microsoft.Dism.Tests
             MountPath = "BBCDB7C4-3A8D-4FCD-9DBD-23858A7C4730",
             MountStatus = DismMountStatus.NeedsRemount,
         };
+
+        public DismMountedImageInfoTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismMountedImageInfo Item => new DismMountedImageInfo(_mountedImageInfo);
 

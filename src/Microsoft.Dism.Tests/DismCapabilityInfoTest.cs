@@ -19,6 +19,11 @@ namespace Microsoft.Dism.Tests
             InstallSize = 2000
         };
 
+        public DismCapabilityInfoTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismCapabilityInfo Item => ItemPtr != IntPtr.Zero ? new DismCapabilityInfo(ItemPtr) : new DismCapabilityInfo(_capabilityInfo);
 
         protected override object Struct => _capabilityInfo;

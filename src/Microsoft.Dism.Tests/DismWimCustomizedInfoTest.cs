@@ -18,6 +18,11 @@ namespace Microsoft.Dism.Tests
             Size = 789,
         };
 
+        public DismWimCustomizedInfoTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismWimCustomizedInfo Item => new DismWimCustomizedInfo(_customizedInfo);
 
         protected override object Struct => _customizedInfo;

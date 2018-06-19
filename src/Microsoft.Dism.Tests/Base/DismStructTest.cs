@@ -12,6 +12,11 @@ namespace Microsoft.Dism.Tests
     public abstract class DismStructTest<T> : TestBase
         where T : class
     {
+        protected DismStructTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected abstract T Item
         {
             get;
