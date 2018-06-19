@@ -78,7 +78,8 @@ namespace Microsoft.Dism.Tests
             SupportInformation = "SupportInformation",
         };
 
-        public DismPackageInfoTest()
+        public DismPackageInfoTest(TestWimTemplate template)
+            : base(template)
         {
             _packageInfo.CustomProperty = ListToPtrArray(_customProperties);
             _packageInfo.CustomPropertyCount = (uint)_customProperties.Count;
@@ -91,11 +92,13 @@ namespace Microsoft.Dism.Tests
 
         protected override object Struct => _packageInfo;
 
-        public void Dispose()
+        public override void Dispose()
         {
             Marshal.FreeHGlobal(_packageInfo.CustomProperty);
 
             Marshal.FreeHGlobal(_packageInfo.Feature);
+
+            base.Dispose();
         }
 
         protected override void VerifyProperties(DismPackageInfo item)

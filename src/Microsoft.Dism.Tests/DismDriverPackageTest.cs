@@ -10,6 +10,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismDriverPackageCollectionTest : DismCollectionTest<DismDriverPackageCollection, DismDriverPackage>
     {
+        public DismDriverPackageCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismDriverPackageCollection CreateCollection(List<DismDriverPackage> expectedCollection)
         {
             return new DismDriverPackageCollection(expectedCollection);
@@ -66,6 +71,11 @@ namespace Microsoft.Dism.Tests
             PublishedName = "C5D23D3E-C66F-454D-8093-E585B38B7AA6",
             Revision = 3,
         };
+
+        public DismDriverPackageTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismDriverPackage Item => ItemPtr != IntPtr.Zero ? new DismDriverPackage(ItemPtr) : new DismDriverPackage(_driverPackage);
 

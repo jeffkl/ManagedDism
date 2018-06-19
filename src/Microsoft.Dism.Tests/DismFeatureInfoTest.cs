@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism.Tests
 {
-    public class DismFeatureInfoTest : DismStructTest<DismFeatureInfo>, IDisposable
+    public class DismFeatureInfoTest : DismStructTest<DismFeatureInfo>
     {
         private readonly List<DismApi.DismCustomProperty_> _customProperties = new List<DismApi.DismCustomProperty_>
         {
@@ -37,7 +37,8 @@ namespace Microsoft.Dism.Tests
             RestartRequired = DismRestartType.Possible,
         };
 
-        public DismFeatureInfoTest()
+        public DismFeatureInfoTest(TestWimTemplate template)
+            : base(template)
         {
             _featureInfo.CustomProperty = ListToPtrArray(_customProperties);
 
@@ -48,9 +49,11 @@ namespace Microsoft.Dism.Tests
 
         protected override object Struct => _featureInfo;
 
-        public void Dispose()
+        public override void Dispose()
         {
             Marshal.FreeHGlobal(_featureInfo.CustomProperty);
+
+            base.Dispose();
         }
 
         protected override void VerifyProperties(DismFeatureInfo item)

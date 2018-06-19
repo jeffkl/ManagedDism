@@ -8,8 +8,13 @@ using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
-    public class DismInitializeTest
+    public class DismInitializeTest : TestBase
     {
+        public DismInitializeTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         [Theory]
         [InlineData(DismLogLevel.LogErrors)]
         [InlineData(DismLogLevel.LogErrorsWarnings)]

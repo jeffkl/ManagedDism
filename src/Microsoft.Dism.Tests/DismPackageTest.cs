@@ -10,6 +10,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismPackageCollectionTest : DismCollectionTest<DismPackageCollection, DismPackage>
     {
+        public DismPackageCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismPackageCollection CreateCollection(List<DismPackage> expectedCollection)
         {
             return new DismPackageCollection(expectedCollection);
@@ -51,6 +56,11 @@ namespace Microsoft.Dism.Tests
             PackageState = DismPackageFeatureState.Removed,
             ReleaseType = DismReleaseType.SecurityUpdate,
         };
+
+        public DismPackageTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismPackage Item => new DismPackage(_package);
 

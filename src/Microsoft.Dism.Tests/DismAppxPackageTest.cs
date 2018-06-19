@@ -10,6 +10,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismAppxPackageCollectionTest : DismCollectionTest<DismAppxPackageCollection, DismAppxPackage>
     {
+        public DismAppxPackageCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismAppxPackageCollection CreateCollection(List<DismAppxPackage> expectedCollection)
         {
             return new DismAppxPackageCollection(expectedCollection);
@@ -56,6 +61,11 @@ namespace Microsoft.Dism.Tests
             ResourceId = "8ADCC0DC-CC33-4B8A-B284-BEE31F83F10C",
             Revision = 3,
         };
+
+        public DismAppxPackageTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismAppxPackage Item => ItemPtr != IntPtr.Zero ? new DismAppxPackage(ItemPtr) : new DismAppxPackage(_appxPackage);
 

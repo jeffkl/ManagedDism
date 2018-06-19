@@ -8,11 +8,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
     public class DismImageInfoCollectionTest : DismCollectionTest<DismImageInfoCollection, DismImageInfo>
     {
+        public DismImageInfoCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismImageInfoCollection CreateCollection(List<DismImageInfo> expectedCollection)
         {
             return new DismImageInfoCollection(expectedCollection);
@@ -93,7 +99,8 @@ namespace Microsoft.Dism.Tests
             Size = 10,
         };
 
-        public DismImageInfoTest()
+        public DismImageInfoTest(TestWimTemplate template)
+            : base(template)
         {
             _imageInfo.Language = ListToPtrArray(_languages);
             _imageInfo.LanguageCount = (uint)_languages.Count;
@@ -108,11 +115,43 @@ namespace Microsoft.Dism.Tests
 
         protected override object Struct => _imageInfo;
 
-        public void Dispose()
+        public override void Dispose()
         {
             Marshal.FreeHGlobal(_imageInfo.Language);
 
             Marshal.FreeHGlobal(_imageInfo.CustomizedInfo);
+
+            base.Dispose();
+        }
+
+        [Fact]
+        public void GetImageInfoFromTestWim()
+        {
+            DismApi.Initialize(DismLogLevel.LogErrors);
+            try
+            {
+                DismImageInfoCollection imageInfos = DismApi.GetImageInfo(Template.FullPath);
+
+                imageInfos.Count.ShouldBe(2);
+
+                foreach (DismImageInfo imageInfo in imageInfos)
+                {
+                    imageInfo.Architecture.ShouldBe((DismProcessorArchitecture)TestWimTemplate.Architecture);
+                    imageInfo.DefaultLanguage.ShouldBe(new CultureInfo(TestWimTemplate.DefaultLangauge));
+                    imageInfo.EditionId.ShouldBe(TestWimTemplate.EditionId);
+                    imageInfo.ImageDescription.ShouldStartWith(TestWimTemplate.ImageNamePrefix);
+                    imageInfo.ImageName.ShouldStartWith(TestWimTemplate.ImageNamePrefix);
+                    imageInfo.InstallationType.ShouldBe(TestWimTemplate.InstallationType);
+                    imageInfo.ProductName.ShouldBe(TestWimTemplate.ProductName);
+                    imageInfo.ProductType.ShouldBe(TestWimTemplate.ProductType);
+                    imageInfo.ProductVersion.ShouldBe(TestWimTemplate.ProductVersion);
+                    imageInfo.SpLevel.ShouldBe(TestWimTemplate.SpLevel);
+                }
+            }
+            finally
+            {
+                DismApi.Shutdown();
+            }
         }
 
         protected override void VerifyProperties(DismImageInfo item)

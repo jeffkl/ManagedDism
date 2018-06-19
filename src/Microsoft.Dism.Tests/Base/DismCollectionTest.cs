@@ -13,6 +13,11 @@ namespace Microsoft.Dism.Tests
         where TCollection : DismCollection<TItem>
         where TItem : class
     {
+        protected DismCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         [Fact]
         public void CollectionTest()
         {

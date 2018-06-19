@@ -10,6 +10,11 @@ namespace Microsoft.Dism.Tests
 {
     public class DismFeatureCollectionTest : DismCollectionTest<DismFeatureCollection, DismFeature>
     {
+        public DismFeatureCollectionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         protected override DismFeatureCollection CreateCollection(List<DismFeature> expectedCollection)
         {
             return new DismFeatureCollection(expectedCollection);
@@ -45,6 +50,11 @@ namespace Microsoft.Dism.Tests
             FeatureName = "ED1E66B9-7234-4D2E-A31F-39F6AB0559D9",
             State = DismPackageFeatureState.PartiallyInstalled,
         };
+
+        public DismFeatureTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
 
         protected override DismFeature Item => ItemPtr != IntPtr.Zero ? new DismFeature(ItemPtr) : new DismFeature(_feature);
 
