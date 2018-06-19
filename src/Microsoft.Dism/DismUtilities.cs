@@ -284,19 +284,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// Unloads a previously-loaded DISM generation library.
         /// </summary>
-        /// <returns>
-        /// TRUE if successful, otherwise FALSE.
-        /// </returns>
-        public static bool UnloadDismGenerationLibrary()
+        public static void UnloadDismGenerationLibrary()
         {
-            if (_hDismApi != IntPtr.Zero)
+            if (_hDismApi != IntPtr.Zero && NativeMethods.FreeLibrary(_hDismApi))
             {
-                NativeMethods.FreeLibrary(_hDismApi);
-
                 _hDismApi = IntPtr.Zero;
             }
-
-            return _hDismApi == IntPtr.Zero;
         }
 
         /// <summary>
