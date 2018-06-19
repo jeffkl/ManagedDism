@@ -38,15 +38,7 @@ namespace Microsoft.Dism
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
-            public static extern int DismAddCapability(
-                DismSession Session,
-                string Name,
-                [MarshalAs(UnmanagedType.Bool)] bool LimitAccess,
-                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] SourcePaths,
-                UInt32 SourcePathCount,
-                SafeWaitHandle CancelEvent,
-                DismProgressCallback Progress,
-                IntPtr UserData);
+            public static extern int DismAddCapability(DismSession Session, string Name, [MarshalAs(UnmanagedType.Bool)] bool LimitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] SourcePaths, UInt32 SourcePathCount, SafeWaitHandle CancelEvent, DismProgressCallback Progress, IntPtr UserData);
 
             /// <summary>
             /// Adds a third party driver (.inf) to an offline Windows® image.
