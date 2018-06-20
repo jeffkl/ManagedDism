@@ -151,7 +151,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// The request was cancelled.
         /// </summary>
-        internal const uint ERROR_CANCELLED = 0x800704C7; // 1223
+        internal const uint ERROR_CANCELLED = 0x000004C7; // 1223
 
         /// <summary>
         /// The operation completed successfully.

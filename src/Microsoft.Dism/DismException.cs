@@ -39,6 +39,7 @@ namespace Microsoft.Dism
                 case DismApi.ERROR_REQUEST_ABORTED:
                 case 0x80070000 | DismApi.ERROR_REQUEST_ABORTED:
                 case DismApi.ERROR_CANCELLED:
+                case 0x80070000 | DismApi.ERROR_CANCELLED:
                     return new OperationCanceledException();
 
                 case DismApi.ERROR_SUCCESS_REBOOT_REQUIRED:
