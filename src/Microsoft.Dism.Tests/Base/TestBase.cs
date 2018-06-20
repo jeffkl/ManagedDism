@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.IO;
 using Xunit;
 
 namespace Microsoft.Dism.Tests
@@ -18,7 +19,9 @@ namespace Microsoft.Dism.Tests
             Template = template;
         }
 
-        public TestWimTemplate Template { get; }
+        protected TestWimTemplate Template { get; }
+
+        protected string TestDirectory { get; } = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}")).FullName;
 
         public virtual void Dispose()
         {
