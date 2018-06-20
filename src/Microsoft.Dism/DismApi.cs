@@ -1410,6 +1410,15 @@ namespace Microsoft.Dism
 #pragma warning restore SA1300 // Element must begin with upper-case letter
 
         /// <summary>
+        /// Throws an exception if the specified function fails.
+        /// </summary>
+        /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
+        internal static void ThrowIfFail(Func<int> func)
+        {
+            ThrowIfFail(func, DismApi.ERROR_SUCCESS);
+        }
+
+        /// <summary>
         /// Releases resources held by a structure or an array of structures returned by other DISM API functions.
         /// </summary>
         /// <param name="handle">A pointer to the structure, or array of structures, to be deleted. The structure must have been returned by an earlier call to a DISM API function.</param>
@@ -1417,15 +1426,6 @@ namespace Microsoft.Dism
         {
             // Call the native function
             NativeMethods.DismDelete(handle);
-        }
-
-        /// <summary>
-        /// Throws an exception if the specified function fails.
-        /// </summary>
-        /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
-        private static void ThrowIfFail(Func<int> func)
-        {
-            ThrowIfFail(func, DismApi.ERROR_SUCCESS);
         }
 
         /// <summary>
@@ -1629,11 +1629,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive)
         {
-            DismSession session = null;
-
-            ThrowIfFail(() => NativeMethods.DismOpenSession(imagePath, windowsDirectory, systemDrive, out session));
-
-            return session;
+            return new DismSession(imagePath, windowsDirectory, systemDrive);
         }
 
         /// <summary>
