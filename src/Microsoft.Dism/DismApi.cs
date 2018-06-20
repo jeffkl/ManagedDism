@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 // ReSharper disable ArrangeStaticMemberQualifier
 // ReSharper disable RedundantNameQualifier
@@ -44,6 +43,7 @@ namespace Microsoft.Dism
         /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
         /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths)
         {
             DismApi.AddCapability(session, capabilityName, limitAccess, sourcePaths, null, null);
@@ -59,6 +59,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Get the list of source paths as an array
@@ -67,7 +68,9 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -77,9 +80,12 @@ namespace Microsoft.Dism
         /// <param name="driverPath">A relative or absolute path to the driver .inf file.</param>
         /// <param name="forceUnsigned">Indicates whether to accept unsigned drivers to an x64-based image. Unsigned drivers will automatically be added to an x86-based image.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddDriver(DismSession session, string driverPath, bool forceUnsigned)
         {
-            ThrowIfFail(() => NativeMethods.DismAddDriver(session, driverPath, forceUnsigned));
+            int hresult = NativeMethods.DismAddDriver(session, driverPath, forceUnsigned);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -90,6 +96,7 @@ namespace Microsoft.Dism
         /// <param name="ignoreCheck">Specifies whether to ignore the internal applicability checks that are done when a package is added.</param>
         /// <param name="preventPending">Specifies whether to add a package if it has pending online actions.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending)
         {
             DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, null);
@@ -105,6 +112,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A DismProgressCallback method to call when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback)
         {
             DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, null);
@@ -121,12 +129,15 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -137,7 +148,9 @@ namespace Microsoft.Dism
         /// <param name="singleSession">Specifies whether the packages that are listed in an answer file will be processed in a single session or in multiple sessions.</param>
         public static void ApplyUnattend(DismSession session, string unattendFile, bool singleSession)
         {
-            ThrowIfFail(() => NativeMethods.DismApplyUnattend(session, unattendFile, singleSession));
+            int hresult = NativeMethods.DismApplyUnattend(session, unattendFile, singleSession);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -178,13 +191,12 @@ namespace Microsoft.Dism
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
-            // Stores the output of the native function
-            DismImageHealthState imageHealthState = DismImageHealthState.Healthy;
-
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out imageHealthState));
+            int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
+
+            ThrowIfFail(hresult);
 
             return imageHealthState;
         }
@@ -193,9 +205,12 @@ namespace Microsoft.Dism
         /// Removes files and releases resources associated with corrupted or invalid mount paths.
         /// </summary>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void CleanupMountpoints()
         {
-            ThrowIfFail(NativeMethods.DismCleanupMountpoints);
+            int hresult = NativeMethods.DismCleanupMountpoints();
+
+            ThrowIfFail(hresult);
         }
 
         /// <summary>
@@ -205,7 +220,9 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CloseSession(DismSession session)
         {
-            ThrowIfFail(() => NativeMethods.DismCloseSession(session.DangerousGetHandle()));
+            int hresult = NativeMethods.DismCloseSession(session.DangerousGetHandle());
+
+            ThrowIfFail(hresult);
         }
 
         /// <summary>
@@ -249,7 +266,9 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismCommitImage(session, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismCommitImage(session, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -305,7 +324,9 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero), DismApi.ERROR_SUCCESS, DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, DismApi.ERROR_SUCCESS_RESTART_REQUIRED);
+            int hresult = NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -401,6 +422,7 @@ namespace Microsoft.Dism
         /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
         /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths)
         {
             DismApi.EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, null);
@@ -453,13 +475,11 @@ namespace Microsoft.Dism
         {
             DismCapabilityCollection capabilities = new DismCapabilityCollection();
 
-            // Used for the native call
-            IntPtr capabilityPtr = IntPtr.Zero;
-            UInt32 capabilityCount = 0;
+            int hresult = NativeMethods.DismGetCapabilities(session, out IntPtr capabilityPtr, out UInt32 capabilityCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetCapabilities(session, out capabilityPtr, out capabilityCount));
+                ThrowIfFail(hresult, session);
 
                 // Add the items
                 capabilities.AddRange<DismCapability_>(capabilityPtr, (int)capabilityCount, c => new DismCapability(c));
@@ -481,12 +501,11 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismCapabilityInfo GetCapabilityInfo(DismSession session, string capabilityName)
         {
-            // Stores the output from DismGetCapabilityInfo
-            IntPtr capabilityInfoPtr = IntPtr.Zero;
+            int hresult = NativeMethods.DismGetCapabilityInfo(session, capabilityName, out IntPtr capabilityInfoPtr);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetCapabilityInfo(session, capabilityName, out capabilityInfoPtr));
+                ThrowIfFail(hresult, session);
 
                 // Return a new DismCapabilityInfo from the native pointer
                 return new DismCapabilityInfo(capabilityInfoPtr);
@@ -509,14 +528,11 @@ namespace Microsoft.Dism
         {
             var driverInfos = new DismDriverCollection();
 
-            // Used for the native call
-            IntPtr driverInfoPtr = IntPtr.Zero;
-            UInt32 driverInfoCount = 0;
-            IntPtr driverPackagePtr = IntPtr.Zero;
+            int hresult = NativeMethods.DismGetDriverInfo(session, driverPath, out IntPtr driverInfoPtr, out UInt32 driverInfoCount, out IntPtr driverPackagePtr);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetDriverInfo(session, driverPath, out driverInfoPtr, out driverInfoCount, out driverPackagePtr));
+                ThrowIfFail(hresult, session);
 
                 // Add the items
                 driverInfos.AddRange<DismApi.DismDriver_>(driverInfoPtr, (int)driverInfoCount, i => new DismDriver(i));
@@ -542,13 +558,11 @@ namespace Microsoft.Dism
         {
             var driverPackages = new DismDriverPackageCollection();
 
-            // Used for the native call
-            IntPtr driverPackagePtr = IntPtr.Zero;
-            UInt32 driverPackageCount = 0;
+            int hresult = NativeMethods.DismGetDrivers(session, allDrivers, out IntPtr driverPackagePtr, out UInt32 driverPackageCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetDrivers(session, allDrivers, out driverPackagePtr, out driverPackageCount));
+                ThrowIfFail(hresult, session);
 
                 // Add the items
                 driverPackages.AddRange<DismApi.DismDriverPackage_>(driverPackagePtr, (int)driverPackageCount, i => new DismDriverPackage(i));
@@ -671,13 +685,11 @@ namespace Microsoft.Dism
         {
             var imageInfos = new DismImageInfoCollection();
 
-            // Used for the native call
-            IntPtr imageInfoPtr = IntPtr.Zero;
-            UInt32 imageInfoCount = 0;
+            int hresult = NativeMethods.DismGetImageInfo(imageFilePath, out IntPtr imageInfoPtr, out UInt32 imageInfoCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetImageInfo(imageFilePath, out imageInfoPtr, out imageInfoCount));
+                ThrowIfFail(hresult);
 
                 // Add the items
                 imageInfos.AddRange<DismApi.DismImageInfo_>(imageInfoPtr, (int)imageInfoCount, i => new DismImageInfo(i));
@@ -703,16 +715,13 @@ namespace Microsoft.Dism
                 return GetLastErrorMessageTestHook();
             }
 
-            // Used for the native call
-            IntPtr errorMessagePtr = IntPtr.Zero;
+            if (NativeMethods.DismGetLastErrorMessage(out IntPtr errorMessagePtr) != DismApi.ERROR_SUCCESS)
+            {
+                return null;
+            }
 
             try
             {
-                if (NativeMethods.DismGetLastErrorMessage(out errorMessagePtr) != DismApi.ERROR_SUCCESS)
-                {
-                    return null;
-                }
-
                 // Get a string from the pointer
                 string dismString = errorMessagePtr.ToStructure<DismApi.DismString>();
 
@@ -742,13 +751,11 @@ namespace Microsoft.Dism
         {
             var mountedImageInfos = new DismMountedImageInfoCollection();
 
-            // Used for the native call
-            IntPtr mountedImageInfoPtr = IntPtr.Zero;
-            UInt32 mountedImageInfoCount = 0;
+            int hresult = NativeMethods.DismGetMountedImageInfo(out IntPtr mountedImageInfoPtr, out UInt32 mountedImageInfoCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetMountedImageInfo(out mountedImageInfoPtr, out mountedImageInfoCount));
+                ThrowIfFail(hresult);
 
                 // Add the items
                 mountedImageInfos.AddRange<DismApi.DismMountedImageInfo_>(mountedImageInfoPtr, (int)mountedImageInfoCount, i => new DismMountedImageInfo(i));
@@ -796,13 +803,11 @@ namespace Microsoft.Dism
         {
             var packages = new DismPackageCollection();
 
-            // Used for the native call
-            IntPtr packagePtr = IntPtr.Zero;
-            UInt32 packageCount = 0;
+            int hresult = NativeMethods.DismGetPackages(session, out IntPtr packagePtr, out UInt32 packageCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetPackages(session, out packagePtr, out packageCount));
+                ThrowIfFail(hresult, session);
 
                 // Add the items
                 packages.AddRange<DismApi.DismPackage_>(packagePtr, (int)packageCount, i => new DismPackage(i));
@@ -850,7 +855,9 @@ namespace Microsoft.Dism
             {
                 if (!_isInitialized)
                 {
-                    ThrowIfFail(() => NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory));
+                    int hresult = NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory);
+
+                    ThrowIfFail(hresult);
 
                     _isInitialized = true;
                 }
@@ -1106,7 +1113,9 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void RemountImage(string mountPath)
         {
-            ThrowIfFail(() => NativeMethods.DismRemountImage(mountPath));
+            int hresult = NativeMethods.DismRemountImage(mountPath);
+
+            ThrowIfFail(hresult);
         }
 
         /// <summary>
@@ -1115,6 +1124,7 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="capabilityName">The name of the capability that is being removed</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemoveCapability(DismSession session, string capabilityName)
         {
             DismApi.RemoveCapability(session, capabilityName, null, null);
@@ -1129,12 +1139,15 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemoveCapability(DismSession session, string capabilityName, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismRemoveCapability(session, capabilityName, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismRemoveCapability(session, capabilityName, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -1143,9 +1156,12 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="driverPath">The published file name of the driver that has been added to the image, for example OEM1.inf. You can use the GetDrivers method to get the published name of the driver.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemoveDriver(DismSession session, string driverPath)
         {
-            ThrowIfFail(() => NativeMethods.DismRemoveDriver(session, driverPath));
+            int hresult = NativeMethods.DismRemoveDriver(session, driverPath);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -1154,6 +1170,7 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="packageName">The package name.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByName(DismSession session, string packageName)
         {
             DismApi.RemovePackageByName(session, packageName, null);
@@ -1167,6 +1184,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByName(DismSession session, string packageName, Dism.DismProgressCallback progressCallback)
         {
             DismApi.RemovePackageByName(session, packageName, progressCallback, null);
@@ -1181,6 +1199,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByName(DismSession session, string packageName, Dism.DismProgressCallback progressCallback, object userData)
         {
             DismApi.RemovePackage(session, packageName, DismPackageIdentifier.Name, progressCallback, userData);
@@ -1192,6 +1211,7 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="packagePath">The package path.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByPath(DismSession session, string packagePath)
         {
             DismApi.RemovePackageByPath(session, packagePath, null);
@@ -1205,6 +1225,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByPath(DismSession session, string packagePath, Dism.DismProgressCallback progressCallback)
         {
             DismApi.RemovePackageByPath(session, packagePath, progressCallback, null);
@@ -1219,6 +1240,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByPath(DismSession session, string packagePath, Dism.DismProgressCallback progressCallback, object userData)
         {
             DismApi.RemovePackage(session, packagePath, DismPackageIdentifier.Path, progressCallback, userData);
@@ -1230,6 +1252,7 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess)
         {
             DismApi.RestoreImageHealth(session, limitAccess, null);
@@ -1242,6 +1265,7 @@ namespace Microsoft.Dism
         /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
         /// <param name="sourcePaths">List of source locations to check for repair files.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths)
         {
             DismApi.RestoreImageHealth(session, limitAccess, sourcePaths, null);
@@ -1256,6 +1280,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths, Dism.DismProgressCallback progressCallback)
         {
             DismApi.RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback, null);
@@ -1271,6 +1296,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Get the list of source paths as an array
@@ -1279,7 +1305,9 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -1297,7 +1325,9 @@ namespace Microsoft.Dism
                         CurrentDismGeneration = DismGeneration.NotFound;
                     }
 
-                    ThrowIfFail(NativeMethods.DismShutdown);
+                    int hresult = NativeMethods.DismShutdown();
+
+                    ThrowIfFail(hresult);
 
                     _isInitialized = false;
                 }
@@ -1345,11 +1375,14 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult);
         }
 
 #pragma warning disable SA1124 // Do not use regions
 #pragma warning disable SA1300 // Element must begin with upper-case letter
+
         #region Undocumented functions found in the DISM PowerShell module
 
         /// <summary>
@@ -1360,13 +1393,16 @@ namespace Microsoft.Dism
         /// <param name="dependencyPackages">Specifies the location of dependency packages.</param>
         /// <param name="licensePath">Specifies the location of the .xml file containing your application license.</param>
         /// <param name="customDataPath">Specifies the location of a custom data file. The custom data file will be renamed custom.data and saved in the app data store.</param>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void _AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, string licensePath, string customDataPath)
         {
             string[] dependencyPackagesArray = dependencyPackages?.ToArray() ?? new string[0];
 
             bool skipLicense = String.IsNullOrEmpty(licensePath);
 
-            ThrowIfFail(() => NativeMethods._DismAddProvisionedAppxPackage(session, appPath, dependencyPackagesArray, (uint)dependencyPackagesArray.Length, licensePath, skipLicense, customDataPath));
+            int hresult = NativeMethods._DismAddProvisionedAppxPackage(session, appPath, dependencyPackagesArray, (uint)dependencyPackagesArray.Length, licensePath, skipLicense, customDataPath);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -1375,15 +1411,16 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session.</param>
         /// <returns>A <see cref="DismAppxPackageCollection"/> object containing a collection of <see cref="DismAppxPackage"/> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static DismAppxPackageCollection _GetProvisionedAppxPackages(DismSession session)
         {
             var appxPackages = new DismAppxPackageCollection();
 
-            IntPtr appxPackagesPtr = IntPtr.Zero;
-            UInt32 appxPackagesCount = 0;
+            int hresult = NativeMethods._DismGetProvisionedAppxPackages(session, out IntPtr appxPackagesPtr, out UInt32 appxPackagesCount);
+
             try
             {
-                ThrowIfFail(() => NativeMethods._DismGetProvisionedAppxPackages(session, out appxPackagesPtr, out appxPackagesCount));
+                ThrowIfFail(hresult, session);
 
                 appxPackages.AddRange<DismApi.DismAppxPackage_>(appxPackagesPtr, (int)appxPackagesCount, i => new DismAppxPackage(i));
             }
@@ -1400,22 +1437,38 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session.</param>
         /// <param name="packageName">Specifies the name of the app package (.appx) to remove from the Windows image.</param>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void _RemoveProvisionedAppxPackage(DismSession session, string packageName)
         {
-            ThrowIfFail(() => NativeMethods._DismRemoveProvisionedAppxPackage(session, packageName));
+            int hresult = NativeMethods._DismRemoveProvisionedAppxPackage(session, packageName);
+
+            ThrowIfFail(hresult);
         }
 
         #endregion Undocumented functions found in the DISM PowerShell module
+
 #pragma warning restore SA1124 // Do not use regions
 #pragma warning restore SA1300 // Element must begin with upper-case letter
 
         /// <summary>
         /// Throws an exception if the specified function fails.
         /// </summary>
-        /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
-        internal static void ThrowIfFail(Func<int> func)
+        /// <param name="hresult">An HRESULT value from a function return to check.</param>
+        /// <param name="session">An optional <see cref="DismSession"/> to reload if necessary.</param>
+        internal static void ThrowIfFail(int hresult, DismSession session = null)
         {
-            ThrowIfFail(func, DismApi.ERROR_SUCCESS);
+            if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED && session != null)
+            {
+                // Reload the session if necessary
+                session.Reload();
+
+                return;
+            }
+
+            if (hresult != DismApi.ERROR_SUCCESS)
+            {
+                throw DismException.GetDismExceptionForHResult(hresult);
+            }
         }
 
         /// <summary>
@@ -1426,26 +1479,6 @@ namespace Microsoft.Dism
         {
             // Call the native function
             NativeMethods.DismDelete(handle);
-        }
-
-        /// <summary>
-        /// Throws an exception if the specified function fails.
-        /// </summary>
-        /// <param name="func">A <see cref="Func{Int32}"/> to execute and evaluate the return code of.</param>
-        /// <param name="successCodes">A list of one or more codes to consider as success for the function.</param>
-        private static void ThrowIfFail(Func<int> func, params int[] successCodes)
-        {
-            if (successCodes == null)
-            {
-                throw new ArgumentNullException(nameof(successCodes));
-            }
-
-            int hresult = func();
-
-            if (!successCodes.Any(code => code.Equals(hresult)))
-            {
-                throw DismException.GetDismExceptionForHResult(hresult);
-            }
         }
 
         /// <summary>
@@ -1461,9 +1494,6 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        /// <exception cref="DismReloadImageSessionRequiredException">When the operation requires a reload image session.</exception>
         private static void EnableFeature(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Get the list of source paths as an array
@@ -1472,7 +1502,20 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismEnableFeature(session, featureName, identifier, identifier == null ? DismPackageIdentifier.None : packageIdentifier, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, enableAll, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismEnableFeature(
+                Session: session,
+                FeatureName: featureName,
+                Identifier: identifier,
+                PackageIdentifier: identifier == null ? DismPackageIdentifier.None : packageIdentifier,
+                LimitAccess: limitAccess,
+                SourcePaths: sourcePathsArray,
+                SourcePathCount: (uint)sourcePathsArray.Length,
+                EnableAll: enableAll,
+                CancelEvent: progress.EventHandle,
+                Progress: progress.DismProgressCallbackNative,
+                UserData: IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
 
         /// <summary>
@@ -1483,15 +1526,13 @@ namespace Microsoft.Dism
         /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the packageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
         /// <returns>A <see cref="DismFeatureInfo"/> object.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismFeatureInfo GetFeatureInfo(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier)
         {
-            // Stores the output from DismGetFeatureInfo
-            IntPtr featureInfoPtr = IntPtr.Zero;
+            int hresult = NativeMethods.DismGetFeatureInfo(session, featureName, identifier, packageIdentifier, out IntPtr featureInfoPtr);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetFeatureInfo(session, featureName, identifier, packageIdentifier, out featureInfoPtr));
+                ThrowIfFail(hresult, session);
 
                 // Return a new DismFeatureInfo from the native pointer
                 return new DismFeatureInfo(featureInfoPtr);
@@ -1511,18 +1552,15 @@ namespace Microsoft.Dism
         /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the PackageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">Optional. A valid DismPackageIdentifier Enumeration value.</param>
         /// <returns>A <see cref="DismFeatureCollection"/> object containing a collection of <see cref="DismFeature"/> objects.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismFeatureCollection GetFeatureParent(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier)
         {
             var features = new DismFeatureCollection();
 
-            // Used for the native call
-            IntPtr featurePtr = IntPtr.Zero;
-            UInt32 featureCount = 0;
+            int hresult = NativeMethods.DismGetFeatureParent(session, featureName, identifier, packageIdentifier, out IntPtr featurePtr, out UInt32 featureCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetFeatureParent(session, featureName, identifier, packageIdentifier, out featurePtr, out featureCount));
+                ThrowIfFail(hresult, session);
 
                 // Add the items
                 features.AddRange<DismApi.DismFeature_>(featurePtr, (int)featureCount, i => new DismFeature(i));
@@ -1543,17 +1581,15 @@ namespace Microsoft.Dism
         /// <param name="identifier">Optional. Either an absolute path to a .cab file or the package name, depending on the packageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
         /// <returns>A <see cref="DismFeatureCollection"/> object containing a collection of <see cref="DismFeature"/> objects.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismFeatureCollection GetFeatures(DismSession session, string identifier, DismPackageIdentifier packageIdentifier)
         {
             var features = new DismFeatureCollection();
 
-            IntPtr featurePtr = IntPtr.Zero;
-            UInt32 featureCount = 0;
+            int hresult = NativeMethods.DismGetFeatures(session, identifier, packageIdentifier, out IntPtr featurePtr, out UInt32 featureCount);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetFeatures(session, identifier, packageIdentifier, out featurePtr, out featureCount));
+                ThrowIfFail(hresult, session);
 
                 // Add the items
                 features.AddRange<DismApi.DismFeature_>(featurePtr, (int)featureCount, i => new DismFeature(i));
@@ -1574,15 +1610,13 @@ namespace Microsoft.Dism
         /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the PackageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
         /// <returns>A <see cref="DismPackageInfo"/> object.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismPackageInfo GetPackageInfo(DismSession session, string identifier, DismPackageIdentifier packageIdentifier)
         {
-            // Used for the native call
-            IntPtr packageInfoPtr = IntPtr.Zero;
+            int hresult = NativeMethods.DismGetPackageInfo(session, identifier, packageIdentifier, out IntPtr packageInfoPtr);
 
             try
             {
-                ThrowIfFail(() => NativeMethods.DismGetPackageInfo(session, identifier, packageIdentifier, out packageInfoPtr));
+                ThrowIfFail(hresult, session);
 
                 // Return a new DismPackageInfo object with a reference to the pointer
                 return new DismPackageInfo(packageInfoPtr);
@@ -1606,8 +1640,6 @@ namespace Microsoft.Dism
         /// <param name="options">Specifies options to use when mounting an image.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         private static void MountImage(string imageFilePath, string mountPath, int imageIndex, string imageName, DismImageIdentifier imageIdentifier, bool readOnly, DismMountImageOptions options, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Determine the flags to pass to the native call
@@ -1616,7 +1648,9 @@ namespace Microsoft.Dism
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult);
         }
 
         /// <summary>
@@ -1626,7 +1660,6 @@ namespace Microsoft.Dism
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
         /// <returns>A <see cref="DismSession"/> object.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
         private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive)
         {
             return new DismSession(imagePath, windowsDirectory, systemDrive);
@@ -1640,14 +1673,14 @@ namespace Microsoft.Dism
         /// <param name="packageIdentifier">A DismPackageIdentifier Enumeration.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             var progress = new DismProgress(progressCallback, userData);
 
-            ThrowIfFail(() => NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero));
+            int hresult = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            ThrowIfFail(hresult, session);
         }
     }
 }
