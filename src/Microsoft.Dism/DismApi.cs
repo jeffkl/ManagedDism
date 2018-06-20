@@ -16,6 +16,16 @@ namespace Microsoft.Dism
     public static partial class DismApi
     {
         /// <summary>
+        /// Used to lock when initializing or shutting down.
+        /// </summary>
+        private static readonly object InitializeShutDownLock = new object();
+
+        /// <summary>
+        /// Used to keep track if DismApi has been initialized.
+        /// </summary>
+        private static bool _isInitialized;
+
+        /// <summary>
         /// Add a capability to an image.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
@@ -836,7 +846,15 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string logFilePath, string scratchDirectory)
         {
-            ThrowIfFail(() => NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory));
+            lock (InitializeShutDownLock)
+            {
+                if (!_isInitialized)
+                {
+                    ThrowIfFail(() => NativeMethods.DismInitialize(logLevel, logFilePath, scratchDirectory));
+
+                    _isInitialized = true;
+                }
+            }
         }
 
         /// <summary>
@@ -1269,13 +1287,21 @@ namespace Microsoft.Dism
         /// </summary>
         public static void Shutdown()
         {
-            if (CurrentDismGeneration != DismGeneration.NotFound)
+            lock (InitializeShutDownLock)
             {
-                DismUtilities.UnloadDismGenerationLibrary();
-                CurrentDismGeneration = DismGeneration.NotFound;
-            }
+                if (_isInitialized)
+                {
+                    if (CurrentDismGeneration != DismGeneration.NotFound)
+                    {
+                        DismUtilities.UnloadDismGenerationLibrary();
+                        CurrentDismGeneration = DismGeneration.NotFound;
+                    }
 
-            ThrowIfFail(NativeMethods.DismShutdown);
+                    ThrowIfFail(NativeMethods.DismShutdown);
+
+                    _isInitialized = false;
+                }
+            }
         }
 
         /// <summary>
