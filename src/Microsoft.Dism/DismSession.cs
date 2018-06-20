@@ -45,7 +45,7 @@ namespace Microsoft.Dism
 
             int hresult = DismApi.NativeMethods.DismOpenSession(_imagePath, _windowsDirectory, _systemDrive, out IntPtr sessionPtr);
 
-            DismApi.ThrowIfFail(hresult);
+            DismUtilities.ThrowIfFail(hresult);
 
             SetHandle(sessionPtr);
         }

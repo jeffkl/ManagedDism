@@ -293,6 +293,27 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
+        /// Throws an exception if the specified function fails.
+        /// </summary>
+        /// <param name="hresult">An HRESULT value from a function return to check.</param>
+        /// <param name="session">An optional <see cref="DismSession"/> to reload if necessary.</param>
+        internal static void ThrowIfFail(int hresult, DismSession session = null)
+        {
+            if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED && session != null)
+            {
+                // Reload the session if necessary
+                session.Reload();
+
+                return;
+            }
+
+            if (hresult != DismApi.ERROR_SUCCESS)
+            {
+                throw DismException.GetDismExceptionForHResult(hresult);
+            }
+        }
+
+        /// <summary>
         /// Native methods necessary for manually loading and unloading Win32 libraries.
         /// </summary>
         internal static class NativeMethods
