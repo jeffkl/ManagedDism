@@ -149,6 +149,11 @@ namespace Microsoft.Dism
         public const uint DISMAPI_E_UNKNOWN_FEATURE = 0x800f080c;
 
         /// <summary>
+        /// The request was cancelled.
+        /// </summary>
+        internal const uint ERROR_CANCELLED = 0x000004C7; // 1223
+
+        /// <summary>
         /// The operation completed successfully.
         /// </summary>
         internal const int ERROR_SUCCESS = 0x00000000;
