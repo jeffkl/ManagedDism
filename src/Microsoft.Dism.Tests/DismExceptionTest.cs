@@ -45,16 +45,18 @@ namespace Microsoft.Dism.Tests
             VerifyDismException<DismException>(DismApi.ERROR_OUTOFMEMORY, message);
         }
 
-        [Fact]
-        public void OperationCanceledExceptionTest()
+        [Theory]
+        [InlineData(DismApi.ERROR_CANCELLED)]
+        [InlineData(DismApi.ERROR_CANCELLED | 0x80070000)]
+        [InlineData(DismApi.ERROR_REQUEST_ABORTED)]
+        [InlineData(DismApi.ERROR_REQUEST_ABORTED | 0x80070000)]
+        public void OperationCanceledExceptionTest(uint hresult)
         {
-            const int errorCode = unchecked((int)0x800704D3);
-
             const string errorMessage = "The operation was canceled.";
 
             DismApi.GetLastErrorMessageTestHook = () => null;
 
-            Exception exception = DismException.GetDismExceptionForHResult(errorCode);
+            Exception exception = DismException.GetDismExceptionForHResult((int)hresult);
 
             exception.ShouldBeOfType<OperationCanceledException>();
 
