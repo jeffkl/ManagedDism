@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
@@ -59,7 +58,7 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    public class DismImageInfoTest : DismStructTest<DismImageInfo>, IDisposable
+    public class DismImageInfoTest : DismStructTest<DismImageInfo>
     {
         private readonly DismApi.DismImageInfo_ _imageInfo = new DismApi.DismImageInfo_
         {
@@ -122,36 +121,6 @@ namespace Microsoft.Dism.Tests
             Marshal.FreeHGlobal(_imageInfo.CustomizedInfo);
 
             base.Dispose();
-        }
-
-        [Fact]
-        public void GetImageInfoFromTestWim()
-        {
-            DismApi.Initialize(DismLogLevel.LogErrors);
-            try
-            {
-                DismImageInfoCollection imageInfos = DismApi.GetImageInfo(Template.FullPath);
-
-                imageInfos.Count.ShouldBe(2);
-
-                foreach (DismImageInfo imageInfo in imageInfos)
-                {
-                    imageInfo.Architecture.ShouldBe(TestWimTemplate.Architecture);
-                    imageInfo.DefaultLanguage.ShouldBe(TestWimTemplate.DefaultLangauge);
-                    imageInfo.EditionId.ShouldBe(TestWimTemplate.EditionId);
-                    imageInfo.ImageDescription.ShouldStartWith(TestWimTemplate.ImageNamePrefix);
-                    imageInfo.ImageName.ShouldStartWith(TestWimTemplate.ImageNamePrefix);
-                    imageInfo.InstallationType.ShouldBe(TestWimTemplate.InstallationType);
-                    imageInfo.ProductName.ShouldBe(TestWimTemplate.ProductName);
-                    imageInfo.ProductType.ShouldBe(TestWimTemplate.ProductType);
-                    imageInfo.ProductVersion.ShouldBe(TestWimTemplate.ProductVersion);
-                    imageInfo.SpLevel.ShouldBe(TestWimTemplate.SpLevel);
-                }
-            }
-            finally
-            {
-                DismApi.Shutdown();
-            }
         }
 
         protected override void VerifyProperties(DismImageInfo item)
