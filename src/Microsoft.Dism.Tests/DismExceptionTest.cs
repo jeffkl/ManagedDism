@@ -30,12 +30,6 @@ namespace Microsoft.Dism.Tests
         }
 
         [Fact]
-        public void DismReloadImageSessionRequiredExceptionTest()
-        {
-            VerifyDismException<DismReloadImageSessionRequiredException>(DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED, Resources.DismExceptionMessageReloadImageSessionRequired);
-        }
-
-        [Fact]
         public void GetLastErrorMessageTest()
         {
             const string message = "Hello World";

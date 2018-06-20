@@ -501,7 +501,7 @@ namespace Microsoft.Dism
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             [return: MarshalAs(UnmanagedType.Error)]
-            public static extern int DismOpenSession(string ImagePath, string WindowsDirectory, string SystemDrive, out DismSession Session);
+            public static extern int DismOpenSession(string ImagePath, string WindowsDirectory, string SystemDrive, out IntPtr Session);
 
             /// <summary>
             /// Remounts a Windows image from the .wim or .vhd file that was previously mounted at the path specified by MountPath. Use the DismOpenSession Function to associate the image with a DISMSession after it is remounted.
