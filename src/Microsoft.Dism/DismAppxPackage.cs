@@ -32,6 +32,8 @@ namespace Microsoft.Dism
             public string ResourceId;
             [MarshalAs(UnmanagedType.LPWStr)]
             public string InstallLocation;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string Regions;
         }
 #pragma warning restore SA1600 // Elements must be documented
     }
