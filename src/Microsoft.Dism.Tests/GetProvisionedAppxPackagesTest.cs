@@ -24,7 +24,6 @@ namespace Microsoft.Dism.Tests
                 DismAppxPackageCollection packages = DismApi.GetProvisionedAppxPackages(onlineSession);
 
                 packages.ShouldNotBeNull();
-                packages.Count.ShouldBeGreaterThan(0);
 
                 foreach (DismAppxPackage package in packages)
                 {
