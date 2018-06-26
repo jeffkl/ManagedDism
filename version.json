@@ -3,7 +3,8 @@
   "version": "2.0",
   "assemblyVersion": "1.0",
   "publicReleaseRefSpec": [
-    "^refs/heads/master$"
+    "^refs/heads/master$",
+    "^refs/tags/v\\d+\\.\\d+\\.\\d+"
   ],
   "cloudBuild": {
     "setVersionVariables": true,
