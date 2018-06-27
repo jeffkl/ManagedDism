@@ -11,8 +11,11 @@ build_script:
     IF /I "%APPVEYOR_REPO_TAG%" EQU "TRUE" SET Configuration=Release
 
     MSBuild /BinaryLogger /Logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+test: off
 artifacts:
 - path: 'src\**\*.nupkg'
   name: NuGet Packages
+- path: '**\*.binlog'
+  name: Logs
 on_failure:
 - ps: Get-ChildItem .\*log -Recurse | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
