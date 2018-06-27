@@ -9,7 +9,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="2.1.23" />
+    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="2.1.59-g7cef89c7d6" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(EnableStyleCop)' != 'false' ">
