@@ -4,6 +4,7 @@
 
 using Shouldly;
 using System;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -27,7 +28,7 @@ namespace Microsoft.Dism.Tests
 
                 foreach (DismAppxPackage package in packages)
                 {
-                    package.Architecture.ShouldNotBe(DismProcessorArchitecture.None);
+                    package.Architecture.ShouldBeOneOf(Enum.GetValues(typeof(DismProcessorArchitecture)).Cast<DismProcessorArchitecture>().ToArray());
                     package.DisplayName.ShouldNotBeNullOrWhiteSpace();
                     package.InstallLocation.ShouldNotBeNullOrWhiteSpace();
                     package.PackageName.ShouldNotBeNullOrWhiteSpace();

@@ -375,7 +375,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// The package is another type of release.
         /// </summary>
-        Other
+        Other,
+
+        /// <summary>
+        /// This package is a feature on demand.
+        /// </summary>
+        OnDemandPack
     }
 
     /// <summary>
