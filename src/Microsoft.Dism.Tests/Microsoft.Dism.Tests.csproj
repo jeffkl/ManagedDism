@@ -15,4 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Dism\Microsoft.Dism.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="install.wim">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
