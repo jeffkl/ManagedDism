@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -21,6 +22,22 @@ namespace Microsoft.Dism
             int hresult = NativeMethods.DismAddDriver(session, driverPath, forceUnsigned);
 
             DismUtilities.ThrowIfFail(hresult, session);
+        }
+
+        /// <summary>
+        /// Adds third party drivers (.inf) from the specified directory to an offline Windows® image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="driverDirectory">A relative or absolute path to a directory containing driver .inf files.</param>
+        /// <param name="forceUnsigned">Indicates whether to accept unsigned drivers to an x64-based image. Unsigned drivers will automatically be added to an x86-based image.</param>
+        /// <param name="recursive"><code>true</code> to search recursively for driver files, otherwise <code>false</code>.</param>
+        /// <exception cref="DirectoryNotFoundException">The directory specified by the <paramref name="driverDirectory"/> parameter does not exist.</exception>
+        public static void AddDriversEx(DismSession session, string driverDirectory, bool forceUnsigned, bool recursive)
+        {
+            foreach (string driverPath in Directory.EnumerateFiles(driverDirectory, "*.inf", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+            {
+                AddDriver(session, driverPath, forceUnsigned);
+            }
         }
 
         internal static partial class NativeMethods
