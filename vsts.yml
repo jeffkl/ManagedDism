@@ -9,9 +9,9 @@ queue:
 
 steps:
 - task: VSBuild@1
-  displayName: 'Build solution **\*.sln'
+  displayName: 'Build Solution'
   inputs:
-    solution: '$(Parameters.solution)'
+    solution: 'Microsoft.Dism.sln'
 
     platform: '$(BuildPlatform)'
 
