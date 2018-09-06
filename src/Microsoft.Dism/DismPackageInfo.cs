@@ -158,7 +158,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents detailed package information such as the client used to install the package, the date and time that the package was installed, and support information.
     /// </summary>
-    public sealed class DismPackageInfo : IEquatable<DismPackageInfo>
+    public class DismPackageInfo : IEquatable<DismPackageInfo>
     {
         private readonly DismCustomPropertyCollection _customProperties = new DismCustomPropertyCollection();
         private readonly DismFeatureCollection _features = new DismFeatureCollection();
