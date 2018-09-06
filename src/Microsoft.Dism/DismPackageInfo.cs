@@ -158,10 +158,8 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents detailed package information such as the client used to install the package, the date and time that the package was installed, and support information.
     /// </summary>
-    public sealed class DismPackageInfo : IEquatable<DismPackageInfo>
+    public class DismPackageInfo : IEquatable<DismPackageInfo>
     {
-        private readonly DismCustomPropertyCollection _customProperties = new DismCustomPropertyCollection();
-        private readonly DismFeatureCollection _features = new DismFeatureCollection();
         private readonly DismApi.DismPackageInfo_ _packageInfo;
 
         /// <summary>
@@ -185,14 +183,14 @@ namespace Microsoft.Dism
             if (_packageInfo.CustomPropertyCount > 0 && _packageInfo.CustomProperty != IntPtr.Zero)
             {
                 // Add the items
-                _customProperties.AddRange<DismApi.DismCustomProperty_>(_packageInfo.CustomProperty, (int)_packageInfo.CustomPropertyCount, i => new DismCustomProperty(i));
+                CustomProperties.AddRange<DismApi.DismCustomProperty_>(_packageInfo.CustomProperty, (int)_packageInfo.CustomPropertyCount, i => new DismCustomProperty(i));
             }
 
             // See if there are any features associated with the package
             if (_packageInfo.FeatureCount > 0 && _packageInfo.Feature != IntPtr.Zero)
             {
                 // Add the items
-                _features.AddRange<DismApi.DismFeature_>(_packageInfo.Feature, (int)_packageInfo.FeatureCount, i => new DismFeature(i));
+                Features.AddRange<DismApi.DismFeature_>(_packageInfo.Feature, (int)_packageInfo.FeatureCount, i => new DismFeature(i));
             }
         }
 
@@ -219,7 +217,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets an array of DismCustomProperty Structure objects representing the custom properties of the package.
         /// </summary>
-        public DismCustomPropertyCollection CustomProperties => _customProperties;
+        public DismCustomPropertyCollection CustomProperties { get; } = new DismCustomPropertyCollection();
 
         /// <summary>
         /// Gets a description of the purpose of the package.
@@ -234,7 +232,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets an array of DismFeature Structure objects representing the features in the package.
         /// </summary>
-        public DismFeatureCollection Features => _features;
+        public DismFeatureCollection Features { get; } = new DismFeatureCollection();
 
         /// <summary>
         /// Gets a DismFullyOfflineInstallableType Enumeration value describing whether a package can be installed offline without booting the image.

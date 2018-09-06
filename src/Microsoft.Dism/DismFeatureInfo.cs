@@ -71,7 +71,6 @@ namespace Microsoft.Dism
     /// </summary>
     public sealed class DismFeatureInfo : IEquatable<DismFeatureInfo>
     {
-        private readonly DismCustomPropertyCollection _customProperties = new DismCustomPropertyCollection();
         private readonly DismApi.DismFeatureInfo_ _featureInfo;
 
         /// <summary>
@@ -96,14 +95,14 @@ namespace Microsoft.Dism
             if (_featureInfo.CustomPropertyCount > 0 && _featureInfo.CustomProperty != IntPtr.Zero)
             {
                 // Add the items
-                _customProperties.AddRange<DismApi.DismCustomProperty_>(_featureInfo.CustomProperty, (int)_featureInfo.CustomPropertyCount, i => new DismCustomProperty(i));
+                CustomProperties.AddRange<DismApi.DismCustomProperty_>(_featureInfo.CustomProperty, (int)_featureInfo.CustomPropertyCount, i => new DismCustomProperty(i));
             }
         }
 
         /// <summary>
         /// Gets a list of custom properties associated with the feature.
         /// </summary>
-        public DismCustomPropertyCollection CustomProperties => _customProperties;
+        public DismCustomPropertyCollection CustomProperties { get; } = new DismCustomPropertyCollection();
 
         /// <summary>
         /// Gets the description of the feature.
