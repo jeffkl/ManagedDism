@@ -1,6 +1,8 @@
 # Managed DismApi Wrapper
+[![Build Status](https://jeffkl.visualstudio.com/CBT/_apis/build/status/ManagedDism%20CI)](https://jeffkl.visualstudio.com/CBT/_build/latest?definitionId=15)
+[![Microsoft.Dism](https://img.shields.io/nuget/v/Microsoft.Dism.svg?maxAge=2592000)](https://www.nuget.org/packages/Microsoft.Dism)
+[![NuGet](https://img.shields.io/nuget/dt/Microsoft.Dism.svg)](https://www.nuget.org/packages/Microsoft.Dism)
 
-[![Microsoft.Dism](https://img.shields.io/nuget/v/Microsoft.Dism.svg?maxAge=2592000)](https://www.nuget.org/packages/Microsoft.Dism) [![Build Status](https://jeffkl.visualstudio.com/CBT/_apis/build/status/ManagedDism%20CI)](https://jeffkl.visualstudio.com/CBT/_build/latest?definitionId=15)
 
 This is a managed wrapper for the native Deployment Image Servicing and Management (DISM) API. 
 
