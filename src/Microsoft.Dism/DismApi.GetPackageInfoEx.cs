@@ -68,8 +68,8 @@ namespace Microsoft.Dism
             /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
             /// <param name="packageInfoEx">A pointer to the address of an array of DismPackageInfoEx Structure objects.</param>
             /// <returns>Returns S_OK on success.</returns>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824801.aspx"/>
-            /// HRESULT WINAPI DismGetPackageInfo (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _Out_ DismPackageInfo** PackageInfo);
+            /// <remarks>
+            /// HRESULT WINAPI DismGetPackageInfoEx (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _Out_ DismPackageInfoEx** PackageInfoEx);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
