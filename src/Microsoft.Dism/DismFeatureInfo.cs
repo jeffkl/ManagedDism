@@ -142,17 +142,17 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismFeatureInfo"/> is equal to the current <see cref="DismFeatureInfo"/>.
         /// </summary>
-        /// <param name="featureInfo">The <see cref="DismFeatureInfo"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismFeatureInfo"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismFeatureInfo"/> is equal to the current <see cref="DismFeatureInfo"/>; otherwise, false.</returns>
-        public bool Equals(DismFeatureInfo featureInfo)
+        public bool Equals(DismFeatureInfo other)
         {
-            return featureInfo != null
-                   && CustomProperties.SequenceEqual(featureInfo.CustomProperties)
-                   && Description == featureInfo.Description
-                   && DisplayName == featureInfo.DisplayName
-                   && FeatureName == featureInfo.FeatureName
-                   && FeatureState == featureInfo.FeatureState
-                   && RestartRequired == featureInfo.RestartRequired;
+            return other != null
+                   && CustomProperties.SequenceEqual(other.CustomProperties)
+                   && Description == other.Description
+                   && DisplayName == other.DisplayName
+                   && FeatureName == other.FeatureName
+                   && FeatureState == other.FeatureState
+                   && RestartRequired == other.RestartRequired;
         }
 
         /// <summary>

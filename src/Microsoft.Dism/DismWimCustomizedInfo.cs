@@ -117,16 +117,16 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismWimCustomizedInfo"/> is equal to the current <see cref="DismWimCustomizedInfo"/>.
         /// </summary>
-        /// <param name="wimCustomizedInfo">The <see cref="DismWimCustomizedInfo"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismWimCustomizedInfo"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismWimCustomizedInfo"/> is equal to the current <see cref="DismWimCustomizedInfo"/>; otherwise, false.</returns>
-        public bool Equals(DismWimCustomizedInfo wimCustomizedInfo)
+        public bool Equals(DismWimCustomizedInfo other)
         {
-            return wimCustomizedInfo != null
-                   && CreatedTime == wimCustomizedInfo.CreatedTime
-                   && DirectoryCount == wimCustomizedInfo.DirectoryCount
-                   && FileCount == wimCustomizedInfo.FileCount
-                   && ModifiedTime == wimCustomizedInfo.ModifiedTime
-                   && Size == wimCustomizedInfo.Size;
+            return other != null
+                   && CreatedTime == other.CreatedTime
+                   && DirectoryCount == other.DirectoryCount
+                   && FileCount == other.FileCount
+                   && ModifiedTime == other.ModifiedTime
+                   && Size == other.Size;
         }
 
         /// <summary>

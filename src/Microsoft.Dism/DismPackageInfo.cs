@@ -307,12 +307,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismPackageInfo"/> is equal to the current <see cref="DismPackageInfo"/>.
         /// </summary>
-        /// <param name="packageInfo">The <see cref="DismPackageInfo"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismPackageInfo"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismPackageInfo"/> is equal to the current <see cref="DismPackageInfo"/>; otherwise, false.</returns>
-        public bool Equals(DismPackageInfo packageInfo)
+        public bool Equals(DismPackageInfo other)
         {
-            return packageInfo != null
-                   && DisplayName == packageInfo.DisplayName;
+            return other != null
+                   && DisplayName == other.DisplayName;
         }
 
         /// <summary>
