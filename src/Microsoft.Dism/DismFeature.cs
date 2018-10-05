@@ -84,11 +84,11 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismFeature"/> is equal to the current <see cref="DismFeature"/>.
         /// </summary>
-        /// <param name="feature">The <see cref="DismFeature"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismFeature"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismFeature"/> is equal to the current <see cref="DismFeature"/>; otherwise, false.</returns>
-        public bool Equals(DismFeature feature)
+        public bool Equals(DismFeature other)
         {
-            return feature != null && FeatureName == feature.FeatureName && State == feature.State;
+            return other != null && FeatureName == other.FeatureName && State == other.State;
         }
 
         /// <summary>

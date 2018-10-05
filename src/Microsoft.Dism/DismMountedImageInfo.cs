@@ -117,15 +117,15 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismMountedImageInfo"/> is equal to the current <see cref="DismMountedImageInfo"/>.
         /// </summary>
-        /// <param name="mountedImageInfo">The <see cref="DismMountedImageInfo"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismMountedImageInfo"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismMountedImageInfo"/> is equal to the current <see cref="DismMountedImageInfo"/>; otherwise, false.</returns>
-        public bool Equals(DismMountedImageInfo mountedImageInfo)
+        public bool Equals(DismMountedImageInfo other)
         {
-            return mountedImageInfo != null
-                   && ImageFilePath == mountedImageInfo.ImageFilePath
-                   && MountMode == mountedImageInfo.MountMode
-                   && MountPath == mountedImageInfo.MountPath
-                   && MountStatus == mountedImageInfo.MountStatus;
+            return other != null
+                   && ImageFilePath == other.ImageFilePath
+                   && MountMode == other.MountMode
+                   && MountPath == other.MountPath
+                   && MountStatus == other.MountStatus;
         }
 
         /// <summary>

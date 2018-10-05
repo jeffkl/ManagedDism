@@ -63,11 +63,11 @@ namespace Microsoft.Dism.Tests
 
         protected override object Struct => _customPropertyStruct;
 
-        protected override void VerifyProperties(DismCustomProperty customProperty)
+        protected override void VerifyProperties(DismCustomProperty item)
         {
-            customProperty.Name.ShouldBe(_customPropertyStruct.Name);
-            customProperty.Path.ShouldBe(_customPropertyStruct.Path);
-            customProperty.Value.ShouldBe(_customPropertyStruct.Value);
+            item.Name.ShouldBe(_customPropertyStruct.Name);
+            item.Path.ShouldBe(_customPropertyStruct.Path);
+            item.Value.ShouldBe(_customPropertyStruct.Value);
         }
     }
 }

@@ -113,18 +113,18 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismAppxPackage"/> is equal to the current <see cref="DismAppxPackage"/>.
         /// </summary>
-        /// <param name="appxPackage">The <see cref="DismAppxPackage"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismAppxPackage"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismAppxPackage"/> is equal to the current <see cref="DismAppxPackage"/>; otherwise, false.</returns>
-        public bool Equals(DismAppxPackage appxPackage)
+        public bool Equals(DismAppxPackage other)
         {
-            return appxPackage != null
-                   && Architecture == appxPackage.Architecture
-                   && DisplayName == appxPackage.DisplayName
-                   && InstallLocation == appxPackage.InstallLocation
-                   && PackageName == appxPackage.PackageName
-                   && PublisherId == appxPackage.PublisherId
-                   && ResourceId == appxPackage.ResourceId
-                   && Version == appxPackage.Version;
+            return other != null
+                   && Architecture == other.Architecture
+                   && DisplayName == other.DisplayName
+                   && InstallLocation == other.InstallLocation
+                   && PackageName == other.PackageName
+                   && PublisherId == other.PublisherId
+                   && ResourceId == other.ResourceId
+                   && Version == other.Version;
         }
 
         /// <summary>

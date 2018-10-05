@@ -318,29 +318,29 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismImageInfo"/> is equal to the current <see cref="DismImageInfo"/>.
         /// </summary>
-        /// <param name="imageInfo">The <see cref="DismImageInfo"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismImageInfo"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismImageInfo"/> is equal to the current <see cref="DismImageInfo"/>; otherwise, false.</returns>
-        public bool Equals(DismImageInfo imageInfo)
+        public bool Equals(DismImageInfo other)
         {
-            return imageInfo != null
-                   && Architecture == imageInfo.Architecture
-                   && Bootable == imageInfo.Bootable
-                   && Equals(CustomizedInfo, imageInfo.CustomizedInfo)
-                   && DefaultLanguageIndex == imageInfo.DefaultLanguageIndex
-                   && EditionId == imageInfo.EditionId
-                   && Hal == imageInfo.Hal
-                   && ImageDescription == imageInfo.ImageDescription
-                   && ImageIndex == imageInfo.ImageIndex
-                   && ImageSize == imageInfo.ImageSize
-                   && ImageType == imageInfo.ImageType
-                   && InstallationType == imageInfo.InstallationType
-                   && Languages.SequenceEqual(imageInfo.Languages)
-                   && ProductName == imageInfo.ProductName
-                   && ProductSuite == imageInfo.ProductSuite
-                   && ProductType == imageInfo.ProductType
-                   && ProductVersion == imageInfo.ProductVersion
-                   && SpLevel == imageInfo.SpLevel
-                   && SystemRoot == imageInfo.SystemRoot;
+            return other != null
+                   && Architecture == other.Architecture
+                   && Bootable == other.Bootable
+                   && Equals(CustomizedInfo, other.CustomizedInfo)
+                   && DefaultLanguageIndex == other.DefaultLanguageIndex
+                   && EditionId == other.EditionId
+                   && Hal == other.Hal
+                   && ImageDescription == other.ImageDescription
+                   && ImageIndex == other.ImageIndex
+                   && ImageSize == other.ImageSize
+                   && ImageType == other.ImageType
+                   && InstallationType == other.InstallationType
+                   && Languages.SequenceEqual(other.Languages)
+                   && ProductName == other.ProductName
+                   && ProductSuite == other.ProductSuite
+                   && ProductType == other.ProductType
+                   && ProductVersion == other.ProductVersion
+                   && SpLevel == other.SpLevel
+                   && SystemRoot == other.SystemRoot;
         }
 
         /// <summary>

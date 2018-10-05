@@ -96,14 +96,14 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismCustomProperty"/> is equal to the current <see cref="DismCustomProperty"/>.
         /// </summary>
-        /// <param name="customProperty">A <see cref="DismCustomProperty"/> object to compare with the current object.</param>
+        /// <param name="other">A <see cref="DismCustomProperty"/> object to compare with the current object.</param>
         /// <returns><code>true</code> if the specified <see cref="DismCustomProperty"/> is equal to the current <see cref="DismCustomProperty"/>; otherwise, false.</returns>
-        public bool Equals(DismCustomProperty customProperty)
+        public bool Equals(DismCustomProperty other)
         {
-            return customProperty != null
-                   && Name == customProperty.Name
-                   && Path == customProperty.Path
-                   && Value == customProperty.Value;
+            return other != null
+                   && Name == other.Name
+                   && Path == other.Path
+                   && Value == other.Value;
         }
 
         /// <summary>

@@ -220,22 +220,22 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismDriverPackage"/> is equal to the current <see cref="DismDriverPackage"/>.
         /// </summary>
-        /// <param name="driverPackage">The <see cref="DismDriverPackage"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismDriverPackage"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismDriverPackage"/> is equal to the current <see cref="DismDriverPackage"/>; otherwise, false.</returns>
-        public bool Equals(DismDriverPackage driverPackage)
+        public bool Equals(DismDriverPackage other)
         {
-            return driverPackage != null
-                   && BootCritical == driverPackage.BootCritical
-                   && InBox == driverPackage.InBox
-                   && CatalogFile == driverPackage.CatalogFile
-                   && ClassDescription == driverPackage.ClassDescription
-                   && ClassGuid == driverPackage.ClassGuid
-                   && ClassName == driverPackage.ClassName
-                   && Date == driverPackage.Date
-                   && DriverSignature == driverPackage.DriverSignature
-                   && OriginalFileName == driverPackage.OriginalFileName
-                   && ProviderName == driverPackage.ProviderName
-                   && PublishedName == driverPackage.PublishedName;
+            return other != null
+                   && BootCritical == other.BootCritical
+                   && InBox == other.InBox
+                   && CatalogFile == other.CatalogFile
+                   && ClassDescription == other.ClassDescription
+                   && ClassGuid == other.ClassGuid
+                   && ClassName == other.ClassName
+                   && Date == other.Date
+                   && DriverSignature == other.DriverSignature
+                   && OriginalFileName == other.OriginalFileName
+                   && ProviderName == other.ProviderName
+                   && PublishedName == other.PublishedName;
         }
 
         /// <summary>

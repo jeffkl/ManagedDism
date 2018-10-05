@@ -79,13 +79,13 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismPackageInfoEx"/> is equal to the current <see cref="DismPackageInfoEx"/>.
         /// </summary>
-        /// <param name="packageInfo">The <see cref="DismPackageInfoEx"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismPackageInfoEx"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismPackageInfoEx"/> is equal to the current <see cref="DismPackageInfoEx"/>; otherwise, false.</returns>
-        public bool Equals(DismPackageInfoEx packageInfo)
+        public bool Equals(DismPackageInfoEx other)
         {
-            return packageInfo != null
-                   && base.Equals(packageInfo)
-                   && CapabilityId == packageInfo.CapabilityId;
+            return other != null
+                   && base.Equals(other)
+                   && CapabilityId == other.CapabilityId;
         }
 
         /// <summary>

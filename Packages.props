@@ -16,5 +16,11 @@
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
     <Compile Include="..\GlobalSuppressions.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Visible="False" />
+
+    <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.2" />
+    <GlobalPackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.6.2" />
+    <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="2.6.2" />
+    <GlobalPackageReference Include="Roslynator.Analyzers" Version="1.9.0" />
+    <GlobalPackageReference Include="Text.Analyzers" Version="2.6.2" />
   </ItemGroup>
 </Project>

@@ -107,15 +107,15 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismPackage"/> is equal to the current <see cref="DismPackage"/>.
         /// </summary>
-        /// <param name="package">The <see cref="DismPackage"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismPackage"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismPackage"/> is equal to the current <see cref="DismPackage"/>; otherwise, false.</returns>
-        public bool Equals(DismPackage package)
+        public bool Equals(DismPackage other)
         {
-            return package != null
-                   && InstallTime == package.InstallTime
-                   && PackageName == package.PackageName
-                   && PackageState == package.PackageState
-                   && ReleaseType == package.ReleaseType;
+            return other != null
+                   && InstallTime == other.InstallTime
+                   && PackageName == other.PackageName
+                   && PackageState == other.PackageState
+                   && ReleaseType == other.ReleaseType;
         }
 
         /// <summary>

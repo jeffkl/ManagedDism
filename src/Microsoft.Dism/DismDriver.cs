@@ -140,18 +140,18 @@ namespace Microsoft.Dism
         /// <summary>
         /// Determines whether the specified <see cref="DismDriver"/> is equal to the current <see cref="DismDriver"/>.
         /// </summary>
-        /// <param name="driver">The <see cref="DismDriver"/> object to compare with the current object.</param>
+        /// <param name="other">The <see cref="DismDriver"/> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismDriver"/> is equal to the current <see cref="DismDriver"/>; otherwise, false.</returns>
-        public bool Equals(DismDriver driver)
+        public bool Equals(DismDriver other)
         {
-            return driver != null
-                   && Architecture == driver.Architecture
-                   && CompatibleIds == driver.CompatibleIds
-                   && ExcludeIds == driver.ExcludeIds
-                   && HardwareDescription == driver.HardwareDescription
-                   && HardwareId == driver.HardwareId
-                   && ManufacturerName == driver.ManufacturerName
-                   && ServerName == driver.ServerName;
+            return other != null
+                   && Architecture == other.Architecture
+                   && CompatibleIds == other.CompatibleIds
+                   && ExcludeIds == other.ExcludeIds
+                   && HardwareDescription == other.HardwareDescription
+                   && HardwareId == other.HardwareId
+                   && ManufacturerName == other.ManufacturerName
+                   && ServerName == other.ServerName;
         }
 
         /// <summary>

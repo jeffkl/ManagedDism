@@ -6,6 +6,7 @@ using Microsoft.Dism.Properties;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Microsoft.Dism
 {
@@ -16,6 +17,42 @@ namespace Microsoft.Dism
     public class DismException : Win32Exception
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// </summary>
+        public DismException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        public DismException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
+        public DismException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// </summary>
+        /// <param name="error">The error code for the error.</param>
+        public DismException(int error)
+            : base(error)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DismException"/> class with a specified error that is the cause of this exception.
         /// </summary>
         /// <param name="errorCode">The HRESULT, a coded numerical value that is assigned to a specific exception.</param>
@@ -24,6 +61,16 @@ namespace Microsoft.Dism
             : base(errorCode, message)
         {
             HResult = errorCode;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// </summary>
+        /// <param name="serializationInfo">The <see cref="SerializationInfo"/>.</param>
+        /// <param name="streamingContext">The <see cref="StreamingContext"/>.</param>
+        protected DismException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -78,9 +125,41 @@ namespace Microsoft.Dism
         /// <summary>
         /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
         /// </summary>
+        public DismNotInitializedException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        public DismNotInitializedException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
+        public DismNotInitializedException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// </summary>
         /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismNotInitializedException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageNotInitialized)
+        {
+        }
+
+        private DismNotInitializedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+            : base(serializationInfo, streamingContext)
         {
         }
     }
@@ -94,9 +173,41 @@ namespace Microsoft.Dism
         /// <summary>
         /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
         /// </summary>
+        public DismOpenSessionsException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        public DismOpenSessionsException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
+        public DismOpenSessionsException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// </summary>
         /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismOpenSessionsException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageOpenSessions)
+        {
+        }
+
+        private DismOpenSessionsException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+            : base(serializationInfo, streamingContext)
         {
         }
     }
@@ -105,14 +216,46 @@ namespace Microsoft.Dism
     /// The exception that is thrown when the previous operations requires a reboot.
     /// </summary>
     [Serializable]
-    public class DismRebootRequiredException : DismException
+    public sealed class DismRebootRequiredException : DismException
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// </summary>
+        public DismRebootRequiredException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        public DismRebootRequiredException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
+        public DismRebootRequiredException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
         /// </summary>
         /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismRebootRequiredException(int errorCode)
             : base(errorCode, Resources.DismExceptionMessageRebootRequired)
+        {
+        }
+
+        private DismRebootRequiredException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+            : base(serializationInfo, streamingContext)
         {
         }
     }
