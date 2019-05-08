@@ -3,8 +3,11 @@
     <TargetFrameworks>net40;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ArtifactsPath>..\..\artifacts\$(MSBuildProjectName)</ArtifactsPath>
+    <CopyArtifactsAfterTargets>Pack</CopyArtifactsAfterTargets>
+    <DefaultArtifactsFileMatch>*nupkg</DefaultArtifactsFileMatch>
   </PropertyGroup>
-  
+
   <PropertyGroup Label="Package properties">
     <IncludeSymbols>true</IncludeSymbols>
     <Description>Managed API for Deployment Image Servicing and Management (DISM)</Description>
