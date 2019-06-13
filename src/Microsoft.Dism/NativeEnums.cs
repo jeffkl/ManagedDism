@@ -28,7 +28,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// The driver is signed.
         /// </summary>
-        Signed = 2
+        Signed = 2,
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// You may have to boot the image in order to complete the installation of this package.
         /// </summary>
-        FullyOfflineInstallableUndetermined
+        FullyOfflineInstallableUndetermined,
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// The image type is unknown.
         /// </summary>
-        ImageBootableUnknown
+        ImageBootableUnknown,
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// The image is corrupted and cannot be repaired. Discard the image and start again.
         /// </summary>
-        NonRepairable
+        NonRepairable,
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// The image is in a .vhd or .vhdx file.
         /// </summary>
-        Vhd = 1
+        Vhd = 1,
     }
 
     /// <summary>
@@ -148,7 +148,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Log file contains errors, warnings, and additional information.
         /// </summary>
-        LogErrorsWarningsInfo
+        LogErrorsWarningsInfo,
     }
 
     /// <summary>
@@ -213,7 +213,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Indicates that the mounted image is corrupt and is in an invalid state.
         /// </summary>
-        Invalid
+        Invalid,
     }
 
     /// <summary>
@@ -267,7 +267,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// The package or feature is partially installed. Some parts of the package or feature have not been installed.
         /// </summary>
-        PartiallyInstalled
+        PartiallyInstalled,
     }
 
     /// <summary>
@@ -380,7 +380,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// This package is a feature on demand.
         /// </summary>
-        OnDemandPack
+        OnDemandPack,
     }
 
     /// <summary>
@@ -404,7 +404,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// This package or feature always requires a .
         /// </summary>
-        Required
+        Required,
     }
 
     /// <summary>
@@ -423,7 +423,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Identify the image by name.
         /// </summary>
-        ImageName
+        ImageName,
     }
 
     /// <summary>
@@ -447,6 +447,6 @@ namespace Microsoft.Dism
         /// <summary>
         /// The package is specified by its path.
         /// </summary>
-        Path
+        Path,
     }
 }

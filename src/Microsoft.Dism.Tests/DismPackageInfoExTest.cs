@@ -32,7 +32,7 @@ namespace Microsoft.Dism.Tests
                 RestartRequired = DismRestartType.Required,
                 SupportInformation = "SupportInformation",
             },
-            CapabilityId = "5F27812AB5FE4461AE74036F1C562EF8"
+            CapabilityId = "5F27812AB5FE4461AE74036F1C562EF8",
         };
 
         public DismPackageInfoExTest(TestWimTemplate template)

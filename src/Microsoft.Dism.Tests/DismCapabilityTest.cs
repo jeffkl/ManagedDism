@@ -31,13 +31,13 @@ namespace Microsoft.Dism.Tests
                 new DismCapability(new DismApi.DismCapability_
                 {
                    Name = "CapabilityName1",
-                   State = DismPackageFeatureState.Installed
+                   State = DismPackageFeatureState.Installed,
                 }),
                 new DismCapability(new DismApi.DismCapability_
                 {
                    Name = "CapabilityName2",
-                   State = DismPackageFeatureState.Removed
-                })
+                   State = DismPackageFeatureState.Removed,
+                }),
             };
         }
     }
@@ -47,7 +47,7 @@ namespace Microsoft.Dism.Tests
         private readonly DismApi.DismCapability_ _capability = new DismApi.DismCapability_
         {
             Name = "BDC1F89D-EA9D-44AF-AB49-11414B1700D0",
-            State = DismPackageFeatureState.Removed
+            State = DismPackageFeatureState.Removed,
         };
 
         public DismCapabilityTest(TestWimTemplate template)

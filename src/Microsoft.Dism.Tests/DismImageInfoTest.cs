@@ -53,7 +53,7 @@ namespace Microsoft.Dism.Tests
                     SpBuild = 4,
                     SpLevel = 5,
                     SystemRoot = "SystemRoot",
-                })
+                }),
             };
         }
     }
@@ -86,7 +86,7 @@ namespace Microsoft.Dism.Tests
         private readonly List<DismApi.DismLanguage> _languages = new List<DismApi.DismLanguage>
         {
             new DismApi.DismLanguage("en-us"),
-            new DismApi.DismLanguage("es-es")
+            new DismApi.DismLanguage("es-es"),
         };
 
         private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo = new DismApi.DismWimCustomizedInfo_

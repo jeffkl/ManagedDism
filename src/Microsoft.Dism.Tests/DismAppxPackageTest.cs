@@ -41,7 +41,7 @@ namespace Microsoft.Dism.Tests
                     PublisherId = "7017864D-7AEF-492B-96C4-6E776BFD9D65",
                     ResourceId = "6B46D32B-9786-4DD9-9168-088B1B91AFAF",
                     Revision = 2,
-                })
+                }),
             };
         }
     }
