@@ -1,5 +1,5 @@
 # Managed DismApi Wrapper
-[![Build Status](https://jeffkl.visualstudio.com/CBT/_apis/build/status/ManagedDism%20CI)](https://jeffkl.visualstudio.com/CBT/_build/latest?definitionId=15)
+[![Build Status](https://dev.azure.com/jeffkl/Public/_apis/build/status/ManagedDism?branchName=master)](https://dev.azure.com/jeffkl/Public/_build/latest?definitionId=15&branchName=master)
 [![Microsoft.Dism](https://img.shields.io/nuget/v/Microsoft.Dism.svg?maxAge=2592000)](https://www.nuget.org/packages/Microsoft.Dism)
 [![NuGet](https://img.shields.io/nuget/dt/Microsoft.Dism.svg)](https://www.nuget.org/packages/Microsoft.Dism)
 
