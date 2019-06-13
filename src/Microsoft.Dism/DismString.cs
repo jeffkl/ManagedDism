@@ -46,7 +46,7 @@ namespace Microsoft.Dism
             {
                 return new DismString
                 {
-                    value = str
+                    value = str,
                 };
             }
         }

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
     <Platforms>x64</Platforms>
+    <NoWarn>SA0001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

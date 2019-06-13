@@ -119,7 +119,7 @@ namespace Microsoft.Dism
             public string ProductVersion;
 
             /// <summary>
-            /// A DismRestartType Enumeration value describing whether a restart is required after installing the package on an online image
+            /// A DismRestartType Enumeration value describing whether a restart is required after installing the package on an online image.
             /// </summary>
             public DismRestartType RestartRequired;
 
@@ -285,7 +285,7 @@ namespace Microsoft.Dism
         public DismReleaseType ReleaseType => _packageInfo.ReleaseType;
 
         /// <summary>
-        /// Gets a DismRestartType Enumeration value describing whether a restart is required after installing the package on an online image
+        /// Gets a DismRestartType Enumeration value describing whether a restart is required after installing the package on an online image.
         /// </summary>
         public DismRestartType RestartRequired => _packageInfo.RestartRequired;
 

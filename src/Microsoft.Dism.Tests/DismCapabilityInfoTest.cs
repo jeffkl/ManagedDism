@@ -16,7 +16,7 @@ namespace Microsoft.Dism.Tests
             Description = "CB45BE3A-10FC-49DC-A273-317ABBED46D9",
             State = DismPackageFeatureState.Installed,
             DownloadSize = 1000,
-            InstallSize = 2000
+            InstallSize = 2000,
         };
 
         public DismCapabilityInfoTest(TestWimTemplate template)

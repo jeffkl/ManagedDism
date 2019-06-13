@@ -62,7 +62,7 @@ namespace Microsoft.Dism
             {
                 return new DismLanguage
                 {
-                    value = str
+                    value = str,
                 };
             }
         }

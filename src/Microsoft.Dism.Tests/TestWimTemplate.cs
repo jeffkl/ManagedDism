@@ -77,7 +77,7 @@ namespace Microsoft.Dism.Tests
 
             XmlDocument xmlDocument = new XmlDocument
             {
-                XmlResolver = null
+                XmlResolver = null,
             };
 
             using (WimHandle wimHandle = WimgApi.CreateFile(imagePath, WimFileAccess.Write, WimCreationDisposition.CreateNew, WimCreateFileOptions.None, WimCompressionType.Lzx))
@@ -99,7 +99,7 @@ namespace Microsoft.Dism.Tests
                 using (StringReader stringReader = new StringReader(xml.OuterXml))
                 using (XmlTextReader reader = new XmlTextReader(stringReader)
                 {
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 })
                 {
                     xmlDocument.Load(reader);

@@ -97,7 +97,7 @@ namespace Microsoft.Dism
         /// DISM associated with the Windows 10 version of the Windows Assessment and Deployment Kit (WADK).
         /// With respect to Windows PE, this would be 10.x (Windows 10.x).
         /// </summary>
-        Win10
+        Win10,
     }
 
     /// <summary>

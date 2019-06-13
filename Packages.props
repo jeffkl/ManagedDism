@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <PackageReference Update="Shouldly" Version="3.0.2" />
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.1.1" />
     <PackageReference Update="Microsoft.Wim" Version="1.2.11" />
     <PackageReference Update="Microsoft.Win32.Registry" Version="4.5.0" />
     <PackageReference Update="xunit" Version="2.4.1" />
@@ -10,18 +10,18 @@
   </ItemGroup>
   
   <ItemGroup>
-    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="2.3.138" />
+    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="2.3.181" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(EnableStyleCop)' != 'false' ">
-    <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+    <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <Compile Include="..\GlobalSuppressions.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Visible="False" />
 
-    <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.2" />
-    <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="1.0.63-preview" />
-    <GlobalPackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.2" />
-    <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="2.9.2" />
+    <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.3" />
+    <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="1.0.68" />
+    <GlobalPackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.3" />
+    <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="2.9.3" />
     <GlobalPackageReference Include="Roslynator.Analyzers" Version="2.0.0" />
     <GlobalPackageReference Include="Text.Analyzers" Version="2.6.4" />
   </ItemGroup>
