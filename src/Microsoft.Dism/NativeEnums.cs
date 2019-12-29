@@ -296,6 +296,16 @@ namespace Microsoft.Dism
         AMD64 = 9,
 
         /// <summary>
+        /// The image contains the ARM architecture.
+        /// </summary>
+        ARM = 5,
+
+        /// <summary>
+        /// The image contains the ARM64 architecture.
+        /// </summary>
+        ARM64 = 12,
+        
+        /// <summary>
         /// A neutral processor architecture.
         /// </summary>
         Neutral = 11,
