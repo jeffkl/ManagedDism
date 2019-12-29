@@ -304,7 +304,7 @@ namespace Microsoft.Dism
         /// The image contains the ARM64 architecture.
         /// </summary>
         ARM64 = 12,
-        
+
         /// <summary>
         /// A neutral processor architecture.
         /// </summary>
