@@ -5,4 +5,10 @@
   </PropertyGroup>
 
   <Sdk Name="Microsoft.Build.CentralPackageVersions" />
+  <Target Name="SetRepositoryPropertiesFromBuildVersion"
+          AfterTargets="GetBuildVersion">
+    <PropertyGroup>
+      <RepositoryCommit Condition="'$(RepositoryCommit)' == ''">$(GitCommitId)</RepositoryCommit>
+    </PropertyGroup>
+  </Target>
 </Project>
