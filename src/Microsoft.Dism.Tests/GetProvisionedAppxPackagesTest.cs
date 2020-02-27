@@ -33,7 +33,7 @@ namespace Microsoft.Dism.Tests
                     package.InstallLocation.ShouldNotBeNullOrWhiteSpace();
                     package.PackageName.ShouldNotBeNullOrWhiteSpace();
                     package.PublisherId.ShouldNotBeNullOrWhiteSpace();
-                    package.ResourceId.ShouldNotBeNullOrWhiteSpace();
+                    package.ResourceId.ShouldNotBeNull();
                     package.Version.ShouldBeGreaterThan(Version.Parse("0.0.0.0"));
                 }
             }
