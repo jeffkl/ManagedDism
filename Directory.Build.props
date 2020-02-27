@@ -6,5 +6,17 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\key.snk</AssemblyOriginatorKeyFile>
+    <ArtifactsBasePath>$(MSBuildThisFileDirectory)artifacts\</ArtifactsBasePath>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Microsoft Corporation</Authors>
+    <Copyright>(c) Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jeffkl/ManagedDism</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jeffkl/ManagedDism.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 </Project>

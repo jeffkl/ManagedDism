@@ -3,36 +3,21 @@
     <TargetFrameworks>net40;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <ArtifactsPath>..\..\artifacts\$(MSBuildProjectName)</ArtifactsPath>
-    <CopyArtifactsAfterTargets>Pack</CopyArtifactsAfterTargets>
-    <DefaultArtifactsFileMatch>*nupkg</DefaultArtifactsFileMatch>
-  </PropertyGroup>
-
-  <PropertyGroup Label="Package properties">
-    <IncludeSymbols>true</IncludeSymbols>
+    <ArtifactsPath>$(ArtifactsBasePath)$(MSBuildProjectName)</ArtifactsPath>
     <Description>Managed API for Deployment Image Servicing and Management (DISM)</Description>
-    <Authors>Microsoft Corporation</Authors>
-    <Copyright>Copyright © 2014. All rights reserved.</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/josemesona/ManagedDism</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/josemesona/ManagedDism.git</RepositoryUrl>
     <PackageTags>Dism</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Win32.Registry" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
-
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Compile Update="Properties\Resources.Designer.cs"
+             AutoGen="True"
+             DesignTime="True"
+             DependentUpon="Resources.resx" />
+    <EmbeddedResource Update="Properties\Resources.resx"
+                      Generator="ResXFileCodeGenerator"
+                      LastGenOutput="Resources.Designer.cs" />
   </ItemGroup>
 </Project>

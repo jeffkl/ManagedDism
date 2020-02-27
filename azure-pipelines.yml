@@ -1,3 +1,12 @@
+resources:
+- repo: self
+
+variables:
+  ArtifactsDirectoryName: 'artifacts'
+  BinaryLoggerArgs: '"/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
+  BuildConfiguration: 'Debug'
+  BuildPlatform: 'Any CPU'
+
 pool:
   vmImage: 'windows-2019'
 trigger:
@@ -17,29 +26,34 @@ pr:
     exclude:
     - README.md
 
-steps:
-- script: 'echo ##vso[task.setvariable variable=BuildConfiguration;]Release'
-  displayName: 'Set BuildConfiguration to Release for tagged commits'
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+jobs:
+- job: BuildAndTest
+  displayName: 'Build and Test'
+  pool:
+    vmImage: windows-latest
+  steps:
+  - script: 'echo ##vso[task.setvariable variable=BuildConfiguration;]Release'
+    displayName: 'Set BuildConfiguration to Release for tagged commits'
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
 
-- task: MSBuild@1
-  displayName: 'Build Solution'
-  inputs:
-    solution: 'Microsoft.Dism.sln'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+  - task: MSBuild@1
+    displayName: 'Build Solution'
+    inputs:
+      solution: 'Microsoft.Dism.sln'
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+      msbuildArguments: '$(BinaryLoggerArgs)'
 
-- task: VSTest@2
-  displayName: 'Run Unit Tests'
-  inputs:
-    testAssemblyVer2: |
-     **\*Tests.dll
-     !**\obj\**
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+  - task: VSTest@2
+    displayName: 'Run Unit Tests'
+    inputs:
+      testAssemblyVer2: |
+       **\*Tests.dll
+       !**\obj\**
 
-- task: PublishPipelineArtifact@0
-  displayName: 'Publish Artifacts'
-  inputs:
-    artifactName: 'drop'
-    targetPath: 'artifacts'
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(ArtifactsDirectoryName)'
+      ArtifactName: $(ArtifactsDirectoryName)
+    condition: always()
