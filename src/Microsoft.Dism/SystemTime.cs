@@ -7,11 +7,8 @@ using System.Runtime.InteropServices;
 
 using WORD = System.UInt16;
 
-// ReSharper disable InconsistentNaming
 namespace Microsoft.Dism
 {
-#pragma warning disable SA1307 // Accessible fields must begin with upper-case letter
-
     /// <summary>
     /// Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
     /// </summary>
@@ -33,99 +30,79 @@ namespace Microsoft.Dism
     /// WORD wSecond;
     /// WORD wMilliseconds;
     /// } SYSTEMTIME, *PSYSTEMTIME;]]>
-    [StructLayout(LayoutKind.Sequential)]
-#pragma warning disable SA1649 // File name must match first type name
-    internal struct SYSTEMTIME
-#pragma warning restore SA1649 // File name must match first type name
+    [StructLayout(LayoutKind.Sequential, Pack = 2)]
+    internal struct SystemTime
     {
         /// <summary>
         /// The year. The valid values for this member are 1601 through 30827.
         /// </summary>
-        public WORD wYear;
+        public WORD Year;
 
         /// <summary>
         /// The month. January = 1 and December = 12
         /// </summary>
-        public WORD wMonth;
+        public WORD Month;
 
         /// <summary>
         /// The day of the week. Sunday = 0 and Saturday = 6
         /// </summary>
-        public WORD wDayOfWeek;
+        public WORD DayOfWeek;
 
         /// <summary>
         /// The day of the month. The valid values for this member are 1 through 31.
         /// </summary>
-        public WORD wDay;
+        public WORD Day;
 
         /// <summary>
         /// The hour. The valid values for this member are 0 through 23.
         /// </summary>
-        public WORD wHour;
+        public WORD Hour;
 
         /// <summary>
         /// The minute. The valid values for this member are 0 through 59.
         /// </summary>
-        public WORD wMinute;
+        public WORD Minute;
 
         /// <summary>
         /// The second. The valid values for this member are 0 through 59.
         /// </summary>
-        public WORD wSecond;
+        public WORD Second;
 
         /// <summary>
         /// The millisecond. The valid values for this member are 0 through 999.
         /// </summary>
-        public WORD wMilliseconds;
+        public WORD Milliseconds;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SYSTEMTIME" /> struct.
-        /// Initializes a new instance of the SYSTEMTIME class.
+        /// Converts a <see cref="System.DateTime" /> to a <see cref="SystemTime" />.
         /// </summary>
-        /// <param name="dateTime">An existing DateTime object to copy data from.</param>
-        public SYSTEMTIME(DateTime dateTime)
+        /// <param name="dateTime">The time to convert.</param>
+        public static implicit operator SystemTime(DateTime dateTime)
         {
             DateTime utc = dateTime.ToUniversalTime();
 
-            wYear = (ushort)utc.Year;
-            wMonth = (ushort)utc.Month;
-            wDay = (ushort)utc.Day;
-            wDayOfWeek = (ushort)utc.DayOfWeek;
-            wHour = (ushort)utc.Hour;
-            wMinute = (ushort)utc.Minute;
-            wSecond = (ushort)utc.Second;
-            wMilliseconds = (ushort)utc.Millisecond;
+            return new SystemTime
+            {
+                Year = (WORD)utc.Year,
+                Month = (WORD)utc.Month,
+                Day = (WORD)utc.Day,
+                DayOfWeek = (WORD)utc.DayOfWeek,
+                Hour = (WORD)utc.Hour,
+                Minute = (WORD)utc.Minute,
+                Second = (WORD)utc.Second,
+                Milliseconds = (WORD)utc.Millisecond,
+            };
         }
 
         /// <summary>
-        /// Converts a <see cref="System.DateTime" /> to a <see cref="SYSTEMTIME" />.
-        /// </summary>
-        /// <param name="dateTime">The time to convert.</param>
-        public static implicit operator SYSTEMTIME(DateTime dateTime)
-        {
-            return new SYSTEMTIME(dateTime);
-        }
-
-        /// <summary>
-        /// Converts a <see cref="SYSTEMTIME" /> to a <see cref="System.DateTime" />
+        /// Converts a <see cref="SystemTime" /> to a <see cref="System.DateTime" />
         /// </summary>
         /// <param name="systemTime">The time to convert.</param>
-        public static implicit operator DateTime(SYSTEMTIME systemTime)
+        public static implicit operator DateTime(SystemTime systemTime)
         {
-            return systemTime.ToDateTime();
-        }
-
-        /// <summary>
-        /// Returns the SYSTEMTIME as a <see cref="System.DateTime" /> value.
-        /// </summary>
-        /// <returns>A <see cref="System.DateTime" /> value.</returns>
-        public DateTime ToDateTime()
-        {
-            return wYear == 0
+            return systemTime.Year == 0
                 ? DateTime.MinValue
-                : new DateTime(wYear, wMonth, wDay, wHour, wMinute, wSecond, DateTimeKind.Utc);
+                : new DateTime(systemTime.Year, systemTime.Month, systemTime.Day, systemTime.Hour, systemTime.Minute, systemTime.Second, DateTimeKind.Utc);
         }
-
-#pragma warning restore SA1307 // Accessible fields must begin with upper-case letter
     }
 }
