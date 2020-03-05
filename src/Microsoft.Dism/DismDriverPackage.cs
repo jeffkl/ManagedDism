@@ -89,7 +89,7 @@ namespace Microsoft.Dism
             /// <summary>
             /// The manufacturer's build date of the driver.
             /// </summary>
-            public SYSTEMTIME Date;
+            public SystemTime Date;
 
             /// <summary>
             /// The major version number of the driver.
@@ -128,6 +128,8 @@ namespace Microsoft.Dism
         {
             _driverPackage = driverPackage;
 
+            Date = _driverPackage.Date;
+
             // Copy data from the struct
             Version = new Version((int)driverPackage.MajorVersion, (int)driverPackage.MinorVersion, (int)driverPackage.Build, (int)driverPackage.Revision);
         }
@@ -160,7 +162,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the manufacturer's build date of the driver.
         /// </summary>
-        public DateTime Date => _driverPackage.Date;
+        public DateTime Date { get; }
 
         /// <summary>
         /// Gets the driver signature status.

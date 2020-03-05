@@ -44,12 +44,12 @@ namespace Microsoft.Dism
             /// <summary>
             /// The time that the image file was created.
             /// </summary>
-            public SYSTEMTIME CreatedTime;
+            public SystemTime CreatedTime;
 
             /// <summary>
             /// The time that the image file was last modified.
             /// </summary>
-            public SYSTEMTIME ModifiedTime;
+            public SystemTime ModifiedTime;
         }
     }
 
@@ -76,12 +76,16 @@ namespace Microsoft.Dism
         internal DismWimCustomizedInfo(DismApi.DismWimCustomizedInfo_ wimCustomizedInfo)
         {
             _wimCustomizedInfo = wimCustomizedInfo;
+
+            CreatedTime = _wimCustomizedInfo.CreatedTime;
+
+            ModifiedTime = _wimCustomizedInfo.ModifiedTime;
         }
 
         /// <summary>
         /// Gets the time that the image file was created.
         /// </summary>
-        public DateTime CreatedTime => _wimCustomizedInfo.CreatedTime;
+        public DateTime CreatedTime { get; }
 
         /// <summary>
         /// Gets the number of directories in the image.
@@ -96,7 +100,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the time that the image file was last modified.
         /// </summary>
-        public DateTime ModifiedTime => _wimCustomizedInfo.ModifiedTime;
+        public DateTime ModifiedTime { get; }
 
         /// <summary>
         /// Gets the size of the customized info.

@@ -61,7 +61,7 @@ namespace Microsoft.Dism
             /// <summary>
             /// The date and time that the package was installed. This field is local time, based on the servicing host computer.
             /// </summary>
-            public SYSTEMTIME InstallTime;
+            public SystemTime InstallTime;
 
             /// <summary>
             /// TRUE if the package is applicable to the image, otherwise FALSE.
@@ -81,7 +81,7 @@ namespace Microsoft.Dism
             /// <summary>
             /// The date and time that the package was created. This field is local time, based on the time zone of the computer that created the package.
             /// </summary>
-            public SYSTEMTIME CreationTime;
+            public SystemTime CreationTime;
 
             /// <summary>
             /// The display name of the package.
@@ -106,7 +106,7 @@ namespace Microsoft.Dism
             /// <summary>
             /// The date and time when this package was last updated. This field is local time, based on the servicing host computer.
             /// </summary>
-            public SYSTEMTIME LastUpdateTime;
+            public SystemTime LastUpdateTime;
 
             /// <summary>
             /// The product name for this package.
@@ -179,6 +179,10 @@ namespace Microsoft.Dism
         {
             _packageInfo = packageInfo;
 
+            CreationTime = _packageInfo.CreationTime;
+            InstallTime = _packageInfo.InstallTime;
+            LastUpdateTime = _packageInfo.LastUpdateTime;
+
             CustomProperties = new DismCustomPropertyCollection(_packageInfo.CustomProperty, _packageInfo.CustomPropertyCount);
 
             Features = new DismFeatureCollection(_packageInfo.Feature, _packageInfo.FeatureCount);
@@ -202,7 +206,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the date and time that the package was created. This field is local time, based on the time zone of the computer that created the package.
         /// </summary>
-        public DateTime CreationTime => _packageInfo.CreationTime;
+        public DateTime CreationTime { get; }
 
         /// <summary>
         /// Gets an array of DismCustomProperty Structure objects representing the custom properties of the package.
@@ -242,12 +246,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the date and time that the package was installed.
         /// </summary>
-        public DateTime InstallTime => _packageInfo.InstallTime;
+        public DateTime InstallTime { get; }
 
         /// <summary>
         /// Gets the date and time when this package was last updated. This field is local time, based on the servicing host computer.
         /// </summary>
-        public DateTime LastUpdateTime => _packageInfo.LastUpdateTime;
+        public DateTime LastUpdateTime { get; }
 
         /// <summary>
         /// Gets the name of the package.

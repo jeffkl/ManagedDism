@@ -43,7 +43,7 @@ namespace Microsoft.Dism
             /// <summary>
             /// The date and time that the package was installed. This field is local time relative to the servicing host computer.
             /// </summary>
-            public SYSTEMTIME InstallTime;
+            public SystemTime InstallTime;
         }
     }
 
@@ -61,12 +61,14 @@ namespace Microsoft.Dism
         internal DismPackage(DismApi.DismPackage_ package)
         {
             _package = package;
+
+            InstallTime = _package.InstallTime;
         }
 
         /// <summary>
         /// Gets the date and time the package was installed.
         /// </summary>
-        public DateTime InstallTime => _package.InstallTime;
+        public DateTime InstallTime { get; }
 
         /// <summary>
         /// Gets the package name.
