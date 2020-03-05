@@ -26,7 +26,7 @@ namespace Microsoft.Dism
             /// Removes files and releases resources associated with corrupted or invalid mount paths.
             /// </summary>
             /// <returns>Returns S_OK on success.</returns>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824743.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824743.aspx" />
             /// HRESULT WINAPI DismCleanupMountpoints( );
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]

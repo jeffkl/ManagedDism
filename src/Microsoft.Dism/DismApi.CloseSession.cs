@@ -11,9 +11,9 @@ namespace Microsoft.Dism
     public static partial class DismApi
     {
         /// <summary>
-        /// Closes a DISMSession created by <see cref="OpenOfflineSession(string)"/> method. This function does not unmount the image. To unmount the image, use the <see cref="UnmountImage(string, bool)"/> method once all sessions are closed.
+        /// Closes a DISMSession created by <see cref="OpenOfflineSession(string)" /> method. This function does not unmount the image. To unmount the image, use the <see cref="UnmountImage(string, bool)" /> method once all sessions are closed.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> or <see cref="OpenOnlineSession" />method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> or <see cref="OpenOnlineSession" />method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CloseSession(DismSession session)
         {
@@ -34,7 +34,7 @@ namespace Microsoft.Dism
             ///
             /// The DISMSession handle will become invalid after completion of this call. Operations invoked on the DISMSession after completion of DismCloseSession will fail and return the error E_INVALIDARG.</returns>
             /// <remarks>The DISMSession will be shut down after this call is completed but the image will not be unmounted. To unmount the image, use the DismUnmountImage Function once all sessions are closed.</remarks>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825839.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825839.aspx" />
             /// HRESULT WINAPI DismCloseSession(_In_ DismSession Session);
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]

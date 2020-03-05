@@ -17,18 +17,18 @@ namespace Microsoft.Dism
         /// <summary>
         /// Add a capability to an image.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="capabilityName">The name of the capability that is being added.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void AddCapability(DismSession session, string capabilityName)
         {
-            DismApi.AddCapability(session, capabilityName, false, null, null, null);
+            AddCapability(session, capabilityName, false, null, null, null);
         }
 
         /// <summary>
         /// Add a capability to an image.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="capabilityName">The name of the capability that is being added.</param>
         /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
         /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
@@ -36,13 +36,13 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths)
         {
-            DismApi.AddCapability(session, capabilityName, limitAccess, sourcePaths, null, null);
+            AddCapability(session, capabilityName, limitAccess, sourcePaths, null, null);
         }
 
         /// <summary>
         /// Add a capability to an image.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="capabilityName">The name of the capability that is being added.</param>
         /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
         /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
@@ -56,7 +56,7 @@ namespace Microsoft.Dism
             string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -78,7 +78,7 @@ namespace Microsoft.Dism
             /// <param name="userData">User defined custom data. This will be passed back to the user through the callback.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
-            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684919.aspx"/>
+            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684919.aspx" />
             /// HRESULT WINAPI DismAddCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_ BOOL LimitAccess, _In_ PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

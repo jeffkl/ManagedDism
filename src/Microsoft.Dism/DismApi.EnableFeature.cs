@@ -23,7 +23,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll)
         {
-            DismApi.EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, null, null);
+            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, null, null);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string> sourcePaths)
         {
-            DismApi.EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, null);
+            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, null);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            DismApi.EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progressCallback, null);
+            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progressCallback, null);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
-            DismApi.EnableFeature(session, featureName, packageName, DismPackageIdentifier.Name, limitAccess, enableAll, sourcePaths, progressCallback, userData);
+            EnableFeature(session, featureName, packageName, DismPackageIdentifier.Name, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll)
         {
-            DismApi.EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, null, null);
+            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, null, null);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths)
         {
-            DismApi.EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, null);
+            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, null);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            DismApi.EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progressCallback, null);
+            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progressCallback, null);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
-            DismApi.EnableFeature(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progressCallback, userData);
+            EnableFeature(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Microsoft.Dism
             string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismEnableFeature(
                 session: session,
@@ -205,7 +205,7 @@ namespace Microsoft.Dism
             ///
             /// If the feature to be enabled is not a component of the foundation package, you must add the parent optional package with the DismAddPackage Function before you enable the feature. Do not you specify a path to a .cab file of an optional package that has not been added to the image in the Identifier parameter. If you specify a package that has not been added, and you specify DismPackagePath as the PackageIdentifier, the function will complete successfully but the feature will not be enabled.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824737.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824737.aspx" />
             /// HRESULT WINAPI DismEnableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _In_ BOOL LimitAccess, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

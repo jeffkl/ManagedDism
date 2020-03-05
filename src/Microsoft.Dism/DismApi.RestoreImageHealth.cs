@@ -20,7 +20,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess)
         {
-            DismApi.RestoreImageHealth(session, limitAccess, null);
+            RestoreImageHealth(session, limitAccess, null);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths)
         {
-            DismApi.RestoreImageHealth(session, limitAccess, sourcePaths, null);
+            RestoreImageHealth(session, limitAccess, sourcePaths, null);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths, Dism.DismProgressCallback progressCallback)
         {
-            DismApi.RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback, null);
+            RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback, null);
         }
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace Microsoft.Dism
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Get the list of source paths as an array
-            var sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -92,7 +92,7 @@ namespace Microsoft.Dism
             ///
             /// If a repair file is not found in any of the locations specified by the SourcePaths parameter or the location paths in the registry specified by Group Policy, the DismRestoreImageHealth function will contact WU to check for a repair file unless the LimitAccess parameter is set to True.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825836.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825836.aspx" />
             /// HRESULT WINAPI DismRestoreImageHealth(_In_ DismSession Session, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_ BOOL LimitAccess, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

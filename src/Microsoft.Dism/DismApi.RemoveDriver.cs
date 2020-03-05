@@ -35,7 +35,7 @@ namespace Microsoft.Dism
             /// Important
             /// Removing a boot-critical driver can make the offline Windows image unable to boot.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824729.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824729.aspx" />
             /// HRESULT WINAPI DismRemoveDriver (_In_ DismSession Session, _In_ PCWSTR DriverPath);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

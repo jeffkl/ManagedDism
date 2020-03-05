@@ -25,7 +25,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel)
         {
-            DismApi.Initialize(logLevel, null);
+            Initialize(logLevel, null);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string logFilePath)
         {
-            DismApi.Initialize(logLevel, logFilePath, null);
+            Initialize(logLevel, logFilePath, null);
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void UnmountImage(string mountPath, bool commitChanges)
         {
-            DismApi.UnmountImage(mountPath, commitChanges, null);
+            UnmountImage(mountPath, commitChanges, null);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Microsoft.Dism
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback progressCallback)
         {
-            DismApi.UnmountImage(mountPath, commitChanges, progressCallback, null);
+            UnmountImage(mountPath, commitChanges, progressCallback, null);
         }
 
         /// <summary>
@@ -46,10 +46,10 @@ namespace Microsoft.Dism
         public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Determine flags
-            var flags = commitChanges ? DismApi.DISM_COMMIT_IMAGE : DismApi.DISM_DISCARD_IMAGE;
+            uint flags = commitChanges ? DISM_COMMIT_IMAGE : DISM_DISCARD_IMAGE;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -69,7 +69,7 @@ namespace Microsoft.Dism
             /// <returns>Returns OK on success.</returns>
             /// <remarks>After you use the DismCloseSession Function to end every active DISMSession, you can unmount the image using the DismUnmountImage function.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824802.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824802.aspx" />
             /// HRESULT WINAPI DismUnmountImage(_In_ PCWSTR MountPath, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

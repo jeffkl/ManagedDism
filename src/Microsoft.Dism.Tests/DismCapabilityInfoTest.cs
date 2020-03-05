@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 using Shouldly;
-using System;
 
 namespace Microsoft.Dism.Tests
 {
@@ -24,7 +23,7 @@ namespace Microsoft.Dism.Tests
         {
         }
 
-        protected override DismCapabilityInfo Item => ItemPtr != IntPtr.Zero ? new DismCapabilityInfo(ItemPtr) : new DismCapabilityInfo(_capabilityInfo);
+        protected override DismCapabilityInfo Item => new DismCapabilityInfo(ItemPtr);
 
         protected override object Struct => _capabilityInfo;
 

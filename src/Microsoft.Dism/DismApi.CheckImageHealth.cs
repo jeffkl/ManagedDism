@@ -15,11 +15,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="scanImage">Specifies whether to scan the image or just check for flags from a previous scan.</param>
-        /// <returns>A <see cref="DismImageHealthState"/> indicating the health state of the image.</returns>
+        /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage)
         {
-            return DismApi.CheckImageHealth(session, scanImage, null);
+            return CheckImageHealth(session, scanImage, null);
         }
 
         /// <summary>
@@ -28,12 +28,12 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="scanImage">Specifies whether to scan the image or just check for flags from a previous scan.</param>
         /// <param name="progressCallback">A DismProgressCallback method to call when progress is made.</param>
-        /// <returns>A <see cref="DismImageHealthState"/> indicating the health state of the image.</returns>
+        /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            return DismApi.CheckImageHealth(session, scanImage, progressCallback, null);
+            return CheckImageHealth(session, scanImage, progressCallback, null);
         }
 
         /// <summary>
@@ -43,13 +43,13 @@ namespace Microsoft.Dism
         /// <param name="scanImage">Specifies whether to scan the image or just check for flags from a previous scan.</param>
         /// <param name="progressCallback">A DismProgressCallback method to call when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        /// <returns>A <see cref="DismImageHealthState"/> indicating the health state of the image.</returns>
+        /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
 
@@ -72,7 +72,7 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>If ScanImage is set to True, this function will take longer to finish.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824769.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824769.aspx" />
             /// HRESULT WINAPI DismCheckImageHealth(_In_ DismSession Session, _In_ BOOL ScanImage, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData, _Out_ DismImageHealthState* ImageHealth);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

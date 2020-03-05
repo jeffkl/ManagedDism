@@ -13,28 +13,23 @@ namespace Microsoft.Dism
         /// Gets a collection of images contained in the specified .wim or .vhd file.
         /// </summary>
         /// <param name="imageFilePath">// Clean up</param>
-        /// <returns>A <see cref="DismImageInfoCollection"/> object containing a collection of <see cref="DismImageInfo"/> objects.</returns>
+        /// <returns>A <see cref="DismImageInfoCollection" /> object containing a collection of <see cref="DismImageInfo" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismImageInfoCollection GetImageInfo(string imageFilePath)
         {
-            var imageInfos = new DismImageInfoCollection();
-
             int hresult = NativeMethods.DismGetImageInfo(imageFilePath, out IntPtr imageInfoPtr, out UInt32 imageInfoCount);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult);
 
-                // Add the items
-                imageInfos.AddRange<DismApi.DismImageInfo_>(imageInfoPtr, (int)imageInfoCount, i => new DismImageInfo(i));
+                return new DismImageInfoCollection(imageInfoPtr, imageInfoCount);
             }
             finally
             {
                 // Clean up
-                DismApi.Delete(imageInfoPtr);
+                Delete(imageInfoPtr);
             }
-
-            return imageInfos;
         }
 
         internal static partial class NativeMethods

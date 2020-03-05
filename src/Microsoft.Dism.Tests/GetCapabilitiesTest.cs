@@ -15,7 +15,7 @@ namespace Microsoft.Dism.Tests
         {
         }
 
-        [Fact(Skip = "This currently fails in AppVeyor.")]
+        [Fact]
         public void GetCapabilitiesOnlineSession()
         {
             using (DismSession session = DismApi.OpenOnlineSession())

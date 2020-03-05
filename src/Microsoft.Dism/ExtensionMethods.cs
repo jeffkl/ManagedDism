@@ -14,34 +14,39 @@ namespace Microsoft.Dism
     internal static class ExtensionMethods
     {
         /// <summary>
-        /// Gets an <see cref="IEnumerable{T}"/> of objects for the current pointer.
+        /// Gets a <see cref="List{T}" /> of objects at the specified pointer.
         /// </summary>
-        /// <typeparam name="T">The type of each element.</typeparam>
-        /// <param name="ptr">The <see cref="IntPtr"/> pointing to the data.</param>
+        /// <typeparam name="T">The type of the items.</typeparam>
+        /// <typeparam name="TStruct">The type of the native structure for the item.</typeparam>
+        /// <param name="ptr">The <see cref="IntPtr" /> pointing to the data.</param>
         /// <param name="count">The number of items that the pointer points to.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of objects.</returns>
-        public static IEnumerable<T> AsEnumerable<T>(this IntPtr ptr, int count)
+        /// <param name="constructor">A <see cref="Func{T1,TResult}" /> that creates an instance of the item for the given native structure.</param>
+        /// <returns>A <see cref="List{T}" /> containing the items.</returns>
+        public static List<T> ToList<T, TStruct>(this IntPtr ptr, uint count, Func<TStruct, T> constructor)
+            where T : class
         {
-            if (count == 0)
+            List<T> list = new List<T>((int)count);
+
+            if (ptr != IntPtr.Zero && count > 0)
             {
-                yield break;
+                int structSize = Marshal.SizeOf(typeof(TStruct));
+
+                // Get the starting point as a long
+                long startPtr = ptr.ToInt64();
+
+                for (int i = 0; i < count; i++)
+                {
+                    IntPtr currentPtr = new IntPtr(startPtr + (i * structSize));
+
+                    TStruct structure = currentPtr.ToStructure<TStruct>();
+
+                    T item = constructor(structure);
+
+                    list.Add(item);
+                }
             }
 
-            // Calculate the size of the struct
-            var structSize = Marshal.SizeOf(typeof(T));
-
-            // Get the starting point as a long
-            var startPtr = ptr.ToInt64();
-
-            // Loop through each pointer
-            for (int i = 0; i < count; i++)
-            {
-                // Get the address of the current structure
-                var currentPtr = new IntPtr(startPtr + (i * structSize));
-
-                // Return the structure at the current pointer
-                yield return currentPtr.ToStructure<T>();
-            }
+            return list;
         }
 
         /// <summary>

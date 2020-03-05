@@ -72,7 +72,7 @@ namespace Microsoft.Dism.Tests
 
             if (!Directory.Exists(capturePath))
             {
-                throw new DirectoryNotFoundException(String.Format(CultureInfo.CurrentCulture, "Could not find part of the path '{0}'", capturePath));
+                throw new DirectoryNotFoundException(string.Format(CultureInfo.CurrentCulture, "Could not find part of the path '{0}'", capturePath));
             }
 
             XmlDocument xmlDocument = new XmlDocument

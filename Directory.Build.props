@@ -3,6 +3,7 @@
   <PropertyGroup>
     <EnableCentralPackageVersions>true</EnableCentralPackageVersions>
     <DefaultItemExcludes>*log</DefaultItemExcludes>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>true</SignAssembly>

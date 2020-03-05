@@ -14,7 +14,7 @@ namespace Microsoft.Dism
         /// Describes advanced feature information, such as installed state and whether a restart is required after installation.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824793.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824793.aspx" />
         /// typedef struct _DismFeatureInfo
         /// {
         ///     PCWSTR FeatureName;
@@ -74,35 +74,20 @@ namespace Microsoft.Dism
         private readonly DismApi.DismFeatureInfo_ _featureInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismFeatureInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismFeatureInfo" /> class.
         /// </summary>
-        /// <param name="featureInfoPtr">A pointer to a <see cref="DismApi.DismFeatureInfo_"/> struct.</param>
+        /// <param name="featureInfoPtr">A pointer to a <see cref="DismApi.DismFeatureInfo_" /> struct.</param>
         internal DismFeatureInfo(IntPtr featureInfoPtr)
-            : this(featureInfoPtr.ToStructure<DismApi.DismFeatureInfo_>())
         {
-        }
+            _featureInfo = featureInfoPtr.ToStructure<DismApi.DismFeatureInfo_>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismFeatureInfo"/> class.
-        /// </summary>
-        /// <param name="featureInfo">A <see cref="DismApi.DismFeatureInfo_"/> struct from the native DismApi.</param>
-        internal DismFeatureInfo(DismApi.DismFeatureInfo_ featureInfo)
-        {
-            // Save a reference to the native struct
-            _featureInfo = featureInfo;
-
-            // See if there are any custom properties to load
-            if (_featureInfo.CustomPropertyCount > 0 && _featureInfo.CustomProperty != IntPtr.Zero)
-            {
-                // Add the items
-                CustomProperties.AddRange<DismApi.DismCustomProperty_>(_featureInfo.CustomProperty, (int)_featureInfo.CustomPropertyCount, i => new DismCustomProperty(i));
-            }
+            CustomProperties = new DismCustomPropertyCollection(_featureInfo.CustomProperty, _featureInfo.CustomPropertyCount);
         }
 
         /// <summary>
         /// Gets a list of custom properties associated with the feature.
         /// </summary>
-        public DismCustomPropertyCollection CustomProperties { get; } = new DismCustomPropertyCollection();
+        public DismCustomPropertyCollection CustomProperties { get; }
 
         /// <summary>
         /// Gets the description of the feature.
@@ -130,20 +115,20 @@ namespace Microsoft.Dism
         public DismRestartType RestartRequired => _featureInfo.RestartRequired;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismFeatureInfo);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismFeatureInfo"/> is equal to the current <see cref="DismFeatureInfo"/>.
+        /// Determines whether the specified <see cref="DismFeatureInfo" /> is equal to the current <see cref="DismFeatureInfo" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismFeatureInfo"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismFeatureInfo"/> is equal to the current <see cref="DismFeatureInfo"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismFeatureInfo" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismFeatureInfo" /> is equal to the current <see cref="DismFeatureInfo" />; otherwise, false.</returns>
         public bool Equals(DismFeatureInfo other)
         {
             return other != null
@@ -158,13 +143,13 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
             return CustomProperties.GetHashCode()
-                   ^ (String.IsNullOrEmpty(Description) ? 0 : Description.GetHashCode())
-                   ^ (String.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode())
-                   ^ (String.IsNullOrEmpty(FeatureName) ? 0 : FeatureName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(Description) ? 0 : Description.GetHashCode())
+                   ^ (string.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(FeatureName) ? 0 : FeatureName.GetHashCode())
                    ^ FeatureState.GetHashCode()
                    ^ RestartRequired.GetHashCode();
         }

@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -13,7 +12,7 @@ namespace Microsoft.Dism
         /// DISM API functions that return strings wrap the heap allocated PCWSTR in a DismString structure.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824782.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824782.aspx" />
         /// typedef struct _DismString
         /// {
         ///     PCWSTR Value;
@@ -28,21 +27,21 @@ namespace Microsoft.Dism
             private string value;
 
             /// <summary>
-            /// Converts a DismString class to a String object
+            /// Converts a <see cref="DismString" /> class to a <see cref="string" /> object
             /// </summary>
-            /// <param name="dismString">The <see cref="DismString"/> object to convert.</param>
-            /// <returns>The current <see cref="DismString"/> as a <see cref="String"/>.</returns>
-            public static implicit operator String(DismString dismString)
+            /// <param name="dismString">The <see cref="DismString" /> object to convert.</param>
+            /// <returns>The current <see cref="DismString" /> as a <see cref="string" />.</returns>
+            public static implicit operator string(DismString dismString)
             {
                 return dismString.value;
             }
 
             /// <summary>
-            /// Converts a String object to a DismString object.
+            /// Converts a <see cref="string" /> object to a <see cref="DismString" /> object.
             /// </summary>
             /// <param name="str">The string to convert.</param>
-            /// <returns>A DismString object containing the string.</returns>
-            public static implicit operator DismString(String str)
+            /// <returns>The current <see cref="string" /> as a <see cref="DismString" /> object.</returns>
+            public static implicit operator DismString(string str)
             {
                 return new DismString
                 {

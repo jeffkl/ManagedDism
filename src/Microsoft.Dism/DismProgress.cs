@@ -25,7 +25,7 @@ namespace Microsoft.Dism
         private readonly EventWaitHandle _eventHandle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismProgress"/> class.
+        /// Initializes a new instance of the <see cref="DismProgress" /> class.
         /// </summary>
         /// <param name="callback">A DismProgressCallback to call when progress is made.</param>
         /// <param name="userData">A custom object to pass to the callback.</param>

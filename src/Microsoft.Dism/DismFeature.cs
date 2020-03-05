@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -14,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes basic information about a feature, such as the feature name and feature state.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824780.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824780.aspx" />
         /// typedef struct _DismFeature
         /// {
         ///     PCWSTR FeatureName;
@@ -44,16 +43,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismFeature_ _feature;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismFeature"/> class.
-        /// </summary>
-        /// <param name="featurePtr">A native pointer to a DismFeature_ struct.</param>
-        internal DismFeature(IntPtr featurePtr)
-            : this(featurePtr.ToStructure<DismApi.DismFeature_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismFeature"/> class.
+        /// Initializes a new instance of the <see cref="DismFeature" /> class.
         /// </summary>
         /// <param name="feature">A native DismFeature_ struct to copy data from.</param>
         internal DismFeature(DismApi.DismFeature_ feature)
@@ -72,20 +62,20 @@ namespace Microsoft.Dism
         public DismPackageFeatureState State => _feature.State;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismFeature);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismFeature"/> is equal to the current <see cref="DismFeature"/>.
+        /// Determines whether the specified <see cref="DismFeature" /> is equal to the current <see cref="DismFeature" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismFeature"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismFeature"/> is equal to the current <see cref="DismFeature"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismFeature" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismFeature" /> is equal to the current <see cref="DismFeature" />; otherwise, false.</returns>
         public bool Equals(DismFeature other)
         {
             return other != null && FeatureName == other.FeatureName && State == other.State;
@@ -94,33 +84,10 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
-            return (String.IsNullOrEmpty(FeatureName) ? 0 : FeatureName.GetHashCode()) ^ State.GetHashCode();
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismFeature"/> objects.
-    /// </summary>
-    public sealed class DismFeatureCollection : DismCollection<DismFeature>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismFeatureCollection"/> class.
-        /// </summary>
-        internal DismFeatureCollection()
-            : base(new List<DismFeature>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismFeatureCollection"/> class.
-        /// </summary>
-        /// <param name="list">An existing list of DismFeature objects to expose as a read-only collection.</param>
-        internal DismFeatureCollection(IList<DismFeature> list)
-            : base(list)
-        {
+            return (string.IsNullOrEmpty(FeatureName) ? 0 : FeatureName.GetHashCode()) ^ State.GetHashCode();
         }
     }
 }

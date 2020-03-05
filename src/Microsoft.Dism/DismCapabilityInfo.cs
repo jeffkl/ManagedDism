@@ -13,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes information about a capability.
         /// </summary>
         /// <remarks>
-        /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684922.aspx"/>
+        /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684922.aspx" />
         /// typedef struct _DismCapabilityInfo {
         ///     PCWSTR Name;
         ///     DismPackageFeatureState State;
@@ -66,21 +66,12 @@ namespace Microsoft.Dism
         private readonly DismApi.DismCapabilityInfo_ _capabilityInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismCapabilityInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismCapabilityInfo" /> class.
         /// </summary>
-        /// <param name="capabilityPtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismCapabilityInfo_"/> structure.</param>
+        /// <param name="capabilityPtr">An <see cref="IntPtr" /> of a <see cref="DismApi.DismCapabilityInfo_" /> structure.</param>
         internal DismCapabilityInfo(IntPtr capabilityPtr)
-            : this(capabilityPtr.ToStructure<DismApi.DismCapabilityInfo_>())
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCapabilityInfo"/> class.
-        /// </summary>
-        /// <param name="capabilityInfo">A <see cref="DismApi.DismCapabilityInfo_"/> structure.</param>
-        internal DismCapabilityInfo(DismApi.DismCapabilityInfo_ capabilityInfo)
-        {
-            _capabilityInfo = capabilityInfo;
+            _capabilityInfo = capabilityPtr.ToStructure<DismApi.DismCapabilityInfo_>();
         }
 
         /// <summary>
@@ -151,10 +142,10 @@ namespace Microsoft.Dism
         /// </returns>
         public override int GetHashCode()
         {
-            return (String.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode())
+            return (string.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode())
                 ^ State.GetHashCode()
-                ^ (String.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode())
-                ^ (String.IsNullOrEmpty(Description) ? 0 : Description.GetHashCode())
+                ^ (string.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode())
+                ^ (string.IsNullOrEmpty(Description) ? 0 : Description.GetHashCode())
                 ^ DownloadSize
                 ^ InstallSize;
         }

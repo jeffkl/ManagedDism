@@ -2,68 +2,44 @@
 //
 // Licensed under the MIT license.
 
-using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Microsoft.Dism.Tests
 {
     public class DismFeatureCollectionTest : DismCollectionTest<DismFeatureCollection, DismFeature>
     {
+        private static readonly List<DismApi.DismFeature_> Items = new List<DismApi.DismFeature_>
+        {
+            new DismApi.DismFeature_
+            {
+                FeatureName = "FeatureName1",
+                State = DismPackageFeatureState.PartiallyInstalled,
+            },
+            new DismApi.DismFeature_
+            {
+                FeatureName = "FeatureName2",
+                State = DismPackageFeatureState.Superseded,
+            },
+        };
+
         public DismFeatureCollectionTest(TestWimTemplate template)
             : base(template)
         {
         }
 
-        protected override DismFeatureCollection CreateCollection(List<DismFeature> expectedCollection)
+        protected override IntPtr Pointer => Items.ToPtr();
+
+        protected override DismFeatureCollection GetActual(IntPtr pointer)
         {
-            return new DismFeatureCollection(expectedCollection);
+            return new DismFeatureCollection(pointer, (uint)Items.Count);
         }
 
-        protected override DismFeatureCollection CreateCollection()
+        protected override ReadOnlyCollection<DismFeature> GetExpected()
         {
-            return new DismFeatureCollection();
-        }
-
-        protected override List<DismFeature> GetCollection()
-        {
-            return new List<DismFeature>
-            {
-                new DismFeature(new DismApi.DismFeature_
-                {
-                    FeatureName = "FeatureName1",
-                    State = DismPackageFeatureState.PartiallyInstalled,
-                }),
-                new DismFeature(new DismApi.DismFeature_
-                {
-                    FeatureName = "FeatureName2",
-                    State = DismPackageFeatureState.Superseded,
-                }),
-            };
-        }
-    }
-
-    public class DismFeatureTest : DismStructTest<DismFeature>
-    {
-        private readonly DismApi.DismFeature_ _feature = new DismApi.DismFeature_
-        {
-            FeatureName = "ED1E66B9-7234-4D2E-A31F-39F6AB0559D9",
-            State = DismPackageFeatureState.PartiallyInstalled,
-        };
-
-        public DismFeatureTest(TestWimTemplate template)
-            : base(template)
-        {
-        }
-
-        protected override DismFeature Item => ItemPtr != IntPtr.Zero ? new DismFeature(ItemPtr) : new DismFeature(_feature);
-
-        protected override object Struct => _feature;
-
-        protected override void VerifyProperties(DismFeature item)
-        {
-            item.FeatureName.ShouldBe(_feature.FeatureName);
-            item.State.ShouldBe(_feature.State);
+            return new ReadOnlyCollection<DismFeature>(Items.Select(i => new DismFeature(i)).ToList());
         }
     }
 }

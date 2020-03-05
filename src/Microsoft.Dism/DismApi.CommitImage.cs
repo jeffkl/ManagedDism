@@ -13,31 +13,31 @@ namespace Microsoft.Dism
         /// <summary>
         /// Commits the changes made to a Windows® image in a mounted .wim or .vhd file.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="discardChanges">true or false to discard changes made to the image.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CommitImage(DismSession session, bool discardChanges)
         {
-            DismApi.CommitImage(session, discardChanges, null);
+            CommitImage(session, discardChanges, null);
         }
 
         /// <summary>
         /// Commits the changes made to a Windows® image in a mounted .wim or .vhd file.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="discardChanges">true or false to discard changes made to the image.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            DismApi.CommitImage(session, discardChanges, progressCallback, null);
+            CommitImage(session, discardChanges, progressCallback, null);
         }
 
         /// <summary>
         /// Commits the changes made to a Windows® image in a mounted .wim or .vhd file.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="discardChanges">true or false to discard changes made to the image.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
@@ -46,10 +46,10 @@ namespace Microsoft.Dism
         public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create the flags
-            UInt32 flags = discardChanges ? DismApi.DISM_DISCARD_IMAGE : DismApi.DISM_COMMIT_IMAGE;
+            UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismCommitImage(session, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -70,7 +70,7 @@ namespace Microsoft.Dism
             /// <remarks>The DismCommitImage function does not unmount the image.
             /// <para>DismCommitImage can only be used on an image that is mounted within the DISM infrastructure. It does not apply to images mounted by another tool, such as the DiskPart tool, which are serviced using the DismOpenSession Function. You must use the DismMountImage Function to mount an image within the DISM infrastructure.</para>
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825835.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825835.aspx" />
             /// HRESULT WINAPI DismCommitImage(_In_ DismSession Session, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

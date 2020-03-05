@@ -13,11 +13,11 @@ namespace Microsoft.Dism
         /// Gets all the features in an image, regardless of whether the features are enabled or disabled.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <returns>A <see cref="DismFeatureCollection"/> object containing a collection of <see cref="DismFeature"/> objects.</returns>
+        /// <returns>A <see cref="DismFeatureCollection" /> object containing a collection of <see cref="DismFeature" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureCollection GetFeatures(DismSession session)
         {
-            return DismApi.GetFeatures(session, String.Empty, DismPackageIdentifier.None);
+            return GetFeatures(session, string.Empty, DismPackageIdentifier.None);
         }
 
         /// <summary>
@@ -25,11 +25,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="packageName">The name of the package to get features of.</param>
-        /// <returns>A <see cref="DismFeatureCollection"/> object containing a collection of <see cref="DismFeature"/> objects.</returns>
+        /// <returns>A <see cref="DismFeatureCollection" /> object containing a collection of <see cref="DismFeature" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureCollection GetFeaturesByPackageName(DismSession session, string packageName)
         {
-            return DismApi.GetFeatures(session, packageName, DismPackageIdentifier.Name);
+            return GetFeatures(session, packageName, DismPackageIdentifier.Name);
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// /// <param name="packagePath">The path of the package to get features of.</param>
-        /// <returns>A <see cref="DismFeatureCollection"/> object containing a collection of <see cref="DismFeature"/> objects.</returns>
+        /// <returns>A <see cref="DismFeatureCollection" /> object containing a collection of <see cref="DismFeature" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureCollection GetFeaturesByPackagePath(DismSession session, string packagePath)
         {
-            return DismApi.GetFeatures(session, packagePath, DismPackageIdentifier.Path);
+            return GetFeatures(session, packagePath, DismPackageIdentifier.Path);
         }
 
         /// <summary>
@@ -50,27 +50,22 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="identifier">Optional. Either an absolute path to a .cab file or the package name, depending on the packageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
-        /// <returns>A <see cref="DismFeatureCollection"/> object containing a collection of <see cref="DismFeature"/> objects.</returns>
+        /// <returns>A <see cref="DismFeatureCollection" /> object containing a collection of <see cref="DismFeature" /> objects.</returns>
         private static DismFeatureCollection GetFeatures(DismSession session, string identifier, DismPackageIdentifier packageIdentifier)
         {
-            var features = new DismFeatureCollection();
-
             int hresult = NativeMethods.DismGetFeatures(session, identifier, packageIdentifier, out IntPtr featurePtr, out UInt32 featureCount);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult, session);
 
-                // Add the items
-                features.AddRange<DismApi.DismFeature_>(featurePtr, (int)featureCount, i => new DismFeature(i));
+                return new DismFeatureCollection(featurePtr, featureCount);
             }
             finally
             {
                 // Clean up
-                DismApi.Delete(featurePtr);
+                Delete(featurePtr);
             }
-
-            return features;
         }
 
         internal static partial class NativeMethods
@@ -85,7 +80,7 @@ namespace Microsoft.Dism
             /// <param name="count">The number of DismFeature structures that were returned.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824771.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824771.aspx" />
             /// HRESULT WINAPI DismGetFeatures (_In_ DismSession Session, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _Outptr_result_buffer_(*Count) DismFeature** Feature, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

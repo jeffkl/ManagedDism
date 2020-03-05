@@ -21,7 +21,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending)
         {
-            DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, null);
+            AddPackage(session, packagePath, ignoreCheck, preventPending, null);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            DismApi.AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, null);
+            AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, null);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.Dism
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -78,7 +78,7 @@ namespace Microsoft.Dism
             /// <remarks>Only .cab files can be added to an online image. Either .cab or .msu files can be added to an offline image.
             ///
             /// This function will return a special error code if the package is not applicable. You can use the DismGetPackageInfo Function to determine if a package is applicable to the target image.
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824788.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824788.aspx" />
             /// HRESULT WINAPI DismAddPackage (_In_ DismSession Session, _In_ PCWSTR PackagePath, _In_ BOOL IgnoreCheck, _In_ BOOL PreventPending _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData)
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

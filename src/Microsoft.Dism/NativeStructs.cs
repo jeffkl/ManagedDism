@@ -22,7 +22,7 @@ namespace Microsoft.Dism
     ///     <item><description>Use normal 64-bit arithmetic on the ULARGE_INTEGER value.</description></item>
     /// </list>
     /// The system can periodically refresh the time by synchronizing with a time source. Because the system time can be adjusted either forward or backward, do not compare system time readings to determine elapsed time. Instead, use one of the methods described in Windows Time.</remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms724950(v=vs.85).aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms724950(v=vs.85).aspx" />
     /// <![CDATA[typedef struct _SYSTEMTIME {
     /// WORD wYear;
     /// WORD wMonth;
@@ -79,7 +79,7 @@ namespace Microsoft.Dism
         public WORD wMilliseconds;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SYSTEMTIME"/> struct.
+        /// Initializes a new instance of the <see cref="SYSTEMTIME" /> struct.
         /// Initializes a new instance of the SYSTEMTIME class.
         /// </summary>
         /// <param name="dateTime">An existing DateTime object to copy data from.</param>
@@ -98,7 +98,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Converts a <see cref="System.DateTime"/> to a <see cref="SYSTEMTIME"/>.
+        /// Converts a <see cref="System.DateTime" /> to a <see cref="SYSTEMTIME" />.
         /// </summary>
         /// <param name="dateTime">The time to convert.</param>
         public static implicit operator SYSTEMTIME(DateTime dateTime)
@@ -107,7 +107,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Converts a <see cref="SYSTEMTIME"/> to a <see cref="System.DateTime"/>
+        /// Converts a <see cref="SYSTEMTIME" /> to a <see cref="System.DateTime" />
         /// </summary>
         /// <param name="systemTime">The time to convert.</param>
         public static implicit operator DateTime(SYSTEMTIME systemTime)
@@ -116,9 +116,9 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Returns the SYSTEMTIME as a <see cref="System.DateTime"/> value.
+        /// Returns the SYSTEMTIME as a <see cref="System.DateTime" /> value.
         /// </summary>
-        /// <returns>A <see cref="System.DateTime"/> value.</returns>
+        /// <returns>A <see cref="System.DateTime" /> value.</returns>
         public DateTime ToDateTime()
         {
             return wYear == 0

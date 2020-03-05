@@ -4,66 +4,51 @@
 
 using Shouldly;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism.Tests
 {
-    public class DismFeatureComparer : IComparer<DismFeature>, IComparer
+    public class DismPackageInfoTest : DismStructTest<DismPackageInfo>
     {
-        public int Compare(DismFeature x, DismFeature y)
-        {
-            return x?.FeatureName == y?.FeatureName && x?.State == y?.State ? 0 : 1;
-        }
-
-        public int Compare(object x, object y)
-        {
-            return Compare((DismFeature)x, (DismFeature)y);
-        }
-    }
-
-    public class DismPackageInfoTest : DismStructTest<DismPackageInfo>, IDisposable
-    {
-        private readonly List<DismApi.DismCustomProperty_> _customProperties = new List<DismApi.DismCustomProperty_>
-        {
-            new DismApi.DismCustomProperty_
-            {
-              Name = "Name1",
-              Path = "Path1",
-              Value = "Value1",
-            },
-            new DismApi.DismCustomProperty_
-            {
-              Name = "Name2",
-              Path = "Path2",
-              Value = "Value2",
-            },
-        };
-
-        private readonly List<DismApi.DismFeature_> _features = new List<DismApi.DismFeature_>
-        {
-            new DismApi.DismFeature_
-            {
-                FeatureName = "FeatureName1",
-                State = DismPackageFeatureState.Installed,
-            },
-            new DismApi.DismFeature_
-            {
-                FeatureName = "FeatureName2",
-                State = DismPackageFeatureState.Superseded,
-            },
-        };
-
         private readonly DismApi.DismPackageInfo_ _packageInfo = new DismApi.DismPackageInfo_
         {
             Applicable = true,
             Company = "Company",
             Copyright = "Copyright",
             CreationTime = DateTime.Today.AddDays(-5),
+            CustomProperty = new List<DismApi.DismCustomProperty_>
+            {
+                new DismApi.DismCustomProperty_
+                {
+                    Name = "Name1",
+                    Path = "Path1",
+                    Value = "Value1",
+                },
+                new DismApi.DismCustomProperty_
+                {
+                    Name = "Name2",
+                    Path = "Path2",
+                    Value = "Value2",
+                },
+            }.ToPtr(),
+            CustomPropertyCount = 2,
             Description = "Description",
             DisplayName = "DisplayName",
+            Feature = new List<DismApi.DismFeature_>
+            {
+                new DismApi.DismFeature_
+                {
+                    FeatureName = "FeatureName1",
+                    State = DismPackageFeatureState.Installed,
+                },
+                new DismApi.DismFeature_
+                {
+                    FeatureName = "FeatureName2",
+                    State = DismPackageFeatureState.Superseded,
+                },
+            }.ToPtr(),
+            FeatureCount = 2,
             FullyOffline = DismFullyOfflineInstallableType.FullyOfflineInstallable,
             InstallClient = "InstallClient",
             InstallPackageName = "InstallPackageName",
@@ -81,14 +66,9 @@ namespace Microsoft.Dism.Tests
         public DismPackageInfoTest(TestWimTemplate template)
             : base(template)
         {
-            _packageInfo.CustomProperty = ListToPtrArray(_customProperties);
-            _packageInfo.CustomPropertyCount = (uint)_customProperties.Count;
-
-            _packageInfo.Feature = ListToPtrArray(_features);
-            _packageInfo.FeatureCount = (uint)_features.Count;
         }
 
-        protected override DismPackageInfo Item => new DismPackageInfo(_packageInfo);
+        protected override DismPackageInfo Item => new DismPackageInfo(ItemPtr);
 
         protected override object Struct => _packageInfo;
 
@@ -107,8 +87,10 @@ namespace Microsoft.Dism.Tests
             item.Company.ShouldBe(_packageInfo.Company);
             item.Copyright.ShouldBe(_packageInfo.Copyright);
             item.CreationTime.ShouldBe((DateTime)_packageInfo.CreationTime);
+            item.CustomProperties.ShouldBe(new DismCustomPropertyCollection(_packageInfo.CustomProperty, _packageInfo.CustomPropertyCount));
             item.Description.ShouldBe(_packageInfo.Description);
             item.DisplayName.ShouldBe(_packageInfo.DisplayName);
+            item.Features.ShouldBe(new DismFeatureCollection(_packageInfo.Feature, _packageInfo.FeatureCount));
             item.FullyOffline.ShouldBe(_packageInfo.FullyOffline);
             item.InstallClient.ShouldBe(_packageInfo.InstallClient);
             item.InstallPackageName.ShouldBe(_packageInfo.InstallPackageName);
@@ -120,10 +102,6 @@ namespace Microsoft.Dism.Tests
             item.ReleaseType.ShouldBe(_packageInfo.ReleaseType);
             item.RestartRequired.ShouldBe(_packageInfo.RestartRequired);
             item.SupportInformation.ShouldBe(_packageInfo.SupportInformation);
-
-            item.CustomProperties.ShouldBe(new DismCustomPropertyCollection(_customProperties.Select(i => new DismCustomProperty(i)).ToList()));
-
-            item.Features.ShouldBe(new DismFeatureCollection(_features.Select(i => new DismFeature(i)).ToList()));
         }
     }
 }

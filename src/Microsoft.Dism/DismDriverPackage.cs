@@ -2,9 +2,7 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -15,7 +13,7 @@ namespace Microsoft.Dism
         /// Contains basic information for the driver that is associated with the .inf file.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824776.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824776.aspx" />
         /// typedef struct DismDriverPackage
         /// {
         ///    PCWSTR PublishedName;
@@ -123,16 +121,7 @@ namespace Microsoft.Dism
         private readonly DismApi.DismDriverPackage_ _driverPackage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismDriverPackage"/> class.
-        /// </summary>
-        /// <param name="driverPackagePtr">A pointer to a native DismDriverPackage_ struct.</param>
-        internal DismDriverPackage(IntPtr driverPackagePtr)
-            : this(driverPackagePtr.ToStructure<DismApi.DismDriverPackage_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismDriverPackage"/> class.
+        /// Initializes a new instance of the <see cref="DismDriverPackage" /> class.
         /// </summary>
         /// <param name="driverPackage">A native DismDriverPackage_ struct.</param>
         internal DismDriverPackage(DismApi.DismDriverPackage_ driverPackage)
@@ -208,20 +197,20 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismDriverPackage);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismDriverPackage"/> is equal to the current <see cref="DismDriverPackage"/>.
+        /// Determines whether the specified <see cref="DismDriverPackage" /> is equal to the current <see cref="DismDriverPackage" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismDriverPackage"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismDriverPackage"/> is equal to the current <see cref="DismDriverPackage"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismDriverPackage" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismDriverPackage" /> is equal to the current <see cref="DismDriverPackage" />; otherwise, false.</returns>
         public bool Equals(DismDriverPackage other)
         {
             return other != null
@@ -241,43 +230,20 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
             return BootCritical.GetHashCode()
                    ^ InBox.GetHashCode()
-                   ^ (String.IsNullOrEmpty(CatalogFile) ? 0 : CatalogFile.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ClassDescription) ? 0 : ClassDescription.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ClassGuid) ? 0 : ClassGuid.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ClassName) ? 0 : ClassName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(CatalogFile) ? 0 : CatalogFile.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ClassDescription) ? 0 : ClassDescription.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ClassGuid) ? 0 : ClassGuid.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ClassName) ? 0 : ClassName.GetHashCode())
                    ^ Date.GetHashCode()
                    ^ DriverSignature.GetHashCode()
-                   ^ (String.IsNullOrEmpty(OriginalFileName) ? 0 : OriginalFileName.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ProviderName) ? 0 : ProviderName.GetHashCode())
-                   ^ (String.IsNullOrEmpty(PublishedName) ? 0 : PublishedName.GetHashCode());
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismDriverPackage"/> objects.
-    /// </summary>
-    public sealed class DismDriverPackageCollection : DismCollection<DismDriverPackage>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismDriverPackageCollection"/> class.
-        /// </summary>
-        internal DismDriverPackageCollection()
-            : base(new List<DismDriverPackage>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismDriverPackageCollection"/> class.
-        /// </summary>
-        /// <param name="list">An <see cref="IList{DismDriverPackage}"/> to wrap.</param>
-        internal DismDriverPackageCollection(IList<DismDriverPackage> list)
-            : base(list)
-        {
+                   ^ (string.IsNullOrEmpty(OriginalFileName) ? 0 : OriginalFileName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ProviderName) ? 0 : ProviderName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(PublishedName) ? 0 : PublishedName.GetHashCode());
         }
     }
 }
