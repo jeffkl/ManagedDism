@@ -18,7 +18,7 @@ namespace Microsoft.Dism
         private readonly string _windowsDirectory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismSession"/> class.
+        /// Initializes a new instance of the <see cref="DismSession" /> class.
         /// </summary>
         /// <param name="imagePath">An absolute or relative path to the root directory of an offline Windows image, an absolute or relative path to the root directory of a mounted Windows image, or DISM_ONLINE_IMAGE to associate with the online Windows installation.</param>
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>

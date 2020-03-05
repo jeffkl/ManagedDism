@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -28,14 +27,14 @@ namespace Microsoft.Dism
             private string value;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="DismLanguage"/> class.
+            /// Initializes a new instance of the <see cref="DismLanguage" /> class.
             /// </summary>
             public DismLanguage()
             {
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="DismLanguage"/> class.
+            /// Initializes a new instance of the <see cref="DismLanguage" /> class.
             /// </summary>
             /// <param name="value">The language.</param>
             public DismLanguage(string value)
@@ -44,21 +43,21 @@ namespace Microsoft.Dism
             }
 
             /// <summary>
-            /// Converts a DismLanguage class to a String object
+            /// Converts a <see cref="DismLanguage" /> class to a <see cref="string" /> object
             /// </summary>
             /// <param name="language">A DismLanguage object to convert.</param>
             /// <returns>The string associated with the DismLanguage</returns>
-            public static implicit operator String(DismLanguage language)
+            public static implicit operator string(DismLanguage language)
             {
                 return language.value;
             }
 
             /// <summary>
-            /// Converts a String object to a DismLanguage object.
+            /// Converts a <see cref="string" /> object to a <see cref="DismLanguage" /> object.
             /// </summary>
             /// <param name="str">A string to convert.</param>
             /// <returns>A DismLanguage containing the specified string.</returns>
-            public static implicit operator DismLanguage(String str)
+            public static implicit operator DismLanguage(string str)
             {
                 return new DismLanguage
                 {

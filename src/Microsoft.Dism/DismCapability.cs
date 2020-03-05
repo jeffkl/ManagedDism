@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -14,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes capability basic information.
         /// </summary>
         /// <remarks>
-        /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684921(v=vs.85).aspx"/>
+        /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684921(v=vs.85).aspx" />
         /// typedef struct _DismCapability {
         ///   PCWSTR Name;
         ///   DismPackageFeatureState State;
@@ -43,18 +42,9 @@ namespace Microsoft.Dism
         private readonly DismApi.DismCapability_ _capability;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismCapability"/> class.
+        /// Initializes a new instance of the <see cref="DismCapability" /> class.
         /// </summary>
-        /// <param name="capabilityPtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismCapability_"/> structure.</param>
-        internal DismCapability(IntPtr capabilityPtr)
-            : this(capabilityPtr.ToStructure<DismApi.DismCapability_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCapability"/> class.
-        /// </summary>
-        /// <param name="capability">A <see cref="DismApi.DismCapability_"/> structure.</param>
+        /// <param name="capability">A <see cref="DismApi.DismCapability_" /> structure.</param>
         internal DismCapability(DismApi.DismCapability_ capability)
         {
             _capability = capability;
@@ -85,7 +75,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name="other">The <see cref="DismCapability"/> object to compare with this object.</param>
+        /// <param name="other">The <see cref="DismCapability" /> object to compare with this object.</param>
         /// <returns>
         /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
@@ -102,30 +92,7 @@ namespace Microsoft.Dism
         /// </returns>
         public override int GetHashCode()
         {
-            return (String.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode()) ^ State.GetHashCode();
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismCapability"/> objects.
-    /// </summary>
-    public sealed class DismCapabilityCollection : DismCollection<DismCapability>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCapabilityCollection"/> class.
-        /// </summary>
-        internal DismCapabilityCollection()
-            : base(new List<DismCapability>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCapabilityCollection"/> class.
-        /// </summary>
-        /// <param name="list">An <see cref="IList{DismCapability}"/> to wrap.</param>
-        internal DismCapabilityCollection(IList<DismCapability> list)
-            : base(list)
-        {
+            return (string.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode()) ^ State.GetHashCode();
         }
     }
 }

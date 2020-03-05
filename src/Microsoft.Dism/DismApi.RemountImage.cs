@@ -32,7 +32,7 @@ namespace Microsoft.Dism
             /// <param name="mountPath">A relative or absolute path to the mount directory of the image.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824778.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824778.aspx" />
             /// HRESULT WINAPI DismRemountImage(_In_ PCWSTR MountPath);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

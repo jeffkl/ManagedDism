@@ -12,31 +12,26 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets information about an .inf file in a specified image.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="driverPath">A relative or absolute path to the driver .inf file.</param>
-        /// <returns>A <see cref="DismDriverCollection"/> object containing a collection of <see cref="DismDriver"/> objects.</returns>
+        /// <returns>A <see cref="DismDriverCollection" /> object containing a collection of <see cref="DismDriver" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismDriverCollection GetDriverInfo(DismSession session, string driverPath)
         {
-            var driverInfos = new DismDriverCollection();
-
             int hresult = NativeMethods.DismGetDriverInfo(session, driverPath, out IntPtr driverInfoPtr, out UInt32 driverInfoCount, out IntPtr driverPackagePtr);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult, session);
 
-                // Add the items
-                driverInfos.AddRange<DismApi.DismDriver_>(driverInfoPtr, (int)driverInfoCount, i => new DismDriver(i));
+                return new DismDriverCollection(driverInfoPtr, driverInfoCount);
             }
             finally
             {
                 // Clean up
-                DismApi.Delete(driverInfoPtr);
-                DismApi.Delete(driverPackagePtr);
+                Delete(driverInfoPtr);
+                Delete(driverPackagePtr);
             }
-
-            return driverInfos;
         }
 
         internal static partial class NativeMethods
@@ -52,7 +47,7 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>This function returns information about the .inf file installed on the image. The driver associated with the .inf file may or may not be installed in the image.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824733.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824733.aspx" />
             /// HRESULT WINAPI DismGetDriverInfo (_In_ DismSession Session, _In_ PCWSTR DriverPath, _Outptr_result_buffer_(*Count) DismDriver** Driver, _Out_ UINT* Count, _Out_opt_ DismDriverPackage** DriverPackage);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

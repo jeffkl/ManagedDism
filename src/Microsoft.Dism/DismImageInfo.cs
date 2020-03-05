@@ -170,19 +170,10 @@ namespace Microsoft.Dism
     public sealed class DismImageInfo : IEquatable<DismImageInfo>
     {
         private readonly DismApi.DismImageInfo_ _imageInfo;
-        private readonly List<CultureInfo> _languages = new List<CultureInfo>();
+        private readonly List<CultureInfo> _languages;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismImageInfo"/> class.
-        /// </summary>
-        /// <param name="imageInfoPtr">A native pointer to a DismImageInfo_ structure.</param>
-        internal DismImageInfo(IntPtr imageInfoPtr)
-            : this(imageInfoPtr.ToStructure<DismApi.DismImageInfo_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismImageInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismImageInfo" /> class.
         /// Creates an instance of the DismImageInfo class.
         /// </summary>
         /// <param name="imageInfo">A instance of a DismImageInfo_ structure.</param>
@@ -190,10 +181,7 @@ namespace Microsoft.Dism
         {
             _imageInfo = imageInfo;
 
-            foreach (var language in _imageInfo.Language.AsEnumerable<DismApi.DismLanguage>((int)_imageInfo.LanguageCount))
-            {
-                _languages.Add(CultureInfo.GetCultureInfo(language));
-            }
+            _languages = _imageInfo.Language.ToList<CultureInfo, DismApi.DismLanguage>(_imageInfo.LanguageCount, language => CultureInfo.GetCultureInfo(language));
 
             // Parse the OS version from the various fields
             ProductVersion = new Version((int)imageInfo.MajorVersion, (int)imageInfo.MinorVersion, (int)imageInfo.Build, (int)imageInfo.SpBuild);
@@ -306,20 +294,20 @@ namespace Microsoft.Dism
         public string SystemRoot => _imageInfo.SystemRoot;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismImageInfo);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismImageInfo"/> is equal to the current <see cref="DismImageInfo"/>.
+        /// Determines whether the specified <see cref="DismImageInfo" /> is equal to the current <see cref="DismImageInfo" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismImageInfo"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismImageInfo"/> is equal to the current <see cref="DismImageInfo"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismImageInfo" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismImageInfo" /> is equal to the current <see cref="DismImageInfo" />; otherwise, false.</returns>
         public bool Equals(DismImageInfo other)
         {
             return other != null
@@ -346,51 +334,26 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
             return Architecture.GetHashCode()
                    ^ Bootable.GetHashCode()
                    ^ CustomizedInfo.GetHashCode()
                    ^ DefaultLanguageIndex
-                   ^ (String.IsNullOrEmpty(EditionId) ? 0 : EditionId.GetHashCode())
-                   ^ (String.IsNullOrEmpty(Hal) ? 0 : Hal.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ImageDescription) ? 0 : ImageDescription.GetHashCode())
+                   ^ (string.IsNullOrEmpty(EditionId) ? 0 : EditionId.GetHashCode())
+                   ^ (string.IsNullOrEmpty(Hal) ? 0 : Hal.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ImageDescription) ? 0 : ImageDescription.GetHashCode())
                    ^ ImageIndex.GetHashCode()
                    ^ ImageType.GetHashCode()
-                   ^ (String.IsNullOrEmpty(InstallationType) ? 0 : InstallationType.GetHashCode())
+                   ^ (string.IsNullOrEmpty(InstallationType) ? 0 : InstallationType.GetHashCode())
                    ^ Languages.GetHashCode()
-                   ^ (String.IsNullOrEmpty(ProductName) ? 0 : ProductName.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ProductSuite) ? 0 : ProductSuite.GetHashCode())
-                   ^ (String.IsNullOrEmpty(ProductType) ? 0 : ProductType.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ProductName) ? 0 : ProductName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ProductSuite) ? 0 : ProductSuite.GetHashCode())
+                   ^ (string.IsNullOrEmpty(ProductType) ? 0 : ProductType.GetHashCode())
                    ^ ProductVersion.GetHashCode()
                    ^ SpLevel.GetHashCode()
-                   ^ (String.IsNullOrEmpty(SystemRoot) ? 0 : SystemRoot.GetHashCode());
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismImageInfo"/> objects.
-    /// </summary>
-    public sealed class DismImageInfoCollection : DismCollection<DismImageInfo>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismImageInfoCollection"/> class.
-        /// Initializes a new instance of the DismImageInfoCollection that is empty.
-        /// </summary>
-        internal DismImageInfoCollection()
-            : base(new List<DismImageInfo>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismImageInfoCollection"/> class.
-        /// Initializes a new instance of the DismImageInfoCollection based on the specified list.
-        /// </summary>
-        /// <param name="list">An <see cref="IList{DismImageInfo}"/> to wrap.</param>
-        internal DismImageInfoCollection(IList<DismImageInfo> list)
-            : base(list)
-        {
+                   ^ (string.IsNullOrEmpty(SystemRoot) ? 0 : SystemRoot.GetHashCode());
         }
     }
 }

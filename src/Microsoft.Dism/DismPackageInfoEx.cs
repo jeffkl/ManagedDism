@@ -13,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes detailed package information such as the client used to install the package, the date and time that the package was installed, and support information.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824774.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824774.aspx" />
         /// typedef struct _DismPackageInfoEx
         /// {
         ///     DismPackageInfo;
@@ -24,7 +24,7 @@ namespace Microsoft.Dism
         internal struct DismPackageInfoEx_
         {
             /// <summary>
-            /// An instance of <see cref="DismPackageInfo_"/> containing the package info.
+            /// An instance of <see cref="DismPackageInfo_" /> containing the package info.
             /// </summary>
             public DismPackageInfo_ PackageInfo;
 
@@ -43,22 +43,18 @@ namespace Microsoft.Dism
         private readonly DismApi.DismPackageInfoEx_ _packageInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackageInfoEx"/> class.
+        /// Initializes a new instance of the <see cref="DismPackageInfoEx" /> class.
         /// </summary>
-        /// <param name="packageInfoPtr">A pointer to a native <see cref="DismApi.DismPackageInfoEx_"/> struct.</param>
+        /// <param name="packageInfoPtr">A pointer to a native <see cref="DismApi.DismPackageInfoEx_" /> struct.</param>
         internal DismPackageInfoEx(IntPtr packageInfoPtr)
             : this(packageInfoPtr.ToStructure<DismApi.DismPackageInfoEx_>())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackageInfoEx"/> class.
-        /// </summary>
-        /// <param name="packageInfo">A <see cref="DismApi.DismPackageInfoEx_"/> struct containing data for this object.</param>
-        internal DismPackageInfoEx(DismApi.DismPackageInfoEx_ packageInfo)
-            : base(packageInfo.PackageInfo)
+        private DismPackageInfoEx(DismApi.DismPackageInfoEx_ packageInfoEx)
+            : base(packageInfoEx.PackageInfo)
         {
-            _packageInfo = packageInfo;
+            _packageInfo = packageInfoEx;
         }
 
         /// <summary>
@@ -67,20 +63,20 @@ namespace Microsoft.Dism
         public string CapabilityId => _packageInfo.CapabilityId;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismPackageInfoEx);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismPackageInfoEx"/> is equal to the current <see cref="DismPackageInfoEx"/>.
+        /// Determines whether the specified <see cref="DismPackageInfoEx" /> is equal to the current <see cref="DismPackageInfoEx" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismPackageInfoEx"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismPackageInfoEx"/> is equal to the current <see cref="DismPackageInfoEx"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismPackageInfoEx" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismPackageInfoEx" /> is equal to the current <see cref="DismPackageInfoEx" />; otherwise, false.</returns>
         public bool Equals(DismPackageInfoEx other)
         {
             return other != null
@@ -91,7 +87,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode() ^ CapabilityId.GetHashCode();

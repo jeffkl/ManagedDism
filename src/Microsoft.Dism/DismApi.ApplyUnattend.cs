@@ -32,7 +32,7 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>When you use DISM to apply an answer file to an image, the unattended settings in the offlineServicing configuration pass are applied to the Windows image. For more information, see Unattended Servicing Command-Line Options.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825840.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825840.aspx" />
             /// HRESULT WINAPI DismApplyUnattend (_In_ DismSession Session, _In_ PCWSTR UnattendFile, _In_ BOOL SingleSession);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

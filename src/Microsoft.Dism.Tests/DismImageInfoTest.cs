@@ -2,10 +2,9 @@
 //
 // Licensed under the MIT license.
 
-using Shouldly;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -13,146 +12,108 @@ namespace Microsoft.Dism.Tests
 {
     public class DismImageInfoCollectionTest : DismCollectionTest<DismImageInfoCollection, DismImageInfo>
     {
+        private readonly List<DismApi.DismImageInfo_> _items = new List<DismApi.DismImageInfo_>
+        {
+            new DismApi.DismImageInfo_
+            {
+                Architecture = DismProcessorArchitecture.IA64,
+                Bootable = DismImageBootable.ImageBootableYes,
+                Build = 1000,
+                CustomizedInfo = new DismApi.DismWimCustomizedInfo_
+                {
+                    CreatedTime = DateTime.Today.AddDays(-7),
+                    DirectoryCount = 1234,
+                    FileCount = 5678,
+                    ModifiedTime = DateTime.Today,
+                    Size = 10,
+                }.ToPtr(),
+                EditionId = "EditionId",
+                Hal = "Hal",
+                ImageDescription = "ImageDescription",
+                ImageIndex = 2,
+                ImageName = "ImageName",
+                ImageSize = 999,
+                ImageType = DismImageType.Wim,
+                InstallationType = "InstallationType",
+                Language = new List<DismApi.DismLanguage>
+                {
+                    new DismApi.DismLanguage("en-us"),
+                    new DismApi.DismLanguage("es-es"),
+                }.ToPtr(),
+                LanguageCount = 2,
+                MajorVersion = 2,
+                MinorVersion = 3,
+                ProductName = "ProductName",
+                ProductSuite = "ProductSuite",
+                ProductType = "ProductType",
+                SpBuild = 4,
+                SpLevel = 5,
+                SystemRoot = "SystemRoot",
+            },
+            new DismApi.DismImageInfo_
+            {
+                Architecture = DismProcessorArchitecture.IA64,
+                Bootable = DismImageBootable.ImageBootableYes,
+                Build = 1000,
+                CustomizedInfo = new DismApi.DismWimCustomizedInfo_
+                {
+                    CreatedTime = DateTime.Today.AddDays(-1),
+                    DirectoryCount = 456,
+                    FileCount = 789,
+                    ModifiedTime = DateTime.Today,
+                    Size = 13,
+                }.ToPtr(),
+                EditionId = "EditionId",
+                Hal = "Hal",
+                ImageDescription = "ImageDescription",
+                ImageIndex = 2,
+                ImageName = "ImageName",
+                ImageSize = 999,
+                ImageType = DismImageType.Wim,
+                InstallationType = "InstallationType",
+                Language = new List<DismApi.DismLanguage>
+                {
+                    new DismApi.DismLanguage("es-es"),
+                }.ToPtr(),
+                LanguageCount = 1,
+                MajorVersion = 2,
+                MinorVersion = 3,
+                ProductName = "ProductName",
+                ProductSuite = "ProductSuite",
+                ProductType = "ProductType",
+                SpBuild = 4,
+                SpLevel = 5,
+                SystemRoot = "SystemRoot",
+            },
+        };
+
         public DismImageInfoCollectionTest(TestWimTemplate template)
             : base(template)
         {
         }
 
-        protected override DismImageInfoCollection CreateCollection(List<DismImageInfo> expectedCollection)
-        {
-            return new DismImageInfoCollection(expectedCollection);
-        }
-
-        protected override DismImageInfoCollection CreateCollection()
-        {
-            return new DismImageInfoCollection();
-        }
-
-        protected override List<DismImageInfo> GetCollection()
-        {
-            return new List<DismImageInfo>
-            {
-                new DismImageInfo(new DismApi.DismImageInfo_
-                {
-                    Architecture = DismProcessorArchitecture.IA64,
-                    Bootable = DismImageBootable.ImageBootableYes,
-                    Build = 1000,
-                    EditionId = "EditionId",
-                    Hal = "Hal",
-                    ImageDescription = "ImageDescription",
-                    ImageIndex = 2,
-                    ImageName = "ImageName",
-                    ImageSize = 999,
-                    ImageType = DismImageType.Wim,
-                    InstallationType = "InstallationType",
-                    MajorVersion = 2,
-                    MinorVersion = 3,
-                    ProductName = "ProductName",
-                    ProductSuite = "ProductSuite",
-                    ProductType = "ProductType",
-                    SpBuild = 4,
-                    SpLevel = 5,
-                    SystemRoot = "SystemRoot",
-                }),
-            };
-        }
-    }
-
-    public class DismImageInfoTest : DismStructTest<DismImageInfo>
-    {
-        private readonly DismApi.DismImageInfo_ _imageInfo = new DismApi.DismImageInfo_
-        {
-            Architecture = DismProcessorArchitecture.IA64,
-            Bootable = DismImageBootable.ImageBootableYes,
-            Build = 1000,
-            EditionId = "EditionId",
-            Hal = "Hal",
-            ImageDescription = "ImageDescription",
-            ImageIndex = 2,
-            ImageName = "ImageName",
-            ImageSize = 999,
-            ImageType = DismImageType.Wim,
-            InstallationType = "InstallationType",
-            MajorVersion = 2,
-            MinorVersion = 3,
-            ProductName = "ProductName",
-            ProductSuite = "ProductSuite",
-            ProductType = "ProductType",
-            SpBuild = 4,
-            SpLevel = 5,
-            SystemRoot = "SystemRoot",
-        };
-
-        private readonly List<DismApi.DismLanguage> _languages = new List<DismApi.DismLanguage>
-        {
-            new DismApi.DismLanguage("en-us"),
-            new DismApi.DismLanguage("es-es"),
-        };
-
-        private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo = new DismApi.DismWimCustomizedInfo_
-        {
-            CreatedTime = DateTime.Today.AddDays(-7),
-            DirectoryCount = 1234,
-            FileCount = 5678,
-            ModifiedTime = DateTime.Today,
-            Size = 10,
-        };
-
-        public DismImageInfoTest(TestWimTemplate template)
-            : base(template)
-        {
-            _imageInfo.Language = ListToPtrArray(_languages);
-            _imageInfo.LanguageCount = (uint)_languages.Count;
-            _imageInfo.DefaultLanguageIndex = 1;
-
-            _imageInfo.CustomizedInfo = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(DismApi.DismWimCustomizedInfo_)));
-
-            Marshal.StructureToPtr(_wimCustomizedInfo, _imageInfo.CustomizedInfo, false);
-        }
-
-        protected override DismImageInfo Item => ItemPtr != IntPtr.Zero ? new DismImageInfo(ItemPtr) : new DismImageInfo(_imageInfo);
-
-        protected override object Struct => _imageInfo;
+        protected override IntPtr Pointer => _items.ToPtr();
 
         public override void Dispose()
         {
-            Marshal.FreeHGlobal(_imageInfo.Language);
+            foreach (DismApi.DismImageInfo_ imageInfo in _items)
+            {
+                Marshal.FreeHGlobal(imageInfo.CustomizedInfo);
 
-            Marshal.FreeHGlobal(_imageInfo.CustomizedInfo);
+                Marshal.FreeHGlobal(imageInfo.Language);
+            }
 
             base.Dispose();
         }
 
-        protected override void VerifyProperties(DismImageInfo item)
+        protected override DismImageInfoCollection GetActual(IntPtr pointer)
         {
-            item.Architecture.ShouldBe(_imageInfo.Architecture);
-            item.Bootable.ShouldBe(_imageInfo.Bootable);
-            item.ProductVersion.Build.ShouldBe((int)_imageInfo.Build);
-            item.EditionId.ShouldBe(_imageInfo.EditionId);
-            item.Hal.ShouldBe(_imageInfo.Hal);
-            item.ImageDescription.ShouldBe(_imageInfo.ImageDescription);
-            item.ImageIndex.ShouldBe((int)_imageInfo.ImageIndex);
-            item.ImageName.ShouldBe(_imageInfo.ImageName);
-            item.ImageSize.ShouldBe(_imageInfo.ImageSize);
-            item.ImageType.ShouldBe(_imageInfo.ImageType);
-            item.InstallationType.ShouldBe(_imageInfo.InstallationType);
-            item.ProductVersion.Major.ShouldBe((int)_imageInfo.MajorVersion);
-            item.ProductVersion.Minor.ShouldBe((int)_imageInfo.MinorVersion);
-            item.ProductName.ShouldBe(_imageInfo.ProductName);
-            item.ProductSuite.ShouldBe(_imageInfo.ProductSuite);
-            item.ProductType.ShouldBe(_imageInfo.ProductType);
-            item.ProductVersion.Revision.ShouldBe((int)_imageInfo.SpBuild);
-            item.SpLevel.ShouldBe((int)_imageInfo.SpLevel);
-            item.SystemRoot.ShouldBe(_imageInfo.SystemRoot);
-            item.DefaultLanguageIndex.ShouldBe((int)_imageInfo.DefaultLanguageIndex);
-            item.Languages.ShouldBe(_languages.Select(i => new CultureInfo(i)));
-            item.DefaultLanguage.ShouldBe(new CultureInfo(_languages[(int)_imageInfo.DefaultLanguageIndex]));
+            return new DismImageInfoCollection(pointer, (uint)_items.Count);
+        }
 
-            item.CustomizedInfo.CreatedTime.ShouldBe((DateTime)_wimCustomizedInfo.CreatedTime);
-            item.CustomizedInfo.DirectoryCount.ShouldBe(_wimCustomizedInfo.DirectoryCount);
-            item.CustomizedInfo.FileCount.ShouldBe(_wimCustomizedInfo.FileCount);
-            item.CustomizedInfo.ModifiedTime.ShouldBe((DateTime)_wimCustomizedInfo.ModifiedTime);
-            item.CustomizedInfo.Size.ShouldBe(_wimCustomizedInfo.Size);
+        protected override ReadOnlyCollection<DismImageInfo> GetExpected()
+        {
+            return new ReadOnlyCollection<DismImageInfo>(_items.Select(i => new DismImageInfo(i)).ToList());
         }
     }
 }

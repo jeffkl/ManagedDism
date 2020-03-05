@@ -2,67 +2,44 @@
 //
 // Licensed under the MIT license.
 
-using Shouldly;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Microsoft.Dism.Tests
 {
     public class DismCapabilityCollectionTest : DismCollectionTest<DismCapabilityCollection, DismCapability>
     {
+        private static readonly List<DismApi.DismCapability_> Items = new List<DismApi.DismCapability_>
+        {
+            new DismApi.DismCapability_
+            {
+                Name = "CapabilityName1",
+                State = DismPackageFeatureState.Installed,
+            },
+            new DismApi.DismCapability_
+            {
+                Name = "CapabilityName2",
+                State = DismPackageFeatureState.Removed,
+            },
+        };
+
         public DismCapabilityCollectionTest(TestWimTemplate template)
             : base(template)
         {
         }
 
-        protected override DismCapabilityCollection CreateCollection(List<DismCapability> expectedCollection)
+        protected override IntPtr Pointer => Items.ToPtr();
+
+        protected override DismCapabilityCollection GetActual(IntPtr pointer)
         {
-            return new DismCapabilityCollection(expectedCollection);
+            return new DismCapabilityCollection(pointer, (uint)Items.Count);
         }
 
-        protected override DismCapabilityCollection CreateCollection()
+        protected override ReadOnlyCollection<DismCapability> GetExpected()
         {
-            return new DismCapabilityCollection();
-        }
-
-        protected override List<DismCapability> GetCollection()
-        {
-            return new List<DismCapability>
-            {
-                new DismCapability(new DismApi.DismCapability_
-                {
-                   Name = "CapabilityName1",
-                   State = DismPackageFeatureState.Installed,
-                }),
-                new DismCapability(new DismApi.DismCapability_
-                {
-                   Name = "CapabilityName2",
-                   State = DismPackageFeatureState.Removed,
-                }),
-            };
-        }
-    }
-
-    public class DismCapabilityTest : DismStructTest<DismCapability>
-    {
-        private readonly DismApi.DismCapability_ _capability = new DismApi.DismCapability_
-        {
-            Name = "BDC1F89D-EA9D-44AF-AB49-11414B1700D0",
-            State = DismPackageFeatureState.Removed,
-        };
-
-        public DismCapabilityTest(TestWimTemplate template)
-            : base(template)
-        {
-        }
-
-        protected override DismCapability Item => new DismCapability(_capability);
-
-        protected override object Struct => _capability;
-
-        protected override void VerifyProperties(DismCapability item)
-        {
-            item.Name.ShouldBe(_capability.Name);
-            item.State.ShouldBe(_capability.State);
+            return new ReadOnlyCollection<DismCapability>(Items.Select(i => new DismCapability(i)).ToList());
         }
     }
 }

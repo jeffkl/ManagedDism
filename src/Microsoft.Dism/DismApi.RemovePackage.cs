@@ -19,7 +19,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByName(DismSession session, string packageName)
         {
-            DismApi.RemovePackageByName(session, packageName, null);
+            RemovePackageByName(session, packageName, null);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByName(DismSession session, string packageName, Dism.DismProgressCallback progressCallback)
         {
-            DismApi.RemovePackageByName(session, packageName, progressCallback, null);
+            RemovePackageByName(session, packageName, progressCallback, null);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByName(DismSession session, string packageName, Dism.DismProgressCallback progressCallback, object userData)
         {
-            DismApi.RemovePackage(session, packageName, DismPackageIdentifier.Name, progressCallback, userData);
+            RemovePackage(session, packageName, DismPackageIdentifier.Name, progressCallback, userData);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByPath(DismSession session, string packagePath)
         {
-            DismApi.RemovePackageByPath(session, packagePath, null);
+            RemovePackageByPath(session, packagePath, null);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByPath(DismSession session, string packagePath, Dism.DismProgressCallback progressCallback)
         {
-            DismApi.RemovePackageByPath(session, packagePath, progressCallback, null);
+            RemovePackageByPath(session, packagePath, progressCallback, null);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemovePackageByPath(DismSession session, string packagePath, Dism.DismProgressCallback progressCallback, object userData)
         {
-            DismApi.RemovePackage(session, packagePath, DismPackageIdentifier.Path, progressCallback, userData);
+            RemovePackage(session, packagePath, DismPackageIdentifier.Path, progressCallback, userData);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Microsoft.Dism
         private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -123,7 +123,7 @@ namespace Microsoft.Dism
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>The DismRemovePackage function does not support .msu files.</remarks>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824732.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824732.aspx" />
             /// HRESULT WINAPI DismRemovePackage (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]

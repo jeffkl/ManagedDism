@@ -14,11 +14,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenImageSession Function.</param>
         /// <param name="packageName">The name of the package to get information about.</param>
-        /// <returns>A <see cref="DismPackageInfoEx"/> object.</returns>
+        /// <returns>A <see cref="DismPackageInfoEx" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismPackageInfoEx GetPackageInfoExByName(DismSession session, string packageName)
         {
-            return DismApi.GetPackageInfoEx(session, packageName, DismPackageIdentifier.Name);
+            return GetPackageInfoEx(session, packageName, DismPackageIdentifier.Name);
         }
 
         /// <summary>
@@ -26,11 +26,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenImageSession Function.</param>
         /// <param name="packagePath">An absolute path to a .cab file or to a folder containing an expanded package.</param>
-        /// <returns>A <see cref="DismPackageInfoEx"/> object.</returns>
+        /// <returns>A <see cref="DismPackageInfoEx" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismPackageInfoEx GetPackageInfoExByPath(DismSession session, string packagePath)
         {
-            return DismApi.GetPackageInfoEx(session, packagePath, DismPackageIdentifier.Path);
+            return GetPackageInfoEx(session, packagePath, DismPackageIdentifier.Path);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenImageSession Function.</param>
         /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the PackageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
-        /// <returns>A <see cref="DismPackageInfoEx"/> object.</returns>
+        /// <returns>A <see cref="DismPackageInfoEx" /> object.</returns>
         private static DismPackageInfoEx GetPackageInfoEx(DismSession session, string identifier, DismPackageIdentifier packageIdentifier)
         {
             int hresult = NativeMethods.DismGetPackageInfoEx(session, identifier, packageIdentifier, out IntPtr packageInfoExPtr);
@@ -54,7 +54,7 @@ namespace Microsoft.Dism
             finally
             {
                 // Clean up
-                DismApi.Delete(packageInfoExPtr);
+                Delete(packageInfoExPtr);
             }
         }
 

@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -14,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes the metadata of a mounted image.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824755.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824755.aspx" />
         /// typedef struct _DismMountedImageInfo
         /// {
         ///     PCWSTR MountPath;
@@ -43,12 +42,12 @@ namespace Microsoft.Dism
             public UInt32 ImageIndex;
 
             /// <summary>
-            /// A <a href="DismMountMode"/> Enumeration value representing whether the image is DismReadWrite or DismReadOnly.
+            /// A <a href="DismMountMode" /> Enumeration value representing whether the image is DismReadWrite or DismReadOnly.
             /// </summary>
             public DismMountMode MountMode;
 
             /// <summary>
-            /// A <a href="DismMountStatus"/> Enumeration value such as DismMountStatusOk.
+            /// A <a href="DismMountStatus" /> Enumeration value such as DismMountStatusOk.
             /// </summary>
             public DismMountStatus MountStatus;
         }
@@ -62,18 +61,9 @@ namespace Microsoft.Dism
         private readonly DismApi.DismMountedImageInfo_ _mountedImageInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismMountedImageInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismMountedImageInfo" /> class.
         /// </summary>
-        /// <param name="mountedImageInfoPtr">An <see cref="IntPtr"/> of a <see cref="DismApi.DismMountedImageInfo_"/> structure.</param>
-        internal DismMountedImageInfo(IntPtr mountedImageInfoPtr)
-            : this(mountedImageInfoPtr.ToStructure<DismApi.DismMountedImageInfo_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismMountedImageInfo"/> class.
-        /// </summary>
-        /// <param name="mountedImageInfo">A <see cref="DismApi.DismMountedImageInfo_"/> structure.</param>
+        /// <param name="mountedImageInfo">A <see cref="DismApi.DismMountedImageInfo_" /> structure.</param>
         internal DismMountedImageInfo(DismApi.DismMountedImageInfo_ mountedImageInfo)
         {
             _mountedImageInfo = mountedImageInfo;
@@ -105,20 +95,20 @@ namespace Microsoft.Dism
         public DismMountStatus MountStatus => _mountedImageInfo.MountStatus;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismMountedImageInfo);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismMountedImageInfo"/> is equal to the current <see cref="DismMountedImageInfo"/>.
+        /// Determines whether the specified <see cref="DismMountedImageInfo" /> is equal to the current <see cref="DismMountedImageInfo" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismMountedImageInfo"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismMountedImageInfo"/> is equal to the current <see cref="DismMountedImageInfo"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismMountedImageInfo" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismMountedImageInfo" /> is equal to the current <see cref="DismMountedImageInfo" />; otherwise, false.</returns>
         public bool Equals(DismMountedImageInfo other)
         {
             return other != null
@@ -131,36 +121,13 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
-            return (String.IsNullOrEmpty(ImageFilePath) ? 0 : ImageFilePath.GetHashCode())
+            return (string.IsNullOrEmpty(ImageFilePath) ? 0 : ImageFilePath.GetHashCode())
                    ^ MountMode.GetHashCode()
-                   ^ (String.IsNullOrEmpty(MountPath) ? 0 : MountPath.GetHashCode())
+                   ^ (string.IsNullOrEmpty(MountPath) ? 0 : MountPath.GetHashCode())
                    ^ MountStatus.GetHashCode();
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismMountedImageInfo"/> objects.
-    /// </summary>
-    public sealed class DismMountedImageInfoCollection : DismCollection<DismMountedImageInfo>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismMountedImageInfoCollection"/> class.
-        /// </summary>
-        internal DismMountedImageInfoCollection()
-            : base(new List<DismMountedImageInfo>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismMountedImageInfoCollection"/> class.
-        /// </summary>
-        /// <param name="list">An existing list of DismMountedImageInfo objects to expose as a read-only collection.</param>
-        internal DismMountedImageInfoCollection(IList<DismMountedImageInfo> list)
-            : base(list)
-        {
         }
     }
 }

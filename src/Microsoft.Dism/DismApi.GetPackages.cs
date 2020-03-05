@@ -13,28 +13,23 @@ namespace Microsoft.Dism
         /// Gets a collection of each package in an image and provides basic information about each package, such as the package name and type of package.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DismSession must be associated with an image.</param>
-        /// <returns>A <see cref="DismPackageCollection"/> object containing a collection of <see cref="DismPackage"/>objects.</returns>
+        /// <returns>A <see cref="DismPackageCollection" /> object containing a collection of <see cref="DismPackage" />objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismPackageCollection GetPackages(DismSession session)
         {
-            var packages = new DismPackageCollection();
-
             int hresult = NativeMethods.DismGetPackages(session, out IntPtr packagePtr, out UInt32 packageCount);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult, session);
 
-                // Add the items
-                packages.AddRange<DismApi.DismPackage_>(packagePtr, (int)packageCount, i => new DismPackage(i));
+                return new DismPackageCollection(packagePtr, packageCount);
             }
             finally
             {
                 // Clean up
-                DismApi.Delete(packagePtr);
+                Delete(packagePtr);
             }
-
-            return packages;
         }
 
         internal static partial class NativeMethods
@@ -50,7 +45,7 @@ namespace Microsoft.Dism
             /// Package points to an array of DismPackage Structure objects. You can manipulate this array using normal array notation in order to get information about each package in the image.</returns>
             /// <remarks>When you are finished with the Package array, you must remove it by using the DismDelete Function.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824759.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824759.aspx" />
             /// HRESULT WINAPI DismGetPackages (_In_ DismSession Session, _Outptr_result_buffer_(*Count) DismPackage** Package, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

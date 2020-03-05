@@ -48,6 +48,8 @@ namespace Microsoft.Dism.Tests
                         case DismPackageFeatureState.Superseded:
                             break;
                     }
+
+                    GetFeaturesTest.ValidateFeatures(DismApi.GetFeaturesByPackageName(session, package.PackageName));
                 }
             }
         }

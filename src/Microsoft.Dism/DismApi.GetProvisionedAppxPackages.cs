@@ -13,27 +13,23 @@ namespace Microsoft.Dism
         /// Gets information about app packages (.appx) in an image that will be installed for each new user.
         /// </summary>
         /// <param name="session">A valid DISM Session.</param>
-        /// <returns>A <see cref="DismAppxPackageCollection"/> object containing a collection of <see cref="DismAppxPackage"/> objects.</returns>
+        /// <returns>A <see cref="DismAppxPackageCollection" /> object containing a collection of <see cref="DismAppxPackage" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static DismAppxPackageCollection GetProvisionedAppxPackages(DismSession session)
         {
-            var appxPackages = new DismAppxPackageCollection();
-
             int hresult = NativeMethods._DismGetProvisionedAppxPackages(session, out IntPtr appxPackagesPtr, out UInt32 appxPackagesCount);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult, session);
 
-                appxPackages.AddRange<DismApi.DismAppxPackage_>(appxPackagesPtr, (int)appxPackagesCount, i => new DismAppxPackage(i));
+                return new DismAppxPackageCollection(appxPackagesPtr, appxPackagesCount);
             }
             finally
             {
-                DismApi.Delete(appxPackagesPtr);
+                Delete(appxPackagesPtr);
             }
-
-            return appxPackages;
         }
 
         internal static partial class NativeMethods

@@ -19,7 +19,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemoveCapability(DismSession session, string capabilityName)
         {
-            DismApi.RemoveCapability(session, capabilityName, null, null);
+            RemoveCapability(session, capabilityName, null, null);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Microsoft.Dism
         public static void RemoveCapability(DismSession session, string capabilityName, Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismRemoveCapability(session, capabilityName, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -54,7 +54,7 @@ namespace Microsoft.Dism
             /// <param name="userData">User defined custom data. This will be passed back to the user through the callback.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
-            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684925.aspx"/>
+            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684925.aspx" />
             /// HRESULT WINAPI DismRemoveCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

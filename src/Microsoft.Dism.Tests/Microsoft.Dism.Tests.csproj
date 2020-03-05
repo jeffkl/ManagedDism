@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <Platforms>x64</Platforms>
     <NoWarn>SA0001;SA1600</NoWarn>
   </PropertyGroup>
@@ -15,7 +15,6 @@
     <ProjectReference Include="..\Microsoft.Dism\Microsoft.Dism.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="install.wim"
-          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="install.wim" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

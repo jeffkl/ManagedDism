@@ -11,7 +11,7 @@ namespace Microsoft.Dism
     /// Specifies the signature status of a driver.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824785.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824785.aspx" />
     /// </remarks>
     public enum DismDriverSignature
     {
@@ -35,7 +35,7 @@ namespace Microsoft.Dism
     /// Specifies whether a package can be installed to an offline image without booting the image.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824791.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824791.aspx" />
     /// </remarks>
     public enum DismFullyOfflineInstallableType
     {
@@ -59,7 +59,7 @@ namespace Microsoft.Dism
     /// Indicates whether an image is a bootable image type.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824736.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824736.aspx" />
     /// </remarks>
     public enum DismImageBootable
     {
@@ -107,7 +107,7 @@ namespace Microsoft.Dism
     /// Specifies the file type of the Windows® image container.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824762.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824762.aspx" />
     /// </remarks>
     public enum DismImageType
     {
@@ -177,7 +177,7 @@ namespace Microsoft.Dism
     /// Specifies whether an image is mounted as read-only or as read-write.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824752.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824752.aspx" />
     /// </remarks>
     public enum DismMountMode : uint
     {
@@ -196,7 +196,7 @@ namespace Microsoft.Dism
     /// Indicates whether a mounted image needs to be remounted.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824794.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824794.aspx" />
     /// </remarks>
     public enum DismMountStatus
     {
@@ -220,7 +220,7 @@ namespace Microsoft.Dism
     /// Specifies the state of a package or a feature.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824765.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824765.aspx" />
     /// </remarks>
     public enum DismPackageFeatureState : uint
     {
@@ -314,7 +314,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Specifies the release type of a package.
     /// </summary>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824783.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824783.aspx" />
     public enum DismReleaseType
     {
         /// <summary>
@@ -397,7 +397,7 @@ namespace Microsoft.Dism
     /// Specifies whether a restart is required after enabling a feature or installing a package.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824749.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824749.aspx" />
     /// </remarks>
     public enum DismRestartType
     {
@@ -421,7 +421,7 @@ namespace Microsoft.Dism
     /// Specifies whether an image is identified by name or by index number.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824748.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824748.aspx" />
     /// </remarks>
     internal enum DismImageIdentifier
     {
@@ -440,7 +440,7 @@ namespace Microsoft.Dism
     /// Specifies whether a package is identified by name or by file path.
     /// </summary>
     /// <remarks>
-    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824781.aspx"/>
+    /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824781.aspx" />
     /// </remarks>
     internal enum DismPackageIdentifier
     {

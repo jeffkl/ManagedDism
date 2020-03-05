@@ -12,28 +12,23 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets a list of images that are currently mounted.
         /// </summary>
-        /// <returns>A <see cref="DismMountedImageInfoCollection"/> object containing a collection of <see cref="DismMountedImageInfo"/> objects.</returns>
+        /// <returns>A <see cref="DismMountedImageInfoCollection" /> object containing a collection of <see cref="DismMountedImageInfo" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismMountedImageInfoCollection GetMountedImages()
         {
-            var mountedImageInfos = new DismMountedImageInfoCollection();
-
             int hresult = NativeMethods.DismGetMountedImageInfo(out IntPtr mountedImageInfoPtr, out UInt32 mountedImageInfoCount);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult);
 
-                // Add the items
-                mountedImageInfos.AddRange<DismApi.DismMountedImageInfo_>(mountedImageInfoPtr, (int)mountedImageInfoCount, i => new DismMountedImageInfo(i));
+                return new DismMountedImageInfoCollection(mountedImageInfoPtr, mountedImageInfoCount);
             }
             finally
             {
                 // Clean up
-                DismApi.Delete(mountedImageInfoPtr);
+                Delete(mountedImageInfoPtr);
             }
-
-            return mountedImageInfos;
         }
 
         internal static partial class NativeMethods
@@ -50,7 +45,7 @@ namespace Microsoft.Dism
             ///
             /// You must call the DismDelete Function, passing the ImageInfo pointer, to free the resources associated with the DismImageInfo structures.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824745.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824745.aspx" />
             /// HRESULT WINAPI DismGetMountedImageInfo(_Outptr_result_buffer_(*Count) DismMountedImageInfo** MountedImageInfo, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

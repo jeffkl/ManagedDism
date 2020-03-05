@@ -14,11 +14,11 @@ namespace Microsoft.Dism
         /// Associates an offline Windows image with a DISMSession.
         /// </summary>
         /// <param name="imagePath">An absolute or relative path to the root directory of an offline Windows image or an absolute or relative path to the root directory of a mounted Windows image.</param>
-        /// <returns>A <see cref="DismSession"/> object.</returns>
+        /// <returns>A <see cref="DismSession" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismSession OpenOfflineSession(string imagePath)
         {
-            return DismApi.OpenOfflineSession(imagePath, null, null);
+            return OpenOfflineSession(imagePath, null, null);
         }
 
         /// <summary>
@@ -27,21 +27,21 @@ namespace Microsoft.Dism
         /// <param name="imagePath">An absolute or relative path to the root directory of an offline Windows image or an absolute or relative path to the root directory of a mounted Windows image.</param>
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
-        /// <returns>A <see cref="DismSession"/> object.</returns>
+        /// <returns>A <see cref="DismSession" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismSession OpenOfflineSession(string imagePath, string windowsDirectory, string systemDrive)
         {
-            return DismApi.OpenSession(imagePath, windowsDirectory, systemDrive);
+            return OpenSession(imagePath, windowsDirectory, systemDrive);
         }
 
         /// <summary>
         /// Associates an online Windows image with a DISMSession.
         /// </summary>
-        /// <returns>A <see cref="DismSession"/> object.</returns>
+        /// <returns>A <see cref="DismSession" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismSession OpenOnlineSession()
         {
-            return OpenSession(DismApi.DISM_ONLINE_IMAGE, null, null);
+            return OpenSession(DISM_ONLINE_IMAGE, null, null);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Dism
         /// <param name="imagePath">An absolute or relative path to the root directory of an offline Windows image, an absolute or relative path to the root directory of a mounted Windows image, or DISM_ONLINE_IMAGE to associate with the online Windows installation.</param>
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
-        /// <returns>A <see cref="DismSession"/> object.</returns>
+        /// <returns>A <see cref="DismSession" /> object.</returns>
         private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive)
         {
             return new DismSession(imagePath, windowsDirectory, systemDrive);
@@ -82,7 +82,7 @@ namespace Microsoft.Dism
             /// Returns a Win32 error code mapped to an HRESULT for other errors.</returns>
             /// <remarks>The DISMSession can be used to service the image after the DISMOpenSession call is successfully completed. The DISMSession must be shut down by calling the DismCloseSession Function.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824800.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824800.aspx" />
             /// HRESULT WINAPI DismOpenSession(_In_ PCWSTR ImagePath, _In_opt_ PCWSTR WindowsDirectory, _In_opt_ WCHAR* SystemDrive, _Out_ DismSession* Session);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

@@ -3,7 +3,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -14,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes the custom properties of a package. Custom properties are any properties that are not found in DismPackage Structure or DismFeature Structure.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824746.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824746.aspx" />
         /// typedef struct _DismCustomProperty
         /// {
         ///     PCWSTR Name;
@@ -43,25 +42,16 @@ namespace Microsoft.Dism
     }
 
     /// <summary>
-    /// Represents the custom properties of a package. Custom properties are any properties that are not found in <see cref="DismPackage"/> or <see cref="DismFeature"/>.
+    /// Represents the custom properties of a package. Custom properties are any properties that are not found in <see cref="DismPackage" /> or <see cref="DismFeature" />.
     /// </summary>
     public class DismCustomProperty : IEquatable<DismCustomProperty>
     {
         private readonly DismApi.DismCustomProperty_ _customProperty;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismCustomProperty"/> class.
+        /// Initializes a new instance of the <see cref="DismCustomProperty" /> class.
         /// </summary>
-        /// <param name="customPropertyPtr">A native pointer to a <see cref="DismApi.DismCustomProperty_"/> struct.</param>
-        internal DismCustomProperty(IntPtr customPropertyPtr)
-            : this(customPropertyPtr.ToStructure<DismApi.DismCustomProperty_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCustomProperty"/> class.
-        /// </summary>
-        /// <param name="customProperty">A native <see cref="DismApi.DismCustomProperty_"/> struct that holds the data of the custom property</param>
+        /// <param name="customProperty">A native <see cref="DismApi.DismCustomProperty_" /> struct that holds the data of the custom property</param>
         internal DismCustomProperty(DismApi.DismCustomProperty_ customProperty)
         {
             // Save a reference to the native struct
@@ -84,20 +74,20 @@ namespace Microsoft.Dism
         public string Value => _customProperty.Value;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismCustomProperty);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismCustomProperty"/> is equal to the current <see cref="DismCustomProperty"/>.
+        /// Determines whether the specified <see cref="DismCustomProperty" /> is equal to the current <see cref="DismCustomProperty" />.
         /// </summary>
-        /// <param name="other">A <see cref="DismCustomProperty"/> object to compare with the current object.</param>
-        /// <returns><code>true</code> if the specified <see cref="DismCustomProperty"/> is equal to the current <see cref="DismCustomProperty"/>; otherwise, false.</returns>
+        /// <param name="other">A <see cref="DismCustomProperty" /> object to compare with the current object.</param>
+        /// <returns><code>true</code> if the specified <see cref="DismCustomProperty" /> is equal to the current <see cref="DismCustomProperty" />; otherwise, false.</returns>
         public bool Equals(DismCustomProperty other)
         {
             return other != null
@@ -109,35 +99,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
-            return (String.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode())
-                   ^ (String.IsNullOrEmpty(Path) ? 0 : Path.GetHashCode())
-                   ^ (String.IsNullOrEmpty(Value) ? 0 : Value.GetHashCode());
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismCustomProperty"/> objects.
-    /// </summary>
-    public sealed class DismCustomPropertyCollection : DismCollection<DismCustomProperty>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCustomPropertyCollection"/> class.
-        /// </summary>
-        internal DismCustomPropertyCollection()
-            : base(new List<DismCustomProperty>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismCustomPropertyCollection"/> class.
-        /// </summary>
-        /// <param name="list">An <see cref="IList{DismCustomProperty}"/> to wrap.</param>
-        internal DismCustomPropertyCollection(IList<DismCustomProperty> list)
-            : base(list)
-        {
+            return (string.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode())
+                   ^ (string.IsNullOrEmpty(Path) ? 0 : Path.GetHashCode())
+                   ^ (string.IsNullOrEmpty(Value) ? 0 : Value.GetHashCode());
         }
     }
 }

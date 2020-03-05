@@ -23,7 +23,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload)
         {
-            DismApi.DisableFeature(session, featureName, packageName, removePayload, null);
+            DisableFeature(session, featureName, packageName, removePayload, null);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback progressCallback)
         {
-            DismApi.DisableFeature(session, featureName, packageName, removePayload, progressCallback, null);
+            DisableFeature(session, featureName, packageName, removePayload, progressCallback, null);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.Dism
         public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            var progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new DismProgress(progressCallback, userData);
 
             int hresult = NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -84,7 +84,7 @@ namespace Microsoft.Dism
             /// <param name="userData">Optional. User specified data.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824766.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824766.aspx" />
             /// HRESULT WINAPI DismDisableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR PackageName, _In_ BOOL RemovePayload, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

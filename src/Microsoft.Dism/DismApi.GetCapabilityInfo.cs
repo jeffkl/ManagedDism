@@ -12,9 +12,9 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets DISM capability info.
         /// </summary>
-        /// <param name="session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DismSession. The DismSession must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="capabilityName">The name of the specified capability.</param>
-        /// <returns>A <see cref="DismCapabilityInfo"/> object.</returns>
+        /// <returns>A <see cref="DismCapabilityInfo" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismCapabilityInfo GetCapabilityInfo(DismSession session, string capabilityName)
         {
@@ -30,7 +30,7 @@ namespace Microsoft.Dism
             finally
             {
                 // Clean up the native pointer
-                DismApi.Delete(capabilityInfoPtr);
+                Delete(capabilityInfoPtr);
             }
         }
 

@@ -13,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes detailed package information such as the client used to install the package, the date and time that the package was installed, and support information.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824774.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824774.aspx" />
         /// typedef struct _DismPackageInfo
         /// {
         ///     PCWSTR PackageName;
@@ -163,35 +163,25 @@ namespace Microsoft.Dism
         private readonly DismApi.DismPackageInfo_ _packageInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackageInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismPackageInfo" /> class.
         /// </summary>
-        /// <param name="packageInfoPtr">A pointer to a native <see cref="DismApi.DismPackageInfo_"/> struct.</param>
+        /// <param name="packageInfoPtr">A pointer to a native <see cref="DismApi.DismPackageInfo_" /> struct.</param>
         internal DismPackageInfo(IntPtr packageInfoPtr)
             : this(packageInfoPtr.ToStructure<DismApi.DismPackageInfo_>())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackageInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismPackageInfo" /> class.
         /// </summary>
-        /// <param name="packageInfo">A <see cref="DismApi.DismPackageInfo_"/> struct containing data for this object.</param>
+        /// <param name="packageInfo">A <see cref="DismApi.DismPackageInfo_" /> struct containing data for this object.</param>
         internal DismPackageInfo(DismApi.DismPackageInfo_ packageInfo)
         {
             _packageInfo = packageInfo;
 
-            // See if there are any custom properties
-            if (_packageInfo.CustomPropertyCount > 0 && _packageInfo.CustomProperty != IntPtr.Zero)
-            {
-                // Add the items
-                CustomProperties.AddRange<DismApi.DismCustomProperty_>(_packageInfo.CustomProperty, (int)_packageInfo.CustomPropertyCount, i => new DismCustomProperty(i));
-            }
+            CustomProperties = new DismCustomPropertyCollection(_packageInfo.CustomProperty, _packageInfo.CustomPropertyCount);
 
-            // See if there are any features associated with the package
-            if (_packageInfo.FeatureCount > 0 && _packageInfo.Feature != IntPtr.Zero)
-            {
-                // Add the items
-                Features.AddRange<DismApi.DismFeature_>(_packageInfo.Feature, (int)_packageInfo.FeatureCount, i => new DismFeature(i));
-            }
+            Features = new DismFeatureCollection(_packageInfo.Feature, _packageInfo.FeatureCount);
         }
 
         /// <summary>
@@ -217,7 +207,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets an array of DismCustomProperty Structure objects representing the custom properties of the package.
         /// </summary>
-        public DismCustomPropertyCollection CustomProperties { get; } = new DismCustomPropertyCollection();
+        public DismCustomPropertyCollection CustomProperties { get; }
 
         /// <summary>
         /// Gets a description of the purpose of the package.
@@ -232,7 +222,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets an array of DismFeature Structure objects representing the features in the package.
         /// </summary>
-        public DismFeatureCollection Features { get; } = new DismFeatureCollection();
+        public DismFeatureCollection Features { get; }
 
         /// <summary>
         /// Gets a DismFullyOfflineInstallableType Enumeration value describing whether a package can be installed offline without booting the image.
@@ -295,20 +285,20 @@ namespace Microsoft.Dism
         public string SupportInformation => _packageInfo.SupportInformation;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismPackageInfo);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismPackageInfo"/> is equal to the current <see cref="DismPackageInfo"/>.
+        /// Determines whether the specified <see cref="DismPackageInfo" /> is equal to the current <see cref="DismPackageInfo" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismPackageInfo"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismPackageInfo"/> is equal to the current <see cref="DismPackageInfo"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismPackageInfo" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismPackageInfo" /> is equal to the current <see cref="DismPackageInfo" />; otherwise, false.</returns>
         public bool Equals(DismPackageInfo other)
         {
             return other != null
@@ -318,10 +308,10 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
-            return String.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode();
+            return string.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode();
         }
     }
 }

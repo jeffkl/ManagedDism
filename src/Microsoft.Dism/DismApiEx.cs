@@ -127,7 +127,7 @@ namespace Microsoft.Dism
                 throw new Exception($"Loading the latest DISM Generation library ({dismGeneration}) failed.");
             }
 
-            DismApi.Initialize(logLevel, logFilePath, scratchDirectory);
+            Initialize(logLevel, logFilePath, scratchDirectory);
 
             CurrentDismGeneration = dismGeneration;
         }

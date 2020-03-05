@@ -21,7 +21,7 @@ namespace Microsoft.Dism
                 return GetLastErrorMessageTestHook();
             }
 
-            if (NativeMethods.DismGetLastErrorMessage(out IntPtr errorMessagePtr) != DismApi.ERROR_SUCCESS)
+            if (NativeMethods.DismGetLastErrorMessage(out IntPtr errorMessagePtr) != ERROR_SUCCESS)
             {
                 return null;
             }
@@ -29,10 +29,10 @@ namespace Microsoft.Dism
             try
             {
                 // Get a string from the pointer
-                string dismString = errorMessagePtr.ToStructure<DismApi.DismString>();
+                string dismString = errorMessagePtr.ToStructure<DismString>();
 
                 // See if the string has a value
-                if (String.IsNullOrEmpty(dismString) == false)
+                if (string.IsNullOrEmpty(dismString) == false)
                 {
                     // Return the trimmed value
                     return dismString.Trim();
@@ -41,7 +41,7 @@ namespace Microsoft.Dism
             finally
             {
                 // Clean up
-                DismApi.Delete(errorMessagePtr);
+                Delete(errorMessagePtr);
             }
 
             // No error message was found
@@ -59,7 +59,7 @@ namespace Microsoft.Dism
             ///
             /// DismGetLastErrorMessage does not apply to the DismShutdown function, DismDelete function, or the DismGetLastErrorMessage function.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824754.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824754.aspx" />
             /// HRESULT WINAPI DismGetLastErrorMessage(_Out_ DismString** ErrorMessage);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

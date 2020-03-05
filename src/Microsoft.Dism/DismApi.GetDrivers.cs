@@ -12,30 +12,25 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the drivers in an image.
         /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)"/> method.</param>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="allDrivers">true or false to specify to retrieve all drivers or just out-of-box drivers.</param>
-        /// <returns>A <see cref="DismDriverPackageCollection"/> object containing a collection of <see cref="DismDriverPackage"/> objects.</returns>
+        /// <returns>A <see cref="DismDriverPackageCollection" /> object containing a collection of <see cref="DismDriverPackage" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismDriverPackageCollection GetDrivers(DismSession session, bool allDrivers)
         {
-            var driverPackages = new DismDriverPackageCollection();
-
             int hresult = NativeMethods.DismGetDrivers(session, allDrivers, out IntPtr driverPackagePtr, out UInt32 driverPackageCount);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult, session);
 
-                // Add the items
-                driverPackages.AddRange<DismApi.DismDriverPackage_>(driverPackagePtr, (int)driverPackageCount, i => new DismDriverPackage(i));
+                return new DismDriverPackageCollection(driverPackagePtr, driverPackageCount);
             }
             finally
             {
                 // Clean up
-                DismApi.Delete(driverPackagePtr);
+                Delete(driverPackagePtr);
             }
-
-            return driverPackages;
         }
 
         internal static partial class NativeMethods
@@ -49,7 +44,7 @@ namespace Microsoft.Dism
             /// <param name="Count">The number of DismDriverPackage structures that were returned.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824784.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824784.aspx" />
             /// HRESULT WINAPI DismGetDrivers (_In_ DismSession Session, _In_ BOOL AllDrivers, _Outptr_result_buffer_(*Count) DismDriverPackage** DriverPackage, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

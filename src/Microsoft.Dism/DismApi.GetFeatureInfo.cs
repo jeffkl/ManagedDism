@@ -14,11 +14,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="featureName">The name of the feature that you want to get more information about.</param>
-        /// <returns>A <see cref="DismFeatureInfo"/> object.</returns>
+        /// <returns>A <see cref="DismFeatureInfo" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureInfo GetFeatureInfo(DismSession session, string featureName)
         {
-            return DismApi.GetFeatureInfo(session, featureName, String.Empty, DismPackageIdentifier.None);
+            return GetFeatureInfo(session, featureName, string.Empty, DismPackageIdentifier.None);
         }
 
         /// <summary>
@@ -27,11 +27,11 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="featureName">The name of the feature that you want to get more information about.</param>
         /// <param name="packageName">The package name.</param>
-        /// <returns>A <see cref="DismFeatureInfo"/> object.</returns>
+        /// <returns>A <see cref="DismFeatureInfo" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureInfo GetFeatureInfoByPackageName(DismSession session, string featureName, string packageName)
         {
-            return DismApi.GetFeatureInfo(session, featureName, packageName, DismPackageIdentifier.Name);
+            return GetFeatureInfo(session, featureName, packageName, DismPackageIdentifier.Name);
         }
 
         /// <summary>
@@ -40,11 +40,11 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="featureName">The name of the feature that you want to get more information about.</param>
         /// <param name="packagePath">An absolute path to a package.</param>
-        /// <returns>A <see cref="DismFeatureInfo"/> object.</returns>
+        /// <returns>A <see cref="DismFeatureInfo" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismFeatureInfo GetFeatureInfoByPackagePath(DismSession session, string featureName, string packagePath)
         {
-            return DismApi.GetFeatureInfo(session, featureName, packagePath, DismPackageIdentifier.Path);
+            return GetFeatureInfo(session, featureName, packagePath, DismPackageIdentifier.Path);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.Dism
         /// <param name="featureName">The name of the feature that you want to get more information about.</param>
         /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the packageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
-        /// <returns>A <see cref="DismFeatureInfo"/> object.</returns>
+        /// <returns>A <see cref="DismFeatureInfo" /> object.</returns>
         private static DismFeatureInfo GetFeatureInfo(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier)
         {
             int hresult = NativeMethods.DismGetFeatureInfo(session, featureName, identifier, packageIdentifier, out IntPtr featureInfoPtr);
@@ -69,7 +69,7 @@ namespace Microsoft.Dism
             finally
             {
                 // Clean up the native pointer
-                DismApi.Delete(featureInfoPtr);
+                Delete(featureInfoPtr);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>You can use this function to get the custom properties of a feature. If the feature has custom properties, they will be stored in the CustomProperty field as an array. Not all features have custom properties.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824735.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824735.aspx" />
             /// HRESULT WINAPI DismGetFeatureInfo (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _Out_ DismFeatureInfo** FeatureInfo);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]

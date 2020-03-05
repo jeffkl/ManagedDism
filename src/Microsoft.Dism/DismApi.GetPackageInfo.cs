@@ -14,11 +14,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenImageSession Function.</param>
         /// <param name="packageName">The name of the package to get information about.</param>
-        /// <returns>A <see cref="DismPackageInfo"/> object.</returns>
+        /// <returns>A <see cref="DismPackageInfo" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismPackageInfo GetPackageInfoByName(DismSession session, string packageName)
         {
-            return DismApi.GetPackageInfo(session, packageName, DismPackageIdentifier.Name);
+            return GetPackageInfo(session, packageName, DismPackageIdentifier.Name);
         }
 
         /// <summary>
@@ -26,11 +26,11 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenImageSession Function.</param>
         /// <param name="packagePath">An absolute path to a .cab file or to a folder containing an expanded package.</param>
-        /// <returns>A <see cref="DismPackageInfo"/> object.</returns>
+        /// <returns>A <see cref="DismPackageInfo" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismPackageInfo GetPackageInfoByPath(DismSession session, string packagePath)
         {
-            return DismApi.GetPackageInfo(session, packagePath, DismPackageIdentifier.Path);
+            return GetPackageInfo(session, packagePath, DismPackageIdentifier.Path);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.Dism
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenImageSession Function.</param>
         /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the PackageIdentifier parameter value.</param>
         /// <param name="packageIdentifier">A valid DismPackageIdentifier Enumeration value.</param>
-        /// <returns>A <see cref="DismPackageInfo"/> object.</returns>
+        /// <returns>A <see cref="DismPackageInfo" /> object.</returns>
         private static DismPackageInfo GetPackageInfo(DismSession session, string identifier, DismPackageIdentifier packageIdentifier)
         {
             int hresult = NativeMethods.DismGetPackageInfo(session, identifier, packageIdentifier, out IntPtr packageInfoPtr);
@@ -54,7 +54,7 @@ namespace Microsoft.Dism
             finally
             {
                 // Clean up
-                DismApi.Delete(packageInfoPtr);
+                Delete(packageInfoPtr);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>You can use this function to determine whether a package is applicable to the specified image. The DismPackageInfo Structure contains an Applicable field, which is a Boolean that returns TRUE if the package is applicable and FALSE if the package is not applicable to the specified image.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824801.aspx"/>
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824801.aspx" />
             /// HRESULT WINAPI DismGetPackageInfo (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _Out_ DismPackageInfo** PackageInfo);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
