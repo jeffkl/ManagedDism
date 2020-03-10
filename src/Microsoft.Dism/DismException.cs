@@ -99,6 +99,9 @@ namespace Microsoft.Dism
                 case DismApi.DISMAPI_E_OPEN_SESSION_HANDLES:
                     // User has not called CloseSession() on open sessions
                     return new DismOpenSessionsException(errorCode);
+
+                case DismApi.CBS_E_NOT_APPLICABLE:
+                    return new DismPackageNotApplicableException(errorCode);
             }
 
             // Attempt to get an error message from the DismApi
@@ -208,6 +211,49 @@ namespace Microsoft.Dism
 
         private DismOpenSessionsException(SerializationInfo serializationInfo, StreamingContext streamingContext)
             : base(serializationInfo, streamingContext)
+        {
+        }
+    }
+
+    /// <summary>
+    /// The exception that is thrown when a package is not applicable to a particular session.
+    /// </summary>
+    [Serializable]
+    public sealed class DismPackageNotApplicableException : DismException
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code to associate with the exception.</param>
+        public DismPackageNotApplicableException(int errorCode)
+        : base(errorCode, Resources.DismExceptionMessagePackageNotApplicable)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        public DismPackageNotApplicableException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        public DismPackageNotApplicableException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
+        public DismPackageNotApplicableException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
     }

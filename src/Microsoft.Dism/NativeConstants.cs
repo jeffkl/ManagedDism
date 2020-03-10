@@ -182,6 +182,11 @@ namespace Microsoft.Dism
         /// The requested operation is successful. The DISM session needs to be reloaded.
         /// </summary>
         internal const int DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED = 0x00000001;  // 1
+
+        /// <summary>
+        /// The specified package is not applicable.
+        /// </summary>
+        internal const uint CBS_E_NOT_APPLICABLE = 0x800F081E;
 #pragma warning restore SA1310 // Field names must not contain underscore
     }
 }
