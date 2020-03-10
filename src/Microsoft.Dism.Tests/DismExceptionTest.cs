@@ -24,6 +24,16 @@ namespace Microsoft.Dism.Tests
         }
 
         [Fact]
+        public void DismPackageNotApplicableExceptionTest()
+        {
+            Exception exception = DismException.GetDismExceptionForHResult(unchecked((int)DismApi.CBS_E_NOT_APPLICABLE));
+
+            exception.ShouldBeOfType<DismPackageNotApplicableException>();
+
+            exception.Message.ShouldBe(Resources.DismExceptionMessagePackageNotApplicable);
+        }
+
+        [Fact]
         public void DismRebootRequiredExceptionTest()
         {
             VerifyDismException<DismRebootRequiredException>(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, Resources.DismExceptionMessageRebootRequired);

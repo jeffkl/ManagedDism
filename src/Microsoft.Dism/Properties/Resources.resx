@@ -125,6 +125,10 @@
     <value>There are one or more open sessions.</value>
     <comment>Exception message when there are one or more open sessions and a user calls the Shutdown() method.</comment>
   </data>
+  <data name="DismExceptionMessagePackageNotApplicable" xml:space="preserve">
+    <value>The specified package is not applicable.</value>
+    <comment>Exception message when a package is not applicable.</comment>
+  </data>
   <data name="DismExceptionMessageRebootRequired" xml:space="preserve">
     <value>A restart is required to complete the operation.</value>
     <comment>Exception message when an operation requires a reboot.</comment>
