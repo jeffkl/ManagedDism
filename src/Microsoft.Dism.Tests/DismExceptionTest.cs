@@ -68,6 +68,24 @@ namespace Microsoft.Dism.Tests
         }
 
         [Fact]
+        public void ReloadSessionRequiredButNoSession()
+        {
+            DismException exception = Should.Throw<DismException>(() => DismUtilities.ThrowIfFail(1, session: null));
+
+            exception.HResult.ShouldBe(1);
+            exception.Message.ShouldBe($"The {nameof(ReloadSessionRequiredButNoSession)} function returned DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED but was not passed a session to reload.");
+        }
+
+        [Fact]
+        public void UnknownErrorThrowsDismExceptionWithHResult()
+        {
+            DismException exception = Should.Throw<DismException>(() => DismUtilities.ThrowIfFail(3));
+
+            exception.HResult.ShouldBe(3);
+            exception.Message.ShouldBe($"The {nameof(UnknownErrorThrowsDismExceptionWithHResult)} function returned the error code 0x00000003");
+        }
+
+        [Fact]
         public void Win32ExceptionTest()
         {
             const int errorCode = unchecked((int)0x80020012);

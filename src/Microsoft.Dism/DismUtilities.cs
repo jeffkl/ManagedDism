@@ -61,6 +61,7 @@
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -297,10 +298,16 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="hresult">An HRESULT value from a function return to check.</param>
         /// <param name="session">An optional <see cref="DismSession" /> to reload if necessary.</param>
-        internal static void ThrowIfFail(int hresult, DismSession session = null)
+        /// <param name="callerMemberName">The name of the calling member.</param>
+        internal static void ThrowIfFail(int hresult, DismSession session = null, [CallerMemberName] string callerMemberName = null)
         {
-            if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED && session != null)
+            if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED)
             {
+                if (session == null)
+                {
+                    throw new DismException(hresult, $"The {callerMemberName} function returned {nameof(DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED)} but was not passed a session to reload.");
+                }
+
                 // Reload the session if necessary
                 session.Reload();
 
@@ -309,7 +316,7 @@ namespace Microsoft.Dism
 
             if (hresult != DismApi.ERROR_SUCCESS)
             {
-                throw DismException.GetDismExceptionForHResult(hresult);
+                throw DismException.GetDismExceptionForHResult(hresult) ?? new DismException(hresult, $"The {callerMemberName} function returned the error code 0x{hresult:X8}");
             }
         }
 
