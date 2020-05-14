@@ -53,7 +53,7 @@ namespace Microsoft.Dism
 
             int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
 
-            DismUtilities.ThrowIfFail(hresult);
+            DismUtilities.ThrowIfFail(hresult, session);
 
             return imageHealthState;
         }

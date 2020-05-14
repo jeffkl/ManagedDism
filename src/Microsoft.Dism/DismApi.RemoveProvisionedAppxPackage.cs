@@ -18,7 +18,7 @@ namespace Microsoft.Dism
         {
             int hresult = NativeMethods._DismRemoveProvisionedAppxPackage(session, packageName);
 
-            DismUtilities.ThrowIfFail(hresult);
+            DismUtilities.ThrowIfFail(hresult, session);
         }
 
         internal static partial class NativeMethods
