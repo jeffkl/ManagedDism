@@ -3,13 +3,11 @@ resources:
 
 variables:
   ArtifactsDirectoryName: 'artifacts'
-  BinaryLoggerArgs: '"/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
   BuildConfiguration: 'Debug'
   BuildPlatform: 'Any CPU'
-  DotNetCoreVersion: '3.1.100'
+  DotNetCoreVersion: '3.1.300'
+  MSBuildArguments: '"/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
 
-pool:
-  vmImage: 'windows-2019'
 trigger:
   batch: true
   branches:
@@ -22,7 +20,7 @@ trigger:
 pr:
   branches:
     include:
-    - master
+    - 'master'
   paths:
     exclude:
     - '*.md'
@@ -45,17 +43,15 @@ jobs:
   - task: MSBuild@1
     displayName: 'Build Solution'
     inputs:
-      solution: 'Microsoft.Dism.sln'
       platform: '$(BuildPlatform)'
       configuration: '$(BuildConfiguration)'
-      msbuildArguments: '$(BinaryLoggerArgs)'
+      msbuildArguments: '$(MSBuildArguments)'
 
-  - task: VSTest@2
+  - task: DotNetCoreCLI@2
     displayName: 'Run Unit Tests'
     inputs:
-      testAssemblyVer2: |
-       **\*Tests.dll
-       !**\obj\**
+      command: 'test'
+      arguments: '--no-build -restore:false -property:VSTestNoBuild=true'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifacts'
