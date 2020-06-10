@@ -1,14 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
   <PropertyGroup>
     <DebugType Condition="'$(Configuration)' == 'Debug'">Full</DebugType>
   </PropertyGroup>
 
-  <Sdk Name="Microsoft.Build.CentralPackageVersions" />
-  <Target Name="SetRepositoryPropertiesFromBuildVersion"
-          AfterTargets="GetBuildVersion">
-    <PropertyGroup>
-      <RepositoryCommit Condition="'$(RepositoryCommit)' == ''">$(GitCommitId)</RepositoryCommit>
-    </PropertyGroup>
-  </Target>
+  <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.79" />
 </Project>
