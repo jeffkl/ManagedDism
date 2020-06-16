@@ -51,7 +51,6 @@ jobs:
     displayName: 'Run Unit Tests'
     inputs:
       command: 'test'
-      arguments: '--no-build -restore:false -property:VSTestNoBuild=true'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifacts'
