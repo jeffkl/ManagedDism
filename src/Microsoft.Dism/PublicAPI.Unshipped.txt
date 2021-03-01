@@ -1,1 +1,8 @@
-﻿
+﻿Microsoft.Dism.DismSession.RebootRequired.get -> bool
+Microsoft.Dism.DismSessionOptions
+Microsoft.Dism.DismSessionOptions.DismSessionOptions() -> void
+Microsoft.Dism.DismSessionOptions.ThrowExceptionOnRebootRequired.get -> bool
+Microsoft.Dism.DismSessionOptions.ThrowExceptionOnRebootRequired.set -> void
+static Microsoft.Dism.DismApi.OpenOfflineSessionEx(string imagePath, Microsoft.Dism.DismSessionOptions options = null) -> Microsoft.Dism.DismSession
+static Microsoft.Dism.DismApi.OpenOfflineSessionEx(string imagePath, string windowsDirectory, string systemDrive, Microsoft.Dism.DismSessionOptions options = null) -> Microsoft.Dism.DismSession
+static Microsoft.Dism.DismApi.OpenOnlineSessionEx(Microsoft.Dism.DismSessionOptions options = null) -> Microsoft.Dism.DismSession

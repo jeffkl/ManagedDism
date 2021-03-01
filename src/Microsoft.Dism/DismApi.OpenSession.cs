@@ -50,10 +50,11 @@ namespace Microsoft.Dism
         /// <param name="imagePath">An absolute or relative path to the root directory of an offline Windows image, an absolute or relative path to the root directory of a mounted Windows image, or DISM_ONLINE_IMAGE to associate with the online Windows installation.</param>
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
+        /// <param name="options">A <see cref="DismSessionOptions"/> object that contains the options for the session.</param>
         /// <returns>A <see cref="DismSession" /> object.</returns>
-        private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive)
+        private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive, DismSessionOptions options = null)
         {
-            return new DismSession(imagePath, windowsDirectory, systemDrive);
+            return new DismSession(imagePath, windowsDirectory, systemDrive, options);
         }
 
         internal static partial class NativeMethods

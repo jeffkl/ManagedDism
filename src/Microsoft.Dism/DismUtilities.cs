@@ -316,6 +316,16 @@ namespace Microsoft.Dism
 
             if (hresult != DismApi.ERROR_SUCCESS)
             {
+                if (session != null)
+                {
+                    session.RebootRequired = hresult == DismApi.ERROR_SUCCESS_REBOOT_REQUIRED;
+
+                    if (session.RebootRequired && !session.Options.ThrowExceptionOnRebootRequired)
+                    {
+                        return;
+                    }
+                }
+
                 throw DismException.GetDismExceptionForHResult(hresult) ?? new DismException(hresult, $"The {callerMemberName} function returned the error code 0x{hresult:X8}");
             }
         }
