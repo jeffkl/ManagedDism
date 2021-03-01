@@ -6,13 +6,14 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.Dism.Tests
 {
-    public class DismSessionTest : TestBase
+    public class DismSessionTest : DismTestBase
     {
-        public DismSessionTest(TestWimTemplate template)
-            : base(template)
+        public DismSessionTest(TestWimTemplate template, ITestOutputHelper testOutput)
+            : base(template, testOutput)
         {
         }
 
@@ -28,8 +29,6 @@ namespace Microsoft.Dism.Tests
         [ClassData(typeof(SessionOptionsBehaviorData))]
         public void SessionOptionsBehavior(DismSessionOptions options, Func<DismSessionOptions, DismSession> sessionFunc)
         {
-            DismApi.Initialize(DismLogLevel.LogErrors);
-
             using (DismSession session = sessionFunc(options))
             {
                 session.Options.ShouldNotBeNull();
@@ -61,8 +60,6 @@ namespace Microsoft.Dism.Tests
                 session.RebootRequired = false;
                 session.RebootRequired.ShouldBeTrue();
             }
-
-            DismApi.Shutdown();
         }
 
         private class SessionOptionsBehaviorData : TheoryData<DismSessionOptions, Func<DismSessionOptions, DismSession>>
