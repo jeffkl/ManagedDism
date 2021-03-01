@@ -9,8 +9,13 @@ using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
-    public class DismSessionTest
+    public class DismSessionTest : TestBase
     {
+        public DismSessionTest(TestWimTemplate template)
+            : base(template)
+        {
+        }
+
         [Fact]
         public void SessionOptionsDefaults()
         {
