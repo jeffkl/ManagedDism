@@ -11,7 +11,6 @@
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="2.2.0" />
     <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" />
-    <GlobalPackageReference Include="Microsoft.NetFramework.Analyzers" Version="3.3.0" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.4.216" />
     <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="3.3.2" />
