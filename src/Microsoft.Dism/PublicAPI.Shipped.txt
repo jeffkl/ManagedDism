@@ -334,6 +334,10 @@ static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSess
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
 static Microsoft.Dism.DismApi.GetCapabilities(Microsoft.Dism.DismSession session) -> Microsoft.Dism.DismCapabilityCollection
 static Microsoft.Dism.DismApi.GetCapabilityInfo(Microsoft.Dism.DismSession session, string capabilityName) -> Microsoft.Dism.DismCapabilityInfo
 static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession session, string driverPath) -> Microsoft.Dism.DismDriverCollection
