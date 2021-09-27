@@ -1,4 +1,31 @@
-﻿Microsoft.Dism.DismApi
+﻿const Microsoft.Dism.DismApi.DISM_COMMIT_APPEND = 131072 -> uint
+const Microsoft.Dism.DismApi.DISM_COMMIT_GENERATE_INTEGRITY = 65536 -> uint
+const Microsoft.Dism.DismApi.DISM_COMMIT_IMAGE = 0 -> uint
+const Microsoft.Dism.DismApi.DISM_COMMIT_MASK = 4294901760 -> uint
+const Microsoft.Dism.DismApi.DISM_DISCARD_IMAGE = 1 -> uint
+const Microsoft.Dism.DismApi.DISM_MOUNT_CHECK_INTEGRITY = 4 -> uint
+const Microsoft.Dism.DismApi.DISM_MOUNT_OPTIMIZE = 2 -> uint
+const Microsoft.Dism.DismApi.DISM_MOUNT_READONLY = 1 -> uint
+const Microsoft.Dism.DismApi.DISM_MOUNT_READWRITE = 0 -> uint
+const Microsoft.Dism.DismApi.DISM_ONLINE_IMAGE = "DISM_{53BFAE52-B167-4E2F-A258-0A37B57FF845}" -> string
+const Microsoft.Dism.DismApi.DISM_SESSION_DEFAULT = 0 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_BUSY = 2148468994 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_DISMAPI_NOT_INITIALIZED = 3221487617 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_INVALID_DISM_SESSION = 3221487620 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_INVALID_IMAGE_INDEX = 3221487621 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_INVALID_IMAGE_NAME = 3221487622 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_LOGGING_DISABLED = 3221487625 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_MUST_SPECIFY_ONLINE_IMAGE = 3221487630 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_NEEDS_REMOUNT = 3243311380 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_HANDLES_UNABLE_TO_MOUNT_IMAGE_PATH = 3221487627 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_HANDLES_UNABLE_TO_REMOUNT_IMAGE_PATH = 3221487628 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_HANDLES_UNABLE_TO_UNMOUNT_IMAGE_PATH = 3221487626 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_SESSION_HANDLES = 3221487619 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_PARENT_FEATURE_DISABLED = 3221487629 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_SHUTDOWN_IN_PROGRESS = 3221487618 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_UNABLE_TO_UNMOUNT_IMAGE_PATH = 3221487623 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_FEATURE = 2148468748 -> uint
+Microsoft.Dism.DismApi
 Microsoft.Dism.DismAppxPackage
 Microsoft.Dism.DismAppxPackage.Architecture.get -> Microsoft.Dism.DismProcessorArchitecture
 Microsoft.Dism.DismAppxPackage.DisplayName.get -> string
@@ -59,10 +86,10 @@ Microsoft.Dism.DismDriverSignature.Unknown = 0 -> Microsoft.Dism.DismDriverSigna
 Microsoft.Dism.DismDriverSignature.Unsigned = 1 -> Microsoft.Dism.DismDriverSignature
 Microsoft.Dism.DismException
 Microsoft.Dism.DismException.DismException() -> void
-Microsoft.Dism.DismException.DismException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) -> void
 Microsoft.Dism.DismException.DismException(int error) -> void
 Microsoft.Dism.DismException.DismException(string message) -> void
 Microsoft.Dism.DismException.DismException(string message, System.Exception innerException) -> void
+Microsoft.Dism.DismException.DismException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) -> void
 Microsoft.Dism.DismFeature
 Microsoft.Dism.DismFeature.Equals(Microsoft.Dism.DismFeature other) -> bool
 Microsoft.Dism.DismFeature.FeatureName.get -> string
@@ -125,6 +152,14 @@ Microsoft.Dism.DismLogLevel
 Microsoft.Dism.DismLogLevel.LogErrors = 0 -> Microsoft.Dism.DismLogLevel
 Microsoft.Dism.DismLogLevel.LogErrorsWarnings = 1 -> Microsoft.Dism.DismLogLevel
 Microsoft.Dism.DismLogLevel.LogErrorsWarningsInfo = 2 -> Microsoft.Dism.DismLogLevel
+Microsoft.Dism.DismMountedImageInfo
+Microsoft.Dism.DismMountedImageInfo.Equals(Microsoft.Dism.DismMountedImageInfo other) -> bool
+Microsoft.Dism.DismMountedImageInfo.ImageFilePath.get -> string
+Microsoft.Dism.DismMountedImageInfo.ImageIndex.get -> int
+Microsoft.Dism.DismMountedImageInfo.MountMode.get -> Microsoft.Dism.DismMountMode
+Microsoft.Dism.DismMountedImageInfo.MountPath.get -> string
+Microsoft.Dism.DismMountedImageInfo.MountStatus.get -> Microsoft.Dism.DismMountStatus
+Microsoft.Dism.DismMountedImageInfoCollection
 Microsoft.Dism.DismMountImageOptions
 Microsoft.Dism.DismMountImageOptions.CheckIntegrity = 4 -> Microsoft.Dism.DismMountImageOptions
 Microsoft.Dism.DismMountImageOptions.None = 0 -> Microsoft.Dism.DismMountImageOptions
@@ -136,14 +171,6 @@ Microsoft.Dism.DismMountStatus
 Microsoft.Dism.DismMountStatus.Invalid = 2 -> Microsoft.Dism.DismMountStatus
 Microsoft.Dism.DismMountStatus.NeedsRemount = 1 -> Microsoft.Dism.DismMountStatus
 Microsoft.Dism.DismMountStatus.Ok = 0 -> Microsoft.Dism.DismMountStatus
-Microsoft.Dism.DismMountedImageInfo
-Microsoft.Dism.DismMountedImageInfo.Equals(Microsoft.Dism.DismMountedImageInfo other) -> bool
-Microsoft.Dism.DismMountedImageInfo.ImageFilePath.get -> string
-Microsoft.Dism.DismMountedImageInfo.ImageIndex.get -> int
-Microsoft.Dism.DismMountedImageInfo.MountMode.get -> Microsoft.Dism.DismMountMode
-Microsoft.Dism.DismMountedImageInfo.MountPath.get -> string
-Microsoft.Dism.DismMountedImageInfo.MountStatus.get -> Microsoft.Dism.DismMountStatus
-Microsoft.Dism.DismMountedImageInfoCollection
 Microsoft.Dism.DismNotInitializedException
 Microsoft.Dism.DismNotInitializedException.DismNotInitializedException() -> void
 Microsoft.Dism.DismNotInitializedException.DismNotInitializedException(string message) -> void
@@ -160,8 +187,8 @@ Microsoft.Dism.DismPackage.PackageState.get -> Microsoft.Dism.DismPackageFeature
 Microsoft.Dism.DismPackage.ReleaseType.get -> Microsoft.Dism.DismReleaseType
 Microsoft.Dism.DismPackageCollection
 Microsoft.Dism.DismPackageFeatureState
-Microsoft.Dism.DismPackageFeatureState.InstallPending = 5 -> Microsoft.Dism.DismPackageFeatureState
 Microsoft.Dism.DismPackageFeatureState.Installed = 4 -> Microsoft.Dism.DismPackageFeatureState
+Microsoft.Dism.DismPackageFeatureState.InstallPending = 5 -> Microsoft.Dism.DismPackageFeatureState
 Microsoft.Dism.DismPackageFeatureState.NotPresent = 0 -> Microsoft.Dism.DismPackageFeatureState
 Microsoft.Dism.DismPackageFeatureState.PartiallyInstalled = 7 -> Microsoft.Dism.DismPackageFeatureState
 Microsoft.Dism.DismPackageFeatureState.Removed = 3 -> Microsoft.Dism.DismPackageFeatureState
@@ -240,6 +267,15 @@ Microsoft.Dism.DismRestartType.No = 0 -> Microsoft.Dism.DismRestartType
 Microsoft.Dism.DismRestartType.Possible = 1 -> Microsoft.Dism.DismRestartType
 Microsoft.Dism.DismRestartType.Required = 2 -> Microsoft.Dism.DismRestartType
 Microsoft.Dism.DismSession
+Microsoft.Dism.DismSession.RebootRequired.get -> bool
+Microsoft.Dism.DismSessionOptions
+Microsoft.Dism.DismSessionOptions.DismSessionOptions() -> void
+Microsoft.Dism.DismSessionOptions.ThrowExceptionOnRebootRequired.get -> bool
+Microsoft.Dism.DismSessionOptions.ThrowExceptionOnRebootRequired.set -> void
+Microsoft.Dism.DismStubPackageOption
+Microsoft.Dism.DismStubPackageOption.InstallFull = 1 -> Microsoft.Dism.DismStubPackageOption
+Microsoft.Dism.DismStubPackageOption.InstallStub = 2 -> Microsoft.Dism.DismStubPackageOption
+Microsoft.Dism.DismStubPackageOption.None = 0 -> Microsoft.Dism.DismStubPackageOption
 Microsoft.Dism.DismWimCustomizedInfo
 Microsoft.Dism.DismWimCustomizedInfo.CreatedTime.get -> System.DateTime
 Microsoft.Dism.DismWimCustomizedInfo.DirectoryCount.get -> long
@@ -247,33 +283,6 @@ Microsoft.Dism.DismWimCustomizedInfo.Equals(Microsoft.Dism.DismWimCustomizedInfo
 Microsoft.Dism.DismWimCustomizedInfo.FileCount.get -> long
 Microsoft.Dism.DismWimCustomizedInfo.ModifiedTime.get -> System.DateTime
 Microsoft.Dism.DismWimCustomizedInfo.Size.get -> long
-const Microsoft.Dism.DismApi.DISMAPI_E_BUSY = 2148468994 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_DISMAPI_NOT_INITIALIZED = 3221487617 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_INVALID_DISM_SESSION = 3221487620 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_INVALID_IMAGE_INDEX = 3221487621 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_INVALID_IMAGE_NAME = 3221487622 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_LOGGING_DISABLED = 3221487625 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_MUST_SPECIFY_ONLINE_IMAGE = 3221487630 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_NEEDS_REMOUNT = 3243311380 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_HANDLES_UNABLE_TO_MOUNT_IMAGE_PATH = 3221487627 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_HANDLES_UNABLE_TO_REMOUNT_IMAGE_PATH = 3221487628 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_HANDLES_UNABLE_TO_UNMOUNT_IMAGE_PATH = 3221487626 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_OPEN_SESSION_HANDLES = 3221487619 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_PARENT_FEATURE_DISABLED = 3221487629 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_SHUTDOWN_IN_PROGRESS = 3221487618 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_UNABLE_TO_UNMOUNT_IMAGE_PATH = 3221487623 -> uint
-const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_FEATURE = 2148468748 -> uint
-const Microsoft.Dism.DismApi.DISM_COMMIT_APPEND = 131072 -> uint
-const Microsoft.Dism.DismApi.DISM_COMMIT_GENERATE_INTEGRITY = 65536 -> uint
-const Microsoft.Dism.DismApi.DISM_COMMIT_IMAGE = 0 -> uint
-const Microsoft.Dism.DismApi.DISM_COMMIT_MASK = 4294901760 -> uint
-const Microsoft.Dism.DismApi.DISM_DISCARD_IMAGE = 1 -> uint
-const Microsoft.Dism.DismApi.DISM_MOUNT_CHECK_INTEGRITY = 4 -> uint
-const Microsoft.Dism.DismApi.DISM_MOUNT_OPTIMIZE = 2 -> uint
-const Microsoft.Dism.DismApi.DISM_MOUNT_READONLY = 1 -> uint
-const Microsoft.Dism.DismApi.DISM_MOUNT_READWRITE = 0 -> uint
-const Microsoft.Dism.DismApi.DISM_ONLINE_IMAGE = "DISM_{53BFAE52-B167-4E2F-A258-0A37B57FF845}" -> string
-const Microsoft.Dism.DismApi.DISM_SESSION_DEFAULT = 0 -> uint
 override Microsoft.Dism.DismAppxPackage.Equals(object obj) -> bool
 override Microsoft.Dism.DismAppxPackage.GetHashCode() -> int
 override Microsoft.Dism.DismCapability.Equals(object obj) -> bool
@@ -310,8 +319,9 @@ static Microsoft.Dism.DismApi.AddDriversEx(Microsoft.Dism.DismSession session, s
 static Microsoft.Dism.DismApi.AddPackage(Microsoft.Dism.DismSession session, string packagePath, bool ignoreCheck, bool preventPending) -> void
 static Microsoft.Dism.DismApi.AddPackage(Microsoft.Dism.DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback) -> void
 static Microsoft.Dism.DismApi.AddPackage(Microsoft.Dism.DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
-static Microsoft.Dism.DismApi.AddProvisionedAppxPackage(Microsoft.Dism.DismSession session, string appPath, System.Collections.Generic.List<string> dependencyPackages, System.Collections.Generic.List<string> optionalPackages, System.Collections.Generic.List<string> licensePaths, string customDataPath, string regions) -> void
 static Microsoft.Dism.DismApi.AddProvisionedAppxPackage(Microsoft.Dism.DismSession session, string appPath, System.Collections.Generic.List<string> dependencyPackages, string licensePath, string customDataPath) -> void
+static Microsoft.Dism.DismApi.AddProvisionedAppxPackage(Microsoft.Dism.DismSession session, string appPath, System.Collections.Generic.List<string> dependencyPackages, System.Collections.Generic.List<string> optionalPackages, System.Collections.Generic.List<string> licensePaths, string customDataPath, string regions) -> void
+static Microsoft.Dism.DismApi.AddProvisionedAppxPackage(Microsoft.Dism.DismSession session, string appPath, System.Collections.Generic.List<string> dependencyPackages, System.Collections.Generic.List<string> optionalPackages, System.Collections.Generic.List<string> licensePaths, string customDataPath, string regions, Microsoft.Dism.DismStubPackageOption stubPackageOption) -> void
 static Microsoft.Dism.DismApi.ApplyFfuImage(string imagePath, string applyPath) -> void
 static Microsoft.Dism.DismApi.ApplyFfuImage(string imagePath, string applyPath, string partPath) -> void
 static Microsoft.Dism.DismApi.ApplyUnattend(Microsoft.Dism.DismSession session, string unattendFile, bool singleSession) -> void
@@ -326,6 +336,10 @@ static Microsoft.Dism.DismApi.CommitImage(Microsoft.Dism.DismSession session, bo
 static Microsoft.Dism.DismApi.DisableFeature(Microsoft.Dism.DismSession session, string featureName, string packageName, bool removePayload) -> void
 static Microsoft.Dism.DismApi.DisableFeature(Microsoft.Dism.DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback progressCallback) -> void
 static Microsoft.Dism.DismApi.DisableFeature(Microsoft.Dism.DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback) -> void
+static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackageName(Microsoft.Dism.DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackageName(Microsoft.Dism.DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackageName(Microsoft.Dism.DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback) -> void
@@ -334,10 +348,6 @@ static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSess
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback) -> void
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
-static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll) -> void
-static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths) -> void
-static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback) -> void
-static Microsoft.Dism.DismApi.EnableFeature(Microsoft.Dism.DismSession session, string featureName, bool limitAccess, bool enableAll, System.Collections.Generic.List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
 static Microsoft.Dism.DismApi.GetCapabilities(Microsoft.Dism.DismSession session) -> Microsoft.Dism.DismCapabilityCollection
 static Microsoft.Dism.DismApi.GetCapabilityInfo(Microsoft.Dism.DismSession session, string capabilityName) -> Microsoft.Dism.DismCapabilityInfo
 static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession session, string driverPath) -> Microsoft.Dism.DismDriverCollection
@@ -382,7 +392,10 @@ static Microsoft.Dism.DismApi.MountImage(string imageFilePath, string mountPath,
 static Microsoft.Dism.DismApi.MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void
 static Microsoft.Dism.DismApi.OpenOfflineSession(string imagePath) -> Microsoft.Dism.DismSession
 static Microsoft.Dism.DismApi.OpenOfflineSession(string imagePath, string windowsDirectory, string systemDrive) -> Microsoft.Dism.DismSession
+static Microsoft.Dism.DismApi.OpenOfflineSessionEx(string imagePath, Microsoft.Dism.DismSessionOptions options = null) -> Microsoft.Dism.DismSession
+static Microsoft.Dism.DismApi.OpenOfflineSessionEx(string imagePath, string windowsDirectory, string systemDrive, Microsoft.Dism.DismSessionOptions options = null) -> Microsoft.Dism.DismSession
 static Microsoft.Dism.DismApi.OpenOnlineSession() -> Microsoft.Dism.DismSession
+static Microsoft.Dism.DismApi.OpenOnlineSessionEx(Microsoft.Dism.DismSessionOptions options = null) -> Microsoft.Dism.DismSession
 static Microsoft.Dism.DismApi.RemountImage(string mountPath) -> void
 static Microsoft.Dism.DismApi.RemoveCapability(Microsoft.Dism.DismSession session, string capabilityName) -> void
 static Microsoft.Dism.DismApi.RemoveCapability(Microsoft.Dism.DismSession session, string capabilityName, Microsoft.Dism.DismProgressCallback progressCallback, object userData) -> void

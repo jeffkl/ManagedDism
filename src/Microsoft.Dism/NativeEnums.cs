@@ -418,6 +418,27 @@ namespace Microsoft.Dism
     }
 
     /// <summary>
+    /// Specifies the stub package option when adding an app package (.appx).
+    /// </summary>
+    public enum DismStubPackageOption
+    {
+        /// <summary>
+        /// No option is specified.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Use full package.
+        /// </summary>
+        InstallFull,
+
+        /// <summary>
+        /// Install stub package.
+        /// </summary>
+        InstallStub,
+    }
+
+    /// <summary>
     /// Specifies whether an image is identified by name or by index number.
     /// </summary>
     /// <remarks>
