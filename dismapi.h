@@ -20,27 +20,27 @@ extern "C"
 {
 #endif
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Typedefs
-  //
-  //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //
+    // Typedefs
+    //
+    //////////////////////////////////////////////////////////////////////////////
 
-  typedef UINT DismSession;
+    typedef UINT DismSession;
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Callbacks
-  //
-  //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //
+    // Callbacks
+    //
+    //////////////////////////////////////////////////////////////////////////////
 
-  typedef void(CALLBACK* DISM_PROGRESS_CALLBACK)(_In_ UINT Current, _In_ UINT Total, _In_opt_ PVOID UserData);
+    typedef void(CALLBACK *DISM_PROGRESS_CALLBACK)(_In_ UINT Current, _In_ UINT Total, _In_opt_ PVOID UserData);
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
-  //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //
+    // Constants
+    //
+    //////////////////////////////////////////////////////////////////////////////
 
 #define DISM_ONLINE_IMAGE L"DISM_{53BFAE52-B167-4E2F-A258-0A37B57FF845}"
 #define DISM_SESSION_DEFAULT 0
@@ -50,7 +50,6 @@ extern "C"
 #define DISM_MOUNT_READONLY 0x00000001
 #define DISM_MOUNT_OPTIMIZE 0x00000002
 #define DISM_MOUNT_CHECK_INTEGRITY 0x00000004
-#define DISM_MOUNT_SUPPORT_EA 0x00000008
 
 // Unmount flags
 #define DISM_COMMIT_IMAGE 0x00000000
@@ -59,7 +58,6 @@ extern "C"
 // Commit flags
 #define DISM_COMMIT_GENERATE_INTEGRITY 0x00010000
 #define DISM_COMMIT_APPEND 0x00020000
-#define DISM_COMMIT_SUPPORT_EA 0x00040000
 
 // Commit flags may also be used with unmount.  AND this with unmount flags and you will
 // get the commit-specific flags.
@@ -75,616 +73,616 @@ extern "C"
     //
     //////////////////////////////////////////////////////////////////////////////
 
-  typedef enum _DismLogLevel
-  {
-    DismLogErrors = 0,
-    DismLogErrorsWarnings,
-    DismLogErrorsWarningsInfo
-  } DismLogLevel;
+    typedef enum _DismLogLevel
+    {
+        DismLogErrors = 0,
+        DismLogErrorsWarnings,
+        DismLogErrorsWarningsInfo
+    } DismLogLevel;
 
-  typedef enum _DismImageIdentifier
-  {
-    DismImageIndex = 0,
-    DismImageName
-  } DismImageIdentifier;
+    typedef enum _DismImageIdentifier
+    {
+        DismImageIndex = 0,
+        DismImageName
+    } DismImageIdentifier;
 
-  typedef enum _DismMountMode
-  {
-    DismReadWrite = 0,
-    DismReadOnly
-  } DismMountMode;
+    typedef enum _DismMountMode
+    {
+        DismReadWrite = 0,
+        DismReadOnly
+    } DismMountMode;
 
-  typedef enum _DismImageType
-  {
-    DismImageTypeUnsupported = -1,
-    DismImageTypeWim = 0,
-    DismImageTypeVhd = 1
-  } DismImageType;
+    typedef enum _DismImageType
+    {
+        DismImageTypeUnsupported = -1,
+        DismImageTypeWim = 0,
+        DismImageTypeVhd = 1
+    } DismImageType;
 
-  typedef enum _DismImageBootable
-  {
-    DismImageBootableYes = 0,
-    DismImageBootableNo,
-    DismImageBootableUnknown
-  } DismImageBootable;
+    typedef enum _DismImageBootable
+    {
+        DismImageBootableYes = 0,
+        DismImageBootableNo,
+        DismImageBootableUnknown
+    } DismImageBootable;
 
-  typedef enum _DismMountStatus
-  {
-    DismMountStatusOk = 0,
-    DismMountStatusNeedsRemount,
-    DismMountStatusInvalid
-  } DismMountStatus;
+    typedef enum _DismMountStatus
+    {
+        DismMountStatusOk = 0,
+        DismMountStatusNeedsRemount,
+        DismMountStatusInvalid
+    } DismMountStatus;
 
-  typedef enum _DismImageHealthState
-  {
-    DismImageHealthy = 0,
-    DismImageRepairable,
-    DismImageNonRepairable
-  } DismImageHealthState;
+    typedef enum _DismImageHealthState
+    {
+        DismImageHealthy = 0,
+        DismImageRepairable,
+        DismImageNonRepairable
+    } DismImageHealthState;
 
-  typedef enum _DismPackageIdentifier
-  {
-    DismPackageNone = 0,
-    DismPackageName,
-    DismPackagePath
-  } DismPackageIdentifier;
+    typedef enum _DismPackageIdentifier
+    {
+        DismPackageNone = 0,
+        DismPackageName,
+        DismPackagePath
+    } DismPackageIdentifier;
 
-  typedef enum _DismPackageFeatureState
-  {
-    DismStateNotPresent = 0,
-    DismStateUninstallPending,
-    DismStateStaged,
-    DismStateResolved, // For internal use only
-    DismStateRemoved = DismStateResolved,
-    DismStateInstalled,
-    DismStateInstallPending,
-    DismStateSuperseded,
-    DismStatePartiallyInstalled
-  } DismPackageFeatureState;
+    typedef enum _DismPackageFeatureState
+    {
+        DismStateNotPresent = 0,
+        DismStateUninstallPending,
+        DismStateStaged,
+        DismStateResolved, // For internal use only
+        DismStateRemoved = DismStateResolved,
+        DismStateInstalled,
+        DismStateInstallPending,
+        DismStateSuperseded,
+        DismStatePartiallyInstalled
+    } DismPackageFeatureState;
 
-  typedef enum _DismReleaseType
-  {
-    DismReleaseTypeCriticalUpdate = 0,
-    DismReleaseTypeDriver,
-    DismReleaseTypeFeaturePack,
-    DismReleaseTypeHotfix,
-    DismReleaseTypeSecurityUpdate,
-    DismReleaseTypeSoftwareUpdate,
-    DismReleaseTypeUpdate,
-    DismReleaseTypeUpdateRollup,
-    DismReleaseTypeLanguagePack,
-    DismReleaseTypeFoundation,
-    DismReleaseTypeServicePack,
-    DismReleaseTypeProduct,
-    DismReleaseTypeLocalPack,
-    DismReleaseTypeOther,
-    DismReleaseTypeOnDemandPack
-  } DismReleaseType;
+    typedef enum _DismReleaseType
+    {
+        DismReleaseTypeCriticalUpdate = 0,
+        DismReleaseTypeDriver,
+        DismReleaseTypeFeaturePack,
+        DismReleaseTypeHotfix,
+        DismReleaseTypeSecurityUpdate,
+        DismReleaseTypeSoftwareUpdate,
+        DismReleaseTypeUpdate,
+        DismReleaseTypeUpdateRollup,
+        DismReleaseTypeLanguagePack,
+        DismReleaseTypeFoundation,
+        DismReleaseTypeServicePack,
+        DismReleaseTypeProduct,
+        DismReleaseTypeLocalPack,
+        DismReleaseTypeOther,
+        DismReleaseTypeOnDemandPack
+    } DismReleaseType;
 
-  typedef enum _DismRestartType
-  {
-    DismRestartNo = 0,
-    DismRestartPossible,
-    DismRestartRequired
-  } DismRestartType;
+    typedef enum _DismRestartType
+    {
+        DismRestartNo = 0,
+        DismRestartPossible,
+        DismRestartRequired
+    } DismRestartType;
 
-  typedef enum _DismDriverSignature
-  {
-    DismDriverSignatureUnknown = 0,
-    DismDriverSignatureUnsigned = 1,
-    DismDriverSignatureSigned = 2
-  } DismDriverSignature;
+    typedef enum _DismDriverSignature
+    {
+        DismDriverSignatureUnknown = 0,
+        DismDriverSignatureUnsigned = 1,
+        DismDriverSignatureSigned = 2
+    } DismDriverSignature;
 
-  typedef enum _DismFullyOfflineInstallableType
-  {
-    DismFullyOfflineInstallable = 0,
-    DismFullyOfflineNotInstallable,
-    DismFullyOfflineInstallableUndetermined
-  } DismFullyOfflineInstallableType;
+    typedef enum _DismFullyOfflineInstallableType
+    {
+        DismFullyOfflineInstallable = 0,
+        DismFullyOfflineNotInstallable,
+        DismFullyOfflineInstallableUndetermined
+    } DismFullyOfflineInstallableType;
 
-  // Keep in-sync with StubPackageOption defined in onecore\base\ntsetup\opktools\dism\idl\AppxProviderInterfaces.idl.
-  // Need to redefine it here because the consumers of this header cannot import dismcore.tlb, where all DISM IDLs are
-  // built into.
-  typedef enum _DismStubPackageOption
-  {
-    DismStubPackageOptionNone = 0,
-    DismStubPackageOptionInstallFull = 1,
-    DismStubPackageOptionInstallStub = 2,
-  } DismStubPackageOption;
+    // Keep in-sync with StubPackageOption defined in onecore\base\ntsetup\opktools\dism\idl\AppxProviderInterfaces.idl.
+    // Need to redefine it here because the consumers of this header cannot import dismcore.tlb, where all DISM IDLs are
+    // built into.
+    typedef enum _DismStubPackageOption
+    {
+        DismStubPackageOptionNone = 0,
+        DismStubPackageOptionInstallFull = 1,
+        DismStubPackageOptionInstallStub = 2,
+    } DismStubPackageOption;
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Structs
-  //
-  //////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//
+// Structs
+//
+//////////////////////////////////////////////////////////////////////////////
 #pragma pack(push, 1)
 
-  typedef struct _DismPackage
-  {
-    PCWSTR PackageName;
-    DismPackageFeatureState PackageState;
-    DismReleaseType ReleaseType;
-    SYSTEMTIME InstallTime;
-  } DismPackage;
+    typedef struct _DismPackage
+    {
+        PCWSTR PackageName;
+        DismPackageFeatureState PackageState;
+        DismReleaseType ReleaseType;
+        SYSTEMTIME InstallTime;
+    } DismPackage;
 
-  typedef struct _DismCustomProperty
-  {
-    PCWSTR Name;
-    PCWSTR Value;
-    PCWSTR Path;
-  } DismCustomProperty;
+    typedef struct _DismCustomProperty
+    {
+        PCWSTR Name;
+        PCWSTR Value;
+        PCWSTR Path;
+    } DismCustomProperty;
 
-  typedef struct _DismFeature
-  {
-    PCWSTR FeatureName;
-    DismPackageFeatureState State;
-  } DismFeature;
+    typedef struct _DismFeature
+    {
+        PCWSTR FeatureName;
+        DismPackageFeatureState State;
+    } DismFeature;
 
-  typedef struct _DismCapability
-  {
-    PCWSTR Name;
-    DismPackageFeatureState State;
-  } DismCapability;
+    typedef struct _DismCapability
+    {
+        PCWSTR Name;
+        DismPackageFeatureState State;
+    } DismCapability;
 
-  typedef struct _DismPackageInfo
-  {
-    PCWSTR PackageName;
-    DismPackageFeatureState PackageState;
-    DismReleaseType ReleaseType;
-    SYSTEMTIME InstallTime;
-    BOOL Applicable;
-    PCWSTR Copyright;
-    PCWSTR Company;
-    SYSTEMTIME CreationTime;
-    PCWSTR DisplayName;
-    PCWSTR Description;
-    PCWSTR InstallClient;
-    PCWSTR InstallPackageName;
-    SYSTEMTIME LastUpdateTime;
-    PCWSTR ProductName;
-    PCWSTR ProductVersion;
-    DismRestartType RestartRequired;
-    DismFullyOfflineInstallableType FullyOffline;
-    PCWSTR SupportInformation;
-    DismCustomProperty* CustomProperty;
-    UINT CustomPropertyCount;
-    DismFeature* Feature;
-    UINT FeatureCount;
-  } DismPackageInfo;
+    typedef struct _DismPackageInfo
+    {
+        PCWSTR PackageName;
+        DismPackageFeatureState PackageState;
+        DismReleaseType ReleaseType;
+        SYSTEMTIME InstallTime;
+        BOOL Applicable;
+        PCWSTR Copyright;
+        PCWSTR Company;
+        SYSTEMTIME CreationTime;
+        PCWSTR DisplayName;
+        PCWSTR Description;
+        PCWSTR InstallClient;
+        PCWSTR InstallPackageName;
+        SYSTEMTIME LastUpdateTime;
+        PCWSTR ProductName;
+        PCWSTR ProductVersion;
+        DismRestartType RestartRequired;
+        DismFullyOfflineInstallableType FullyOffline;
+        PCWSTR SupportInformation;
+        DismCustomProperty *CustomProperty;
+        UINT CustomPropertyCount;
+        DismFeature *Feature;
+        UINT FeatureCount;
+    } DismPackageInfo;
 
 #ifdef __cplusplus
-  typedef struct _DismPackageInfoEx : public _DismPackageInfo
-  {
+    typedef struct _DismPackageInfoEx : public _DismPackageInfo
+    {
 #else
-  typedef struct _DismPackageInfoEx
-  {
+typedef struct _DismPackageInfoEx
+{
     DismPackageInfo;
 #endif
-    PCWSTR CapabilityId;
-  } DismPackageInfoEx;
+        PCWSTR CapabilityId;
+    } DismPackageInfoEx;
 
-  typedef struct _DismFeatureInfo
-  {
-    PCWSTR FeatureName;
-    DismPackageFeatureState FeatureState;
-    PCWSTR DisplayName;
-    PCWSTR Description;
-    DismRestartType RestartRequired;
-    DismCustomProperty* CustomProperty;
-    UINT CustomPropertyCount;
-  } DismFeatureInfo;
+    typedef struct _DismFeatureInfo
+    {
+        PCWSTR FeatureName;
+        DismPackageFeatureState FeatureState;
+        PCWSTR DisplayName;
+        PCWSTR Description;
+        DismRestartType RestartRequired;
+        DismCustomProperty *CustomProperty;
+        UINT CustomPropertyCount;
+    } DismFeatureInfo;
 
-  typedef struct _DismCapabilityInfo
-  {
-    PCWSTR Name;
-    DismPackageFeatureState State;
-    PCWSTR DisplayName;
-    PCWSTR Description;
-    DWORD DownloadSize;
-    DWORD InstallSize;
-  } DismCapabilityInfo;
+    typedef struct _DismCapabilityInfo
+    {
+        PCWSTR Name;
+        DismPackageFeatureState State;
+        PCWSTR DisplayName;
+        PCWSTR Description;
+        DWORD DownloadSize;
+        DWORD InstallSize;
+    } DismCapabilityInfo;
 
-  typedef struct _DismString
-  {
-    PCWSTR Value;
-  } DismString;
+    typedef struct _DismString
+    {
+        PCWSTR Value;
+    } DismString;
 
-  typedef DismString DismLanguage;
+    typedef DismString DismLanguage;
 
-  typedef struct _DismWimCustomizedInfo
-  {
-    UINT Size;
-    UINT DirectoryCount;
-    UINT FileCount;
-    SYSTEMTIME CreatedTime;
-    SYSTEMTIME ModifiedTime;
-  } DismWimCustomizedInfo;
+    typedef struct _DismWimCustomizedInfo
+    {
+        UINT Size;
+        UINT DirectoryCount;
+        UINT FileCount;
+        SYSTEMTIME CreatedTime;
+        SYSTEMTIME ModifiedTime;
+    } DismWimCustomizedInfo;
 
-  typedef struct _DismImageInfo
-  {
-    DismImageType ImageType;
-    UINT ImageIndex;
-    PCWSTR ImageName;
-    PCWSTR ImageDescription;
-    UINT64 ImageSize;
-    UINT Architecture;
-    PCWSTR ProductName;
-    PCWSTR EditionId;
-    PCWSTR InstallationType;
-    PCWSTR Hal;
-    PCWSTR ProductType;
-    PCWSTR ProductSuite;
-    UINT MajorVersion;
-    UINT MinorVersion;
-    UINT Build;
-    UINT SpBuild;
-    UINT SpLevel;
-    DismImageBootable Bootable;
-    PCWSTR SystemRoot;
-    DismLanguage* Language;
-    UINT LanguageCount;
-    UINT DefaultLanguageIndex;
-    VOID* CustomizedInfo;
-  } DismImageInfo;
+    typedef struct _DismImageInfo
+    {
+        DismImageType ImageType;
+        UINT ImageIndex;
+        PCWSTR ImageName;
+        PCWSTR ImageDescription;
+        UINT64 ImageSize;
+        UINT Architecture;
+        PCWSTR ProductName;
+        PCWSTR EditionId;
+        PCWSTR InstallationType;
+        PCWSTR Hal;
+        PCWSTR ProductType;
+        PCWSTR ProductSuite;
+        UINT MajorVersion;
+        UINT MinorVersion;
+        UINT Build;
+        UINT SpBuild;
+        UINT SpLevel;
+        DismImageBootable Bootable;
+        PCWSTR SystemRoot;
+        DismLanguage *Language;
+        UINT LanguageCount;
+        UINT DefaultLanguageIndex;
+        VOID *CustomizedInfo;
+    } DismImageInfo;
 
-  typedef struct _DismMountedImageInfo
-  {
-    PCWSTR MountPath;
-    PCWSTR ImageFilePath;
-    UINT ImageIndex;
-    DismMountMode MountMode;
-    DismMountStatus MountStatus;
-  } DismMountedImageInfo;
+    typedef struct _DismMountedImageInfo
+    {
+        PCWSTR MountPath;
+        PCWSTR ImageFilePath;
+        UINT ImageIndex;
+        DismMountMode MountMode;
+        DismMountStatus MountStatus;
+    } DismMountedImageInfo;
 
-  typedef struct _DismDriverPackage
-  {
-    PCWSTR PublishedName;
-    PCWSTR OriginalFileName;
-    BOOL InBox;
-    PCWSTR CatalogFile;
-    PCWSTR ClassName;
-    PCWSTR ClassGuid;
-    PCWSTR ClassDescription;
-    BOOL BootCritical;
-    DismDriverSignature DriverSignature;
-    PCWSTR ProviderName;
-    SYSTEMTIME Date;
-    UINT MajorVersion;
-    UINT MinorVersion;
-    UINT Build;
-    UINT Revision;
-  } DismDriverPackage;
+    typedef struct _DismDriverPackage
+    {
+        PCWSTR PublishedName;
+        PCWSTR OriginalFileName;
+        BOOL InBox;
+        PCWSTR CatalogFile;
+        PCWSTR ClassName;
+        PCWSTR ClassGuid;
+        PCWSTR ClassDescription;
+        BOOL BootCritical;
+        DismDriverSignature DriverSignature;
+        PCWSTR ProviderName;
+        SYSTEMTIME Date;
+        UINT MajorVersion;
+        UINT MinorVersion;
+        UINT Build;
+        UINT Revision;
+    } DismDriverPackage;
 
-  typedef struct _DismDriver
-  {
-    PCWSTR ManufacturerName;
-    PCWSTR HardwareDescription;
-    PCWSTR HardwareId;
-    UINT Architecture;
-    PCWSTR ServiceName;
-    PCWSTR CompatibleIds;
-    PCWSTR ExcludeIds;
-  } DismDriver;
+    typedef struct _DismDriver
+    {
+        PCWSTR ManufacturerName;
+        PCWSTR HardwareDescription;
+        PCWSTR HardwareId;
+        UINT Architecture;
+        PCWSTR ServiceName;
+        PCWSTR CompatibleIds;
+        PCWSTR ExcludeIds;
+    } DismDriver;
 
-  typedef struct _DismAppxPackage
-  {
-    PCWSTR PackageName;
-    PCWSTR DisplayName;
-    PCWSTR PublisherId;
-    UINT MajorVersion;
-    UINT MinorVersion;
-    UINT Build;
-    UINT RevisionNumber;
-    UINT Architecture;
-    PCWSTR ResourceId;
-    PCWSTR InstallLocation;
-    _Maybenull_ PCWSTR Region;
+    typedef struct _DismAppxPackage
+    {
+        PCWSTR PackageName;
+        PCWSTR DisplayName;
+        PCWSTR PublisherId;
+        UINT MajorVersion;
+        UINT MinorVersion;
+        UINT Build;
+        UINT RevisionNumber;
+        UINT Architecture;
+        PCWSTR ResourceId;
+        PCWSTR InstallLocation;
+        _Maybenull_ PCWSTR Region;
 
-  } DismAppxPackage;
+    } DismAppxPackage;
 
 #pragma pack(pop)
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Functions
-  //
-  //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //
+    // Functions
+    //
+    //////////////////////////////////////////////////////////////////////////////
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismInitialize(
-      _In_ DismLogLevel LogLevel,
-      _In_opt_ PCWSTR LogFilePath,
-      _In_opt_ PCWSTR ScratchDirectory);
+        _In_ DismLogLevel LogLevel,
+        _In_opt_ PCWSTR LogFilePath,
+        _In_opt_ PCWSTR ScratchDirectory);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismShutdown();
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismMountImage(
-      _In_ PCWSTR ImageFilePath,
-      _In_ PCWSTR MountPath,
-      _In_ UINT ImageIndex,
-      _In_opt_ PCWSTR ImageName,
-      _In_ DismImageIdentifier ImageIdentifier,
-      _In_ DWORD Flags,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ PCWSTR ImageFilePath,
+        _In_ PCWSTR MountPath,
+        _In_ UINT ImageIndex,
+        _In_opt_ PCWSTR ImageName,
+        _In_ DismImageIdentifier ImageIdentifier,
+        _In_ DWORD Flags,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismUnmountImage(
-      _In_ PCWSTR MountPath,
-      _In_ DWORD Flags,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ PCWSTR MountPath,
+        _In_ DWORD Flags,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismOpenSession(
-      _In_ PCWSTR ImagePath,
-      _In_opt_ PCWSTR WindowsDirectory,
-      _In_opt_ PCWSTR SystemDrive,
-      _Out_ DismSession* Session);
+        _In_ PCWSTR ImagePath,
+        _In_opt_ PCWSTR WindowsDirectory,
+        _In_opt_ PCWSTR SystemDrive,
+        _Out_ DismSession *Session);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismCloseSession(
-      _In_ DismSession Session);
+        _In_ DismSession Session);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetLastErrorMessage(
-      _Out_ DismString** ErrorMessage);
+        _Out_ DismString **ErrorMessage);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismRemountImage(
-      _In_ PCWSTR MountPath);
+        _In_ PCWSTR MountPath);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismCommitImage(
-      _In_ DismSession Session,
-      _In_ DWORD Flags,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ DWORD Flags,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetImageInfo(
-      _In_ PCWSTR ImageFilePath,
-      _Outptr_result_buffer_(*Count) DismImageInfo** ImageInfo,
-      _Out_ UINT* Count);
+        _In_ PCWSTR ImageFilePath,
+        _Outptr_result_buffer_(*Count) DismImageInfo **ImageInfo,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetMountedImageInfo(
-      _Outptr_result_buffer_(*Count) DismMountedImageInfo** MountedImageInfo,
-      _Out_ UINT* Count);
+        _Outptr_result_buffer_(*Count) DismMountedImageInfo **MountedImageInfo,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismCleanupMountpoints();
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismCheckImageHealth(
-      _In_ DismSession Session,
-      _In_ BOOL ScanImage,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData,
-      _Out_ DismImageHealthState* ImageHealth);
+        _In_ DismSession Session,
+        _In_ BOOL ScanImage,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData,
+        _Out_ DismImageHealthState *ImageHealth);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismRestoreImageHealth(
-      _In_ DismSession Session,
-      _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths,
-      _In_opt_ UINT SourcePathCount,
-      _In_ BOOL LimitAccess,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_reads_opt_(SourcePathCount) PCWSTR *SourcePaths,
+        _In_opt_ UINT SourcePathCount,
+        _In_ BOOL LimitAccess,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismDelete(
-      _In_ VOID* DismStructure);
+        _In_ VOID *DismStructure);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismAddPackage(
-      _In_ DismSession Session,
-      _In_ PCWSTR PackagePath,
-      _In_ BOOL IgnoreCheck,
-      _In_ BOOL PreventPending,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ PCWSTR PackagePath,
+        _In_ BOOL IgnoreCheck,
+        _In_ BOOL PreventPending,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismRemovePackage(
-      _In_ DismSession Session,
-      _In_ PCWSTR Identifier,
-      _In_ DismPackageIdentifier PackageIdentifier,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ PCWSTR Identifier,
+        _In_ DismPackageIdentifier PackageIdentifier,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismEnableFeature(
-      _In_ DismSession Session,
-      _In_ PCWSTR FeatureName,
-      _In_opt_ PCWSTR Identifier,
-      _In_opt_ DismPackageIdentifier PackageIdentifier,
-      _In_ BOOL LimitAccess,
-      _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths,
-      _In_opt_ UINT SourcePathCount,
-      _In_ BOOL EnableAll,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ PCWSTR FeatureName,
+        _In_opt_ PCWSTR Identifier,
+        _In_opt_ DismPackageIdentifier PackageIdentifier,
+        _In_ BOOL LimitAccess,
+        _In_reads_opt_(SourcePathCount) PCWSTR *SourcePaths,
+        _In_opt_ UINT SourcePathCount,
+        _In_ BOOL EnableAll,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismDisableFeature(
-      _In_ DismSession Session,
-      _In_ PCWSTR FeatureName,
-      _In_opt_ PCWSTR PackageName,
-      _In_ BOOL RemovePayload,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ PCWSTR FeatureName,
+        _In_opt_ PCWSTR PackageName,
+        _In_ BOOL RemovePayload,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetPackages(
-      _In_ DismSession Session,
-      _Outptr_result_buffer_(*Count) DismPackage** Package,
-      _Out_ UINT* Count);
+        _In_ DismSession Session,
+        _Outptr_result_buffer_(*Count) DismPackage **Package,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetPackageInfo(
-      _In_ DismSession Session,
-      _In_ PCWSTR Identifier,
-      _In_ DismPackageIdentifier PackageIdentifier,
-      _Out_ DismPackageInfo** PackageInfo);
+        _In_ DismSession Session,
+        _In_ PCWSTR Identifier,
+        _In_ DismPackageIdentifier PackageIdentifier,
+        _Out_ DismPackageInfo **PackageInfo);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetPackageInfoEx(
-      _In_ DismSession Session,
-      _In_ PCWSTR Identifier,
-      _In_ DismPackageIdentifier PackageIdentifier,
-      _Out_ DismPackageInfoEx** PackageInfoEx);
+        _In_ DismSession Session,
+        _In_ PCWSTR Identifier,
+        _In_ DismPackageIdentifier PackageIdentifier,
+        _Out_ DismPackageInfoEx **PackageInfoEx);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetFeatures(
-      _In_ DismSession Session,
-      _In_opt_ PCWSTR Identifier,
-      _In_opt_ DismPackageIdentifier PackageIdentifier,
-      _Outptr_result_buffer_(*Count) DismFeature** Feature,
-      _Out_ UINT* Count);
+        _In_ DismSession Session,
+        _In_opt_ PCWSTR Identifier,
+        _In_opt_ DismPackageIdentifier PackageIdentifier,
+        _Outptr_result_buffer_(*Count) DismFeature **Feature,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetFeatureInfo(
-      _In_ DismSession Session,
-      _In_ PCWSTR FeatureName,
-      _In_opt_ PCWSTR Identifier,
-      _In_opt_ DismPackageIdentifier PackageIdentifier,
-      _Out_ DismFeatureInfo** FeatureInfo);
+        _In_ DismSession Session,
+        _In_ PCWSTR FeatureName,
+        _In_opt_ PCWSTR Identifier,
+        _In_opt_ DismPackageIdentifier PackageIdentifier,
+        _Out_ DismFeatureInfo **FeatureInfo);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetFeatureParent(
-      _In_ DismSession Session,
-      _In_ PCWSTR FeatureName,
-      _In_opt_ PCWSTR Identifier,
-      _In_opt_ DismPackageIdentifier PackageIdentifier,
-      _Outptr_result_buffer_(*Count) DismFeature** Feature,
-      _Out_ UINT* Count);
+        _In_ DismSession Session,
+        _In_ PCWSTR FeatureName,
+        _In_opt_ PCWSTR Identifier,
+        _In_opt_ DismPackageIdentifier PackageIdentifier,
+        _Outptr_result_buffer_(*Count) DismFeature **Feature,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismApplyUnattend(
-      _In_ DismSession Session,
-      _In_ PCWSTR UnattendFile,
-      _In_ BOOL SingleSession);
+        _In_ DismSession Session,
+        _In_ PCWSTR UnattendFile,
+        _In_ BOOL SingleSession);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismAddDriver(
-      _In_ DismSession Session,
-      _In_ PCWSTR DriverPath,
-      _In_ BOOL ForceUnsigned);
+        _In_ DismSession Session,
+        _In_ PCWSTR DriverPath,
+        _In_ BOOL ForceUnsigned);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismRemoveDriver(
-      _In_ DismSession Session,
-      _In_ PCWSTR DriverPath);
+        _In_ DismSession Session,
+        _In_ PCWSTR DriverPath);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetDrivers(
-      _In_ DismSession Session,
-      _In_ BOOL AllDrivers,
-      _Outptr_result_buffer_(*Count) DismDriverPackage** DriverPackage,
-      _Out_ UINT* Count);
+        _In_ DismSession Session,
+        _In_ BOOL AllDrivers,
+        _Outptr_result_buffer_(*Count) DismDriverPackage **DriverPackage,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetDriverInfo(
-      _In_ DismSession Session,
-      _In_ PCWSTR DriverPath,
-      _Outptr_result_buffer_(*Count) DismDriver** Driver,
-      _Out_ UINT* Count,
-      _Out_opt_ DismDriverPackage** DriverPackage);
+        _In_ DismSession Session,
+        _In_ PCWSTR DriverPath,
+        _Outptr_result_buffer_(*Count) DismDriver **Driver,
+        _Out_ UINT *Count,
+        _Out_opt_ DismDriverPackage **DriverPackage);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetCapabilities(
-      _In_ DismSession Session,
-      _Outptr_result_buffer_(*Count) DismCapability** Capability,
-      _Out_ UINT* Count);
+        _In_ DismSession Session,
+        _Outptr_result_buffer_(*Count) DismCapability **Capability,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetCapabilityInfo(
-      _In_ DismSession Session,
-      _In_ PCWSTR Name,
-      _Out_ DismCapabilityInfo** Info);
+        _In_ DismSession Session,
+        _In_ PCWSTR Name,
+        _Out_ DismCapabilityInfo **Info);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismAddCapability(
-      _In_ DismSession Session,
-      _In_ PCWSTR Name,
-      _In_ BOOL LimitAccess,
-      _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths,
-      _In_opt_ UINT SourcePathCount,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ PCWSTR Name,
+        _In_ BOOL LimitAccess,
+        _In_reads_opt_(SourcePathCount) PCWSTR *SourcePaths,
+        _In_opt_ UINT SourcePathCount,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismRemoveCapability(
-      _In_ DismSession Session,
-      _In_ PCWSTR Name,
-      _In_opt_ HANDLE CancelEvent,
-      _In_opt_ DISM_PROGRESS_CALLBACK Progress,
-      _In_opt_ PVOID UserData);
+        _In_ DismSession Session,
+        _In_ PCWSTR Name,
+        _In_opt_ HANDLE CancelEvent,
+        _In_opt_ DISM_PROGRESS_CALLBACK Progress,
+        _In_opt_ PVOID UserData);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismGetReservedStorageState(
-      _In_ DismSession Session,
-      _Out_ PDWORD State);
+        _In_ DismSession Session,
+        _Out_ PDWORD State);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     DismSetReservedStorageState(
-      _In_ DismSession Session,
-      _In_ DWORD State);
+        _In_ DismSession Session,
+        _In_ DWORD State);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     _DismGetProvisionedAppxPackages(
-      DismSession Session,
-      _Outptr_result_buffer_(*Count) DismAppxPackage** Package,
-      _Out_ UINT* Count);
+        DismSession Session,
+        _Outptr_result_buffer_(*Count) DismAppxPackage **Package,
+        _Out_ UINT *Count);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     _DismAddProvisionedAppxPackage(
-      _In_ DismSession Session,
-      _In_ PCWSTR AppPath,
-      _In_reads_opt_(DependencyPackageCount) PCWSTR* DependencyPackages,
-      _In_ UINT DependencyPackageCount,
-      _In_reads_opt_(OptionalPackageCount) PCWSTR* OptionalPackages,
-      _In_ UINT OptionalPackageCount,
-      _In_reads_opt_(LicensePathCount) PCWSTR* LicensePaths,
-      _In_ UINT LicensePathCount,
-      _In_ BOOL SkipLicense,
-      _In_opt_ PCWSTR CustomDataPath,
-      _In_opt_ PCWSTR Region,
-      _In_ DismStubPackageOption stubPackageOption);
+        _In_ DismSession Session,
+        _In_ PCWSTR AppPath,
+        _In_reads_opt_(DependencyPackageCount) PCWSTR *DependencyPackages,
+        _In_ UINT DependencyPackageCount,
+        _In_reads_opt_(OptionalPackageCount) PCWSTR *OptionalPackages,
+        _In_ UINT OptionalPackageCount,
+        _In_reads_opt_(LicensePathCount) PCWSTR *LicensePaths,
+        _In_ UINT LicensePathCount,
+        _In_ BOOL SkipLicense,
+        _In_opt_ PCWSTR CustomDataPath,
+        _In_opt_ PCWSTR Region,
+        _In_ DismStubPackageOption stubPackageOption);
 
-  HRESULT WINAPI
+    HRESULT WINAPI
     _DismRemoveProvisionedAppxPackage(
-      _In_ DismSession Session,
-      _In_ PCWSTR PackageName);
+        _In_ DismSession Session,
+        _In_ PCWSTR PackageName);
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Success Codes
-  //
-  //////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//
+// Success Codes
+//
+//////////////////////////////////////////////////////////////////////////////
 
-  // For online scenario, computer needs to be restarted when the return value is ERROR_SUCCESS_REBOOT_REQUIRED (3010L).
+// For online scenario, computer needs to be restarted when the return value is ERROR_SUCCESS_REBOOT_REQUIRED (3010L).
 
-  //
-  // MessageId: DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED
-  //
-  // MessageText:
-  //
-  // The DISM session needs to be reloaded.
-  //
+//
+// MessageId: DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED
+//
+// MessageText:
+//
+// The DISM session needs to be reloaded.
+//
 #define DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED 0x00000001
 
 //////////////////////////////////////////////////////////////////////////////
@@ -853,7 +851,7 @@ extern "C"
 #define DISMAPI_E_BUSY 0x800f0902
 
 #ifdef __cplusplus
-  }
+}
 #endif
 
 #endif /* WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP | WINAPI_PARTITION_PKG_DISM) */

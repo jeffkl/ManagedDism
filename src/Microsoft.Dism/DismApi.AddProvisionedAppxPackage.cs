@@ -43,6 +43,31 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, List<string> optionalPackages, List<string> licensePaths, string customDataPath, string regions)
         {
+            AddProvisionedAppxPackage(
+                session,
+                appPath,
+                dependencyPackages,
+                optionalPackages,
+                licensePaths,
+                customDataPath,
+                regions,
+                DismStubPackageOption.None);
+        }
+
+        /// <summary>
+        /// Adds an app package (.appx) that will install for each new user to a Windows image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session.</param>
+        /// <param name="appPath">Specifies the location of the app package (.appx) to add to the Windows image.</param>
+        /// <param name="dependencyPackages">Specifies the location of dependency packages.</param>
+        /// <param name="optionalPackages">Specifies the location of optional packages.</param>
+        /// <param name="licensePaths">Specifies the locations of .xml files containing your application licenses.</param>
+        /// <param name="customDataPath">Specifies the location of a custom data file. The custom data file will be renamed custom.data and saved in the app data store.</param>
+        /// <param name="regions">Specifies regions for the package.</param>
+        /// <param name="stubPackageOption">Specifies the stub package option.</param>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, List<string> optionalPackages, List<string> licensePaths, string customDataPath, string regions, DismStubPackageOption stubPackageOption)
+        {
             int hresult = NativeMethods._DismAddProvisionedAppxPackage(
                 session,
                 appPath,
@@ -54,7 +79,8 @@ namespace Microsoft.Dism
                 (uint)(licensePaths?.Count ?? 0),
                 licensePaths == null || licensePaths.Count == 0,
                 customDataPath,
-                regions);
+                regions,
+                stubPackageOption);
 
             DismUtilities.ThrowIfFail(hresult, session);
         }
@@ -75,6 +101,7 @@ namespace Microsoft.Dism
             /// <param name="SkipLicense">Specifies whether the license should be skipped.</param>
             /// <param name="CustomDataPath">A custom path.</param>
             /// <param name="Regions">The regions.</param>
+            /// <param name="stubPackageOption">The stub package option.</param>
             /// <returns>Returns S_OK on success.</returns>
             /// <remarks>
             ///   HRESULT WINAPI
@@ -111,7 +138,8 @@ namespace Microsoft.Dism
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string CustomDataPath,
                 [MarshalAs(UnmanagedType.LPWStr)]
-                string Regions);
+                string Regions,
+                DismStubPackageOption stubPackageOption);
         }
     }
 }
