@@ -13,7 +13,7 @@
     <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.4.231" />
-    <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="3.3.2" />
+    <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="3.3.3" />
     <GlobalPackageReference Include="Roslynator.Analyzers" Version="3.2.2" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <Compile Include="$(MSBuildThisFileDirectory)src\GlobalSuppressions.cs" Link="%(Filename)%(Extension)" />
