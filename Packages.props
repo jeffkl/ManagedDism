@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Update="Microsoft.Wim" Version="1.2.11" />
     <PackageReference Update="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Update="Shouldly" Version="4.0.3" />
