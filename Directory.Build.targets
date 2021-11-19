@@ -3,5 +3,5 @@
     <DebugType Condition="'$(Configuration)' == 'Debug'">Full</DebugType>
   </PropertyGroup>
 
-  <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.79" />
+  <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.147" />
 </Project>
