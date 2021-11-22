@@ -7,17 +7,20 @@
     <PackageReference Update="Shouldly" Version="4.0.3" />
     <PackageReference Update="xunit" Version="2.4.1" />
     <PackageReference Update="xunit.runner.visualstudio" Version="2.4.3" />
+    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="4.0.4" />
     <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.4.244" />
+    <GlobalPackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0" />
+    <GlobalPackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" />
     <GlobalPackageReference Include="Roslyn.Diagnostics.Analyzers" Version="3.3.3" />
     <GlobalPackageReference Include="Roslynator.Analyzers" Version="3.2.2" />
+    
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <Compile Include="$(MSBuildThisFileDirectory)src\GlobalSuppressions.cs" Link="%(Filename)%(Extension)" />
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Visible="False" />
-    <GlobalPackageReference Include="Text.Analyzers" Version="3.3.1" />
   </ItemGroup>
 </Project>
