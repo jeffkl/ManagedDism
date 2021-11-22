@@ -6,12 +6,14 @@
     <ArtifactsPath>$(ArtifactsBasePath)$(MSBuildProjectName)</ArtifactsPath>
     <Description>Managed API for Deployment Image Servicing and Management (DISM)</Description>
     <PackageTags>Dism</PackageTags>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="PublicAPI.Shipped.txt" />
     <Content Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Win32.Registry" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
   <ItemGroup>
