@@ -35,11 +35,11 @@ namespace Microsoft.Dism.Tests
     </settings>
                      </unattend>";
 
-            string unattendXmlFile = Path.Combine(TestDirectory, "unattend.xml");
+            FileInfo unattendXmlFile = new FileInfo(Path.Combine(TestDirectory.FullName, "unattend.xml"));
 
-            File.WriteAllText(unattendXmlFile, unattendXml);
+            unattendXmlFile.WriteAllText(unattendXml);
 
-            DismApi.ApplyUnattend(Session, unattendXmlFile, singleSession: true);
+            DismApi.ApplyUnattend(Session, unattendXmlFile.FullName, singleSession: true);
         }
     }
 }

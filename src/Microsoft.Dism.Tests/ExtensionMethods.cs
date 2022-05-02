@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism.Tests
@@ -36,6 +37,11 @@ namespace Microsoft.Dism.Tests
             Marshal.StructureToPtr(obj, pointer, false);
 
             return pointer;
+        }
+
+        public static void WriteAllText(this FileInfo fileInfo, string contents)
+        {
+            File.WriteAllText(fileInfo.FullName, contents);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Microsoft.Dism.Tests
             {
                 _session.Value.Dispose();
 
-                DismApi.UnmountImage(MountPath, commitChanges: false);
+                DismApi.UnmountImage(MountPath.FullName, commitChanges: false);
             }
 
             base.Dispose();
@@ -40,9 +40,9 @@ namespace Microsoft.Dism.Tests
 
             DismApi.CleanupMountpoints();
 
-            DismApi.MountImage(InstallWimPath, MountPath, 1);
+            DismApi.MountImage(InstallWimPath.FullName, MountPath.FullName, 1);
 
-            return DismApi.OpenOfflineSession(MountPath);
+            return DismApi.OpenOfflineSession(MountPath.FullName);
         }
     }
 }

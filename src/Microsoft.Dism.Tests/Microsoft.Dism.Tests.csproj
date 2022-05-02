@@ -16,5 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="install.wim" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
