@@ -5,8 +5,9 @@ variables:
   ArtifactsDirectoryName: 'artifacts'
   BuildConfiguration: 'Debug'
   BuildPlatform: 'Any CPU'
-  DotNetCoreVersion: '3.x'
-  MSBuildArguments: '"/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
+  DotNet3Version: '3.x'
+  DotNet6Version: '6.x'
+  MSBuildArguments: '"/Property:Platform=$(BuildPlatform);Configuration=$(BuildConfiguration)" "/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
 
 trigger:
   batch: 'true'
@@ -36,9 +37,14 @@ jobs:
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
 
   - task: UseDotNet@2
-    displayName: 'Install .NET Core $(DotNetCoreVersion)'
+    displayName: 'Install .NET Core $(DotNet3Version)'
     inputs:
-      version: '$(DotNetCoreVersion)'
+      version: '$(DotNet3Version)'
+
+  - task: UseDotNet@2
+    displayName: 'Install .NET $(DotNet6Version)'
+    inputs:
+      version: '$(DotNet6Version)'
 
   - task: MSBuild@1
     displayName: 'Build Solution'
@@ -48,10 +54,28 @@ jobs:
       msbuildArguments: '$(MSBuildArguments)'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run Unit Tests'
+    displayName: 'Run Unit Tests (.NET Framework)'
     inputs:
       command: 'test'
-      arguments: '--no-build --configuration:$(BuildConfiguration) -restore:false -property:VSTestNoBuild=true'
+      arguments: '--no-restore --no-build --configuration:$(BuildConfiguration) --framework net472 /noautorsp'
+      testRunTitle: '.NET Framework v4.7.2'
+    condition: succeededOrFailed()
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Unit Tests (.NET Core 3.0)'
+    inputs:
+      command: 'test'
+      arguments: '--no-restore --no-build --configuration:$(BuildConfiguration) --framework netcoreapp3.1 /noautorsp'
+      testRunTitle: '.NET Core 3.0'
+    condition: succeededOrFailed()
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Unit Tests (.NET 6.0)'
+    inputs:
+      command: 'test'
+      arguments: '--no-restore --no-build --configuration:$(BuildConfiguration) --framework net6.0 /noautorsp'
+      testRunTitle: '.NET 6.0'
+    condition: succeededOrFailed()
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifacts'

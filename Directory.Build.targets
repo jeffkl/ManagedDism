@@ -1,7 +1,3 @@
 <Project>
-  <PropertyGroup>
-    <DebugType Condition="'$(Configuration)' == 'Debug'">Full</DebugType>
-  </PropertyGroup>
-
   <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
 </Project>

@@ -9,7 +9,7 @@ namespace Microsoft.Dism.Tests
 {
     public abstract class DismTestBase : TestBase
     {
-        private readonly string _logFilePath;
+        private readonly FileInfo _logFilePath;
         private readonly ITestOutputHelper _testOutput;
 
         protected DismTestBase(TestWimTemplate template, ITestOutputHelper testOutput)
@@ -17,16 +17,16 @@ namespace Microsoft.Dism.Tests
         {
             _testOutput = testOutput;
 
-            _logFilePath = Path.Combine(TestDirectory, "dism.log");
+            _logFilePath = new FileInfo(Path.Combine(TestDirectory.FullName, "dism.log"));
 
-            DismApi.Initialize(DismLogLevel.LogErrorsWarningsInfo, _logFilePath);
+            DismApi.Initialize(DismLogLevel.LogErrorsWarningsInfo, _logFilePath.FullName);
         }
 
         public override void Dispose()
         {
             DismApi.Shutdown();
 
-            _testOutput.WriteLine(File.ReadAllText(_logFilePath));
+            _testOutput.WriteLine(File.ReadAllText(_logFilePath.FullName));
 
             base.Dispose();
         }

@@ -19,26 +19,22 @@ namespace Microsoft.Dism.Tests
         {
             Template = template;
 
-            MountPath = Directory.CreateDirectory(Path.Combine(TestDirectory, "mount")).FullName;
+            MountPath = Directory.CreateDirectory(Path.Combine(TestDirectory.FullName, "mount"));
 
-            TestAssemblyDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
-
-            InstallWimPath = Path.Combine(TestAssemblyDirectory, "install.wim");
+            InstallWimPath = new FileInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "install.wim"));
         }
 
-        public string InstallWimPath { get; set; }
+        public FileInfo InstallWimPath { get; set; }
 
-        public string MountPath { get; set; }
-
-        public string TestAssemblyDirectory { get; set; }
+        public DirectoryInfo MountPath { get; set; }
 
         protected TestWimTemplate Template { get; }
 
-        protected string TestDirectory { get; } = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}")).FullName;
+        protected DirectoryInfo TestDirectory { get; } = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}"));
 
         public virtual void Dispose()
         {
-            Directory.Delete(TestDirectory, recursive: true);
+            TestDirectory.Delete(recursive: true);
         }
     }
 }
