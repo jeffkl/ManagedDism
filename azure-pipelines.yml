@@ -58,7 +58,7 @@ jobs:
     inputs:
       command: 'test'
       arguments: '--no-restore --no-build --configuration:$(BuildConfiguration) --framework net472 /noautorsp'
-      testRunTitle: 'Windows .NET Framework'
+      testRunTitle: '.NET Framework v4.7.2'
     condition: succeededOrFailed()
 
   - task: DotNetCoreCLI@2
@@ -66,7 +66,7 @@ jobs:
     inputs:
       command: 'test'
       arguments: '--no-restore --no-build --configuration:$(BuildConfiguration) --framework netcoreapp3.1 /noautorsp'
-      testRunTitle: 'Windows .NET Core 3.0'
+      testRunTitle: '.NET Core 3.0'
     condition: succeededOrFailed()
 
   - task: DotNetCoreCLI@2
@@ -74,7 +74,7 @@ jobs:
     inputs:
       command: 'test'
       arguments: '--no-restore --no-build --configuration:$(BuildConfiguration) --framework net6.0 /noautorsp'
-      testRunTitle: 'Windows .NET 6.0'
+      testRunTitle: '.NET 6.0'
     condition: succeededOrFailed()
 
   - task: PublishBuildArtifacts@1
