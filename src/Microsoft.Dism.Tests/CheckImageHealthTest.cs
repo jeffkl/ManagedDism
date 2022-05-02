@@ -61,7 +61,7 @@ namespace Microsoft.Dism.Tests
 
                 userData.ShouldBe(expectedUserData);
                 current.ShouldBe(50);
-                total.ShouldBe(1000);
+                total.ShouldBeGreaterThanOrEqualTo(1000);
             }
         }
     }
