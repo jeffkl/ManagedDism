@@ -1,7 +1,0 @@
-﻿// Copyright (c). All rights reserved.
-//
-// Licensed under the MIT license.
-
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Microsoft.Dism.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100b9ecd7499a80057a7d78307c187676f77c7a9be80dbe25db8378ccf231356f9018ed306c4b2461d5856c126cd06121c72432d8125cef9b98cf72e6ecd64e46648612acd6b15e8149d16baf9491fbfff81445aaf764b2f7292dc1903d9edc36d4eac9195cdc7ec8e3016953b4b8b29b1c0ea3b112cdfbf519d791b4d3fc3c66be")]

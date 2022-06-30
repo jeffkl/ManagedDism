@@ -6,11 +6,10 @@
     <ArtifactsPath>$(ArtifactsBasePath)$(MSBuildProjectName)</ArtifactsPath>
     <Description>Managed API for Deployment Image Servicing and Management (DISM)</Description>
     <PackageTags>Dism</PackageTags>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="PublicAPI.Shipped.txt" />
-    <Content Include="PublicAPI.Unshipped.txt" />
+    <None Include="PublicAPI.Shipped.txt" />
+    <None Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
@@ -19,5 +18,8 @@
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DesignTime="True" DependentUpon="Resources.resx" />
     <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.Dism.Tests" />
   </ItemGroup>
 </Project>

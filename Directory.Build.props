@@ -1,14 +1,14 @@
 <Project>
   <PropertyGroup>
-    <DefaultItemExcludes>*log</DefaultItemExcludes>
-    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
-    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
     <ArtifactsBasePath>$(MSBuildThisFileDirectory)artifacts\</ArtifactsBasePath>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
+    <DefaultItemExcludes>*log</DefaultItemExcludes>
     <Deterministic>true</Deterministic>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <LangVersion>Latest</LangVersion>
+    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
+    <SignAssembly>true</SignAssembly>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <Authors>jeffkl</Authors>
@@ -20,5 +20,6 @@
     <RepositoryType>Git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 </Project>
