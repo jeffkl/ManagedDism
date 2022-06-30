@@ -6,6 +6,7 @@
     <ArtifactsPath>$(ArtifactsBasePath)$(MSBuildProjectName)</ArtifactsPath>
     <Description>Managed API for Deployment Image Servicing and Management (DISM)</Description>
     <PackageTags>Dism</PackageTags>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
     <None Include="PublicAPI.Shipped.txt" />
