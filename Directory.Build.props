@@ -19,7 +19,6 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 </Project>
