@@ -46,7 +46,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options)
         {
-            MountImage(imageFilePath, mountPath, imageIndex, readOnly, options, null);
+            MountImage(imageFilePath, mountPath, imageIndex, readOnly, options, progressCallback: null);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, Dism.DismProgressCallback progressCallback)
+        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, Dism.DismProgressCallback? progressCallback)
         {
             MountImage(imageFilePath, mountPath, imageIndex, readOnly, DismMountImageOptions.None, progressCallback);
         }
@@ -75,9 +75,9 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback progressCallback)
+        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback? progressCallback)
         {
-            MountImage(imageFilePath, mountPath, imageIndex, readOnly, options, progressCallback, null);
+            MountImage(imageFilePath, mountPath, imageIndex, readOnly, options, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, Dism.DismProgressCallback progressCallback, object userData)
+        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             MountImage(imageFilePath, mountPath, imageIndex, readOnly, DismMountImageOptions.None, progressCallback, userData);
         }
@@ -108,9 +108,9 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback progressCallback, object userData)
+        public static void MountImage(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback? progressCallback, object? userData)
         {
-            MountImage(imageFilePath, mountPath, imageIndex, null, DismImageIdentifier.ImageIndex, readOnly, options, progressCallback, userData);
+            MountImage(imageFilePath, mountPath, imageIndex, imageName: null, DismImageIdentifier.ImageIndex, readOnly, options, progressCallback, userData);
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace Microsoft.Dism
         /// <param name="mountPath">The path of the location where the image should be mounted. This mount path must already exist on the computer. The Windows image in a .wim, .vhd, or .vhdx file can be mounted to an empty folder on an NTFS formatted drive. A Windows image in a .vhd or .vhdx file can also be mounted to an unassigned drive letter. You cannot mount an image to the root of the existing drive.</param>
         /// <param name="imageName">The name of the image that you want to mount.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName)
         {
-            MountImage(imageFilePath, mountPath, imageName, false);
+            MountImage(imageFilePath, mountPath, imageName, readOnly: false);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Microsoft.Dism
         /// <param name="imageName">The name of the image that you want to mount.</param>
         /// <param name="readOnly">Specifies if the image should be mounted in read-only mode.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName, bool readOnly)
         {
             MountImage(imageFilePath, mountPath, imageName, readOnly, DismMountImageOptions.None);
         }
@@ -147,9 +147,9 @@ namespace Microsoft.Dism
         /// <param name="readOnly">Specifies if the image should be mounted in read-only mode.</param>
         /// <param name="options">Specifies options to use when mounting an image.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly, DismMountImageOptions options)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName, bool readOnly, DismMountImageOptions options)
         {
-            MountImage(imageFilePath, mountPath, imageName, readOnly, options, null);
+            MountImage(imageFilePath, mountPath, imageName, readOnly, options, progressCallback: null);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly, Dism.DismProgressCallback progressCallback)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName, bool readOnly, Dism.DismProgressCallback progressCallback)
         {
             MountImage(imageFilePath, mountPath, imageName, readOnly, DismMountImageOptions.None, progressCallback);
         }
@@ -178,7 +178,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback progressCallback)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback? progressCallback)
         {
             MountImage(imageFilePath, mountPath, imageName, readOnly, options, progressCallback, null);
         }
@@ -194,7 +194,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly, Dism.DismProgressCallback progressCallback, object userData)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName, bool readOnly, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             MountImage(imageFilePath, mountPath, imageName, readOnly, DismMountImageOptions.None, progressCallback, userData);
         }
@@ -211,7 +211,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void MountImage(string imageFilePath, string mountPath, string imageName, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback progressCallback, object userData)
+        public static void MountImage(string imageFilePath, string mountPath, string? imageName, bool readOnly, DismMountImageOptions options, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             MountImage(imageFilePath, mountPath, 0, imageName, DismImageIdentifier.ImageName, readOnly, options, progressCallback, userData);
         }
@@ -228,7 +228,7 @@ namespace Microsoft.Dism
         /// <param name="options">Specifies options to use when mounting an image.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        private static void MountImage(string imageFilePath, string mountPath, int imageIndex, string imageName, DismImageIdentifier imageIdentifier, bool readOnly, DismMountImageOptions options, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        private static void MountImage(string imageFilePath, string mountPath, int imageIndex, string? imageName, DismImageIdentifier imageIdentifier, bool readOnly, DismMountImageOptions options, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Determine the flags to pass to the native call
             uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
@@ -275,7 +275,7 @@ namespace Microsoft.Dism
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
-            public static extern int DismMountImage(string imageFilePath, string mountPath, UInt32 imageIndex, string imageName, DismImageIdentifier imageIdentifier, UInt32 flags, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            public static extern int DismMountImage(string imageFilePath, string mountPath, UInt32 imageIndex, string? imageName, DismImageIdentifier imageIdentifier, UInt32 flags, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }
 }

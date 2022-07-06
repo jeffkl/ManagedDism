@@ -119,7 +119,7 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj != null && Equals(obj as DismFeatureInfo);
         }
@@ -129,7 +129,7 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="other">The <see cref="DismFeatureInfo" /> object to compare with the current object.</param>
         /// <returns>true if the specified <see cref="DismFeatureInfo" /> is equal to the current <see cref="DismFeatureInfo" />; otherwise, false.</returns>
-        public bool Equals(DismFeatureInfo other)
+        public bool Equals(DismFeatureInfo? other)
         {
             return other != null
                    && CustomProperties.SequenceEqual(other.CustomProperties)

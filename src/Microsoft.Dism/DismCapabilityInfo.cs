@@ -111,7 +111,7 @@ namespace Microsoft.Dism
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj != null && Equals(obj as DismCapabilityInfo);
         }
@@ -123,7 +123,7 @@ namespace Microsoft.Dism
         /// <returns>
         /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(DismCapabilityInfo other)
+        public bool Equals(DismCapabilityInfo? other)
         {
             return other != null
                 && Name == other.Name

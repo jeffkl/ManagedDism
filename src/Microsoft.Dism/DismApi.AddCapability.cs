@@ -22,7 +22,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void AddCapability(DismSession session, string capabilityName)
         {
-            AddCapability(session, capabilityName, false, null, null, null);
+            AddCapability(session, capabilityName, false, sourcePaths: null, progressCallback: null, userData: null);
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace Microsoft.Dism
         /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths)
+        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths)
         {
-            AddCapability(session, capabilityName, limitAccess, sourcePaths, null, null);
+            AddCapability(session, capabilityName, limitAccess, sourcePaths, progressCallback: null, userData: null);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Get the list of source paths as an array
             string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];

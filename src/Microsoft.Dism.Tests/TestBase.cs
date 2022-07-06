@@ -21,7 +21,7 @@ namespace Microsoft.Dism.Tests
 
             MountPath = Directory.CreateDirectory(Path.Combine(TestDirectory.FullName, "mount"));
 
-            InstallWimPath = new FileInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "install.wim"));
+            InstallWimPath = new FileInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!) !, "install.wim"));
         }
 
         public FileInfo InstallWimPath { get; set; }

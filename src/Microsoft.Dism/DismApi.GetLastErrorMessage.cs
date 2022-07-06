@@ -13,7 +13,7 @@ namespace Microsoft.Dism
         /// Gets the error message in the current thread immediately after a failure.
         /// </summary>
         /// <returns>An error message if one is found, otherwise null.</returns>
-        public static string GetLastErrorMessage()
+        public static string? GetLastErrorMessage()
         {
             // Allow this method to be overridden by an internal test hook
             if (GetLastErrorMessageTestHook != null)
@@ -29,13 +29,13 @@ namespace Microsoft.Dism
             try
             {
                 // Get a string from the pointer
-                string dismString = errorMessagePtr.ToStructure<DismString>();
+                string? dismString = errorMessagePtr.ToStructure<DismString>();
 
                 // See if the string has a value
-                if (string.IsNullOrEmpty(dismString) == false)
+                if (!string.IsNullOrEmpty(dismString))
                 {
                     // Return the trimmed value
-                    return dismString.Trim();
+                    return dismString!.Trim();
                 }
             }
             finally

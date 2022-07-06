@@ -23,7 +23,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload)
         {
-            DisableFeature(session, featureName, packageName, removePayload, null);
+            DisableFeature(session, featureName, packageName, removePayload, progressCallback: null);
         }
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
-            DisableFeature(session, featureName, packageName, removePayload, progressCallback, null);
+            DisableFeature(session, featureName, packageName, removePayload, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void DisableFeature(DismSession session, string featureName, string packageName, bool removePayload, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             DismProgress progress = new DismProgress(progressCallback, userData);

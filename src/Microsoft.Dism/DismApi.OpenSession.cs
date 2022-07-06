@@ -18,7 +18,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismSession OpenOfflineSession(string imagePath)
         {
-            return OpenOfflineSession(imagePath, null, null);
+            return OpenOfflineSession(imagePath, windowsDirectory: null, systemDrive: null);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Microsoft.Dism
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
         /// <returns>A <see cref="DismSession" /> object.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static DismSession OpenOfflineSession(string imagePath, string windowsDirectory, string systemDrive)
+        public static DismSession OpenOfflineSession(string imagePath, string? windowsDirectory, string? systemDrive)
         {
             return OpenSession(imagePath, windowsDirectory, systemDrive);
         }
@@ -41,7 +41,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismSession OpenOnlineSession()
         {
-            return OpenSession(DISM_ONLINE_IMAGE, null, null);
+            return OpenSession(DISM_ONLINE_IMAGE, windowsDirectory: null, systemDrive: null);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Dism
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
         /// <param name="options">A <see cref="DismSessionOptions"/> object that contains the options for the session.</param>
         /// <returns>A <see cref="DismSession" /> object.</returns>
-        private static DismSession OpenSession(string imagePath, string windowsDirectory, string systemDrive, DismSessionOptions options = null)
+        private static DismSession OpenSession(string imagePath, string? windowsDirectory, string? systemDrive, DismSessionOptions? options = null)
         {
             return new DismSession(imagePath, windowsDirectory, systemDrive, options);
         }
@@ -89,7 +89,7 @@ namespace Microsoft.Dism
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
             [return: MarshalAs(UnmanagedType.Error)]
-            public static extern int DismOpenSession(string imagePath, string windowsDirectory, string systemDrive, out IntPtr session);
+            public static extern int DismOpenSession(string imagePath, string? windowsDirectory, string? systemDrive, out IntPtr session);
         }
     }
 }

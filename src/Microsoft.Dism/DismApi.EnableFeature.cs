@@ -23,7 +23,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll)
         {
-            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, null, null);
+            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths: null, progressCallback: null);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string> sourcePaths)
         {
-            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, null);
+            EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progressCallback: null);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
             EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progressCallback, null);
         }
@@ -74,7 +74,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             EnableFeature(session, featureName, packageName, DismPackageIdentifier.Name, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
@@ -91,7 +91,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll)
         {
-            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, null, null);
+            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths: null, progressCallback: null);
         }
 
         /// <summary>
@@ -105,9 +105,9 @@ namespace Microsoft.Dism
         /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths)
+        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths)
         {
-            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, null);
+            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progressCallback: null);
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
-            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progressCallback, null);
+            EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             EnableFeature(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
@@ -157,7 +157,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll)
         {
-            EnableFeature(session, featureName, null, DismPackageIdentifier.None, limitAccess, enableAll, null, null, null);
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths: null, progressCallback: null, userData: null);
         }
 
         /// <summary>
@@ -169,9 +169,9 @@ namespace Microsoft.Dism
         /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
         /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string> sourcePaths)
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths)
         {
-            EnableFeature(session, featureName, null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, null, null);
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback: null, userData: null);
         }
 
         /// <summary>
@@ -184,9 +184,9 @@ namespace Microsoft.Dism
         /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
-            EnableFeature(session, featureName, null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, null);
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -200,9 +200,9 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
-            EnableFeature(session, featureName, null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData);
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        private static void EnableFeature(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string> sourcePaths, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Get the list of source paths as an array
             string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
@@ -268,7 +268,7 @@ namespace Microsoft.Dism
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
-            public static extern int DismEnableFeature(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool enableAll, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            public static extern int DismEnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool enableAll, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }
 }

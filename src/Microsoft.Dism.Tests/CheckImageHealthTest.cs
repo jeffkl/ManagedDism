@@ -32,7 +32,7 @@ namespace Microsoft.Dism.Tests
         {
             const string expectedUserData = "257E41FC307248608E28C3B1F8D5CF09";
 
-            string userData = null;
+            string? userData = null;
 
             int current = -1;
             int total = -1;

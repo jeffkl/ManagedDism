@@ -105,13 +105,13 @@ namespace Microsoft.Dism
             }
 
             // Attempt to get an error message from the DismApi
-            string lastError = DismApi.GetLastErrorMessage();
+            string? lastError = DismApi.GetLastErrorMessage();
 
             // See if the result is not null
             if (!string.IsNullOrEmpty(lastError))
             {
                 // Return a DismException object
-                return new DismException(errorCode, lastError.Trim());
+                return new DismException(errorCode, lastError!.Trim());
             }
 
             // Return an Exception for the HResult

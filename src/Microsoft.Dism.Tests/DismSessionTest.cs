@@ -62,43 +62,25 @@ namespace Microsoft.Dism.Tests
             }
         }
 
-        private class SessionOptionsBehaviorData : TheoryData<DismSessionOptions, Func<DismSessionOptions, DismSession>>
+        private class SessionOptionsBehaviorData : TheoryData<DismSessionOptions?, Func<DismSessionOptions, DismSession>>
         {
-            private readonly List<DismSessionOptions> _sessionOptions = new List<DismSessionOptions>
-            {
-                null,
-                new DismSessionOptions(),
-                new DismSessionOptions { ThrowExceptionOnRebootRequired = false },
-            };
-
-            private readonly List<Func<DismSessionOptions, DismSession>> _publicSessionMethods = new List<Func<DismSessionOptions, DismSession>>
-            {
-                (_) => DismApi.OpenOnlineSession(),
-                (_) => DismApi.OpenOfflineSession(DismApi.DISM_ONLINE_IMAGE),
-                (_) => DismApi.OpenOfflineSession(DismApi.DISM_ONLINE_IMAGE, null, null),
-            };
-
-            private readonly List<Func<DismSessionOptions, DismSession>> _publicSessionExMethods = new List<Func<DismSessionOptions, DismSession>>
-            {
-                (options) => DismApi.OpenOnlineSessionEx(options),
-                (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, options),
-                (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, null, null, options),
-            };
-
             public SessionOptionsBehaviorData()
             {
-                foreach (var sessionMethod in _publicSessionMethods)
-                {
-                    Add(null, sessionMethod);
-                }
+                Add(null, (_) => DismApi.OpenOnlineSession());
+                Add(null, (_) => DismApi.OpenOfflineSession(DismApi.DISM_ONLINE_IMAGE));
+                Add(null, (_) => DismApi.OpenOfflineSession(DismApi.DISM_ONLINE_IMAGE, windowsDirectory: null, systemDrive: null));
 
-                foreach (DismSessionOptions options in _sessionOptions)
-                {
-                    foreach (var sessionMethodEx in _publicSessionExMethods)
-                    {
-                        Add(options, sessionMethodEx);
-                    }
-                }
+                Add(null, (options) => DismApi.OpenOnlineSessionEx(options));
+                Add(null, (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, options));
+                Add(null, (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, windowsDirectory: null, systemDrive: null, options));
+
+                Add(new DismSessionOptions(), (options) => DismApi.OpenOnlineSessionEx(options));
+                Add(new DismSessionOptions(), (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, options));
+                Add(new DismSessionOptions(), (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, windowsDirectory: null, systemDrive: null, options));
+
+                Add(new DismSessionOptions { ThrowExceptionOnRebootRequired = false }, (options) => DismApi.OpenOnlineSessionEx(options));
+                Add(new DismSessionOptions { ThrowExceptionOnRebootRequired = false }, (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, options));
+                Add(new DismSessionOptions { ThrowExceptionOnRebootRequired = false }, (options) => DismApi.OpenOfflineSessionEx(DismApi.DISM_ONLINE_IMAGE, windowsDirectory: null, systemDrive: null, options));
             }
         }
     }

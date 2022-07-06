@@ -18,7 +18,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CommitImage(DismSession session, bool discardChanges)
         {
-            CommitImage(session, discardChanges, null);
+            CommitImage(session, discardChanges, progressCallback: null);
         }
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
-            CommitImage(session, discardChanges, progressCallback, null);
+            CommitImage(session, discardChanges, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create the flags
             UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;

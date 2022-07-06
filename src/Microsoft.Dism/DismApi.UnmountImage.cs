@@ -18,7 +18,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void UnmountImage(string mountPath, bool commitChanges)
         {
-            UnmountImage(mountPath, commitChanges, null);
+            UnmountImage(mountPath, commitChanges, progressCallback: null);
         }
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback progressCallback)
+        public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback? progressCallback)
         {
-            UnmountImage(mountPath, commitChanges, progressCallback, null);
+            UnmountImage(mountPath, commitChanges, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback progressCallback, object userData)
+        public static void UnmountImage(string mountPath, bool commitChanges, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Determine flags
             uint flags = commitChanges ? DISM_COMMIT_IMAGE : DISM_DISCARD_IMAGE;

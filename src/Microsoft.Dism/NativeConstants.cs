@@ -2,16 +2,14 @@
 //
 // Licensed under the MIT license.
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable InconsistentNaming
+#pragma warning disable SA1310 // Field names must not contain underscore
 namespace Microsoft.Dism
 {
     public static partial class DismApi
     {
-#pragma warning disable SA1310 // Field names must not contain underscore
-                              /// <summary>
-                              /// Indicates to the DismCommitImage Function or the DismUnmountImage Function that changes to the image should be saved.
-                              /// </summary>
+        /// <summary>
+        /// Indicates to the DismCommitImage Function or the DismUnmountImage Function that changes to the image should be saved.
+        /// </summary>
         public const uint DISM_COMMIT_APPEND = 0x00020000;
 
         /// <summary>
@@ -187,6 +185,6 @@ namespace Microsoft.Dism
         /// The specified package is not applicable.
         /// </summary>
         internal const uint CBS_E_NOT_APPLICABLE = 0x800F081E;
-#pragma warning restore SA1310 // Field names must not contain underscore
     }
 }
+#pragma warning restore SA1310 // Field names must not contain underscore
