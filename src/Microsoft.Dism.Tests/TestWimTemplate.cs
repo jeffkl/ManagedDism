@@ -86,13 +86,12 @@ namespace Microsoft.Dism.Tests
 
                 for (int i = 0; i < ImageCount; i++)
                 {
-                    // ReSharper disable once UnusedVariable
                     using (WimHandle imageHandle = WimgApi.CaptureImage(wimHandle, capturePath, WimCaptureImageOptions.DisableDirectoryAcl | WimCaptureImageOptions.DisableFileAcl | WimCaptureImageOptions.DisableRPFix))
                     {
                     }
                 }
 
-                XPathNavigator xml = WimgApi.GetImageInformation(wimHandle).CreateNavigator();
+                XPathNavigator xml = WimgApi.GetImageInformation(wimHandle!) !.CreateNavigator() !;
 
                 xml.ShouldNotBeNull();
 
@@ -105,13 +104,17 @@ namespace Microsoft.Dism.Tests
                     xmlDocument.Load(reader);
                 }
 
-                XmlNodeList imageNodes = xmlDocument.SelectNodes("//WIM/IMAGE");
+                XmlNodeList? imageNodes = xmlDocument.SelectNodes("//WIM/IMAGE");
 
                 imageNodes.ShouldNotBeNull();
 
-                // ReSharper disable once PossibleNullReferenceException
-                foreach (XmlElement imageNode in imageNodes)
+                foreach (XmlElement? imageNode in imageNodes)
                 {
+                    if (imageNode == null)
+                    {
+                        continue;
+                    }
+
                     XmlDocumentFragment fragment = xmlDocument.CreateDocumentFragment();
 
                     fragment.InnerXml =
@@ -136,13 +139,17 @@ namespace Microsoft.Dism.Tests
                               <SYSTEMROOT>{SystemRoot}</SYSTEMROOT>
                             </WINDOWS>";
 
+                    XmlAttribute? imageIndexAttribute = imageNode.Attributes["INDEX"];
+
+                    string imageIndex = imageIndexAttribute?.Value ?? "1";
+
                     imageNode.AppendChild(fragment);
 
-                    fragment.InnerXml = $@"<NAME>{ImageNamePrefix}{imageNode.Attributes["INDEX"].Value}</NAME>";
+                    fragment.InnerXml = $@"<NAME>{ImageNamePrefix}{imageIndex}</NAME>";
 
                     imageNode.AppendChild(fragment);
 
-                    fragment.InnerXml = $@"<DESCRIPTION>{ImageNamePrefix}{imageNode.Attributes["INDEX"].Value}</DESCRIPTION>";
+                    fragment.InnerXml = $@"<DESCRIPTION>{ImageNamePrefix}{imageIndex}</DESCRIPTION>";
 
                     imageNode.AppendChild(fragment);
 

@@ -19,7 +19,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RemoveCapability(DismSession session, string capabilityName)
         {
-            RemoveCapability(session, capabilityName, null, null);
+            RemoveCapability(session, capabilityName, progressCallback: null, userData: null);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RemoveCapability(DismSession session, string capabilityName, Dism.DismProgressCallback progressCallback, object userData)
+        public static void RemoveCapability(DismSession session, string capabilityName, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             DismProgress progress = new DismProgress(progressCallback, userData);

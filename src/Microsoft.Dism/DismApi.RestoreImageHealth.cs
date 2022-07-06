@@ -20,7 +20,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static void RestoreImageHealth(DismSession session, bool limitAccess)
         {
-            RestoreImageHealth(session, limitAccess, null);
+            RestoreImageHealth(session, limitAccess, sourcePaths: null);
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace Microsoft.Dism
         /// <param name="sourcePaths">List of source locations to check for repair files.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths)
+        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths)
         {
-            RestoreImageHealth(session, limitAccess, sourcePaths, null);
+            RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback: null);
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths, Dism.DismProgressCallback progressCallback)
+        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, Dism.DismProgressCallback? progressCallback)
         {
-            RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback, null);
+            RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string> sourcePaths, Dism.DismProgressCallback progressCallback, object userData)
+        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Get the list of source paths as an array
             string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];

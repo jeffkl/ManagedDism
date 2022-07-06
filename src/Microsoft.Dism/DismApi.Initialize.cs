@@ -25,7 +25,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel)
         {
-            Initialize(logLevel, null);
+            Initialize(logLevel, logFilePath: null);
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace Microsoft.Dism
         /// <param name="logLevel">Indicates the level of logging.</param>
         /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void Initialize(DismLogLevel logLevel, string logFilePath)
+        public static void Initialize(DismLogLevel logLevel, string? logFilePath)
         {
-            Initialize(logLevel, logFilePath, null);
+            Initialize(logLevel, logFilePath, scratchDirectory: null);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Microsoft.Dism
         /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
         /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If null, the default temp directory, \Windows\%Temp%, will be used.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void Initialize(DismLogLevel logLevel, string logFilePath, string scratchDirectory)
+        public static void Initialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory)
         {
             lock (InitializeShutDownLock)
             {
@@ -81,7 +81,7 @@ namespace Microsoft.Dism
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             [return: MarshalAs(UnmanagedType.Error)]
-            public static extern int DismInitialize(DismLogLevel logLevel, string logFilePath, string scratchDirectory);
+            public static extern int DismInitialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory);
         }
     }
 }

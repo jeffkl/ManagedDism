@@ -2,6 +2,7 @@
 //
 // Licensed under the MIT license.
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -18,16 +19,16 @@ namespace Microsoft.Dism
         /// <param name="licensePath">Specifies the location of the .xml file containing your application license.</param>
         /// <param name="customDataPath">Specifies the location of a custom data file. The custom data file will be renamed custom.data and saved in the app data store.</param>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, string licensePath, string customDataPath)
+        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string>? dependencyPackages, string? licensePath, string customDataPath)
         {
             AddProvisionedAppxPackage(
                 session,
                 appPath,
                 dependencyPackages,
-                null,
-                string.IsNullOrEmpty(licensePath) ? null : new List<string> { licensePath },
-                customDataPath,
-                null);
+                optionalPackages: null,
+                licensePaths: string.IsNullOrEmpty(licensePath) ? null : new List<string> { licensePath! },
+                customDataPath: customDataPath,
+                regions: null);
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace Microsoft.Dism
         /// <param name="customDataPath">Specifies the location of a custom data file. The custom data file will be renamed custom.data and saved in the app data store.</param>
         /// <param name="regions">Specifies regions for the package.</param>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, List<string> optionalPackages, List<string> licensePaths, string customDataPath, string regions)
+        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string>? dependencyPackages, List<string>? optionalPackages, List<string>? licensePaths, string customDataPath, string? regions)
         {
             AddProvisionedAppxPackage(
                 session,
@@ -66,18 +67,18 @@ namespace Microsoft.Dism
         /// <param name="regions">Specifies regions for the package.</param>
         /// <param name="stubPackageOption">Specifies the stub package option.</param>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string> dependencyPackages, List<string> optionalPackages, List<string> licensePaths, string customDataPath, string regions, DismStubPackageOption stubPackageOption)
+        public static void AddProvisionedAppxPackage(DismSession session, string appPath, List<string>? dependencyPackages, List<string>? optionalPackages, List<string>? licensePaths, string customDataPath, string? regions, DismStubPackageOption stubPackageOption)
         {
             int hresult = NativeMethods._DismAddProvisionedAppxPackage(
                 session,
                 appPath,
-                dependencyPackages?.ToArray(),
+                dependencyPackages?.ToArray() ?? new string[0],
                 (uint)(dependencyPackages?.Count ?? 0),
-                optionalPackages?.ToArray(),
+                optionalPackages?.ToArray() ?? new string[0],
                 (uint)(optionalPackages?.Count ?? 0),
-                licensePaths?.ToArray(),
+                licensePaths?.ToArray() ?? new string[0],
                 (uint)(licensePaths?.Count ?? 0),
-                licensePaths == null || licensePaths.Count == 0,
+                SkipLicense: licensePaths == null || licensePaths.Count == 0,
                 customDataPath,
                 regions,
                 stubPackageOption);
@@ -138,7 +139,7 @@ namespace Microsoft.Dism
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string CustomDataPath,
                 [MarshalAs(UnmanagedType.LPWStr)]
-                string Regions,
+                string? Regions,
                 DismStubPackageOption stubPackageOption);
         }
     }

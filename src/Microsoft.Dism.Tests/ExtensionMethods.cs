@@ -23,7 +23,7 @@ namespace Microsoft.Dism.Tests
             {
                 IntPtr currentPtr = new IntPtr(startPtr + (i * structSize));
 
-                Marshal.StructureToPtr(list[i], currentPtr, false);
+                Marshal.StructureToPtr(list[i] !, currentPtr, false);
             }
 
             return mainPtr;

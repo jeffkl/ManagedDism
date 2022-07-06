@@ -14,8 +14,8 @@ namespace Microsoft.Dism
     public sealed class DismSession : SafeHandleZeroOrMinusOneIsInvalid
     {
         private readonly string _imagePath;
-        private readonly string _systemDrive;
-        private readonly string _windowsDirectory;
+        private readonly string? _systemDrive;
+        private readonly string? _windowsDirectory;
         private bool _rebootRequired;
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Microsoft.Dism
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>
         /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
         /// <param name="options">A <see cref="DismSessionOptions"/> object that contains the options for the session.</param>
-        internal DismSession(string imagePath, string windowsDirectory, string systemDrive, DismSessionOptions options = null)
+        internal DismSession(string imagePath, string? windowsDirectory, string? systemDrive, DismSessionOptions? options = null)
             : base(true)
         {
             _imagePath = imagePath;

@@ -19,7 +19,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage)
         {
-            return CheckImageHealth(session, scanImage, null);
+            return CheckImageHealth(session, scanImage, progressCallback: null);
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
-            return CheckImageHealth(session, scanImage, progressCallback, null);
+            return CheckImageHealth(session, scanImage, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             DismProgress progress = new DismProgress(progressCallback, userData);

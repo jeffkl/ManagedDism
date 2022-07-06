@@ -115,92 +115,52 @@ namespace Microsoft.Dism
         /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 10.x generation of tools (WADK).
         /// Otherwise, returns NULL.
         /// </summary>
-        public static string WADK10DismApiPath
-        {
-            get
-            {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots"))
-                {
-                    if (key?.GetValue("KitsRoot10")?.ToString() == null)
-                    {
-                        return null;
-                    }
-
-                    string dismPath = Path.Combine(
-                        key.GetValue("KitsRoot10").ToString(),
-                        $"Assessment and Deployment Kit\\Deployment Tools\\{(Environment.Is64BitProcess ? "amd64" : "x86")}\\DISM\\dismapi.dll");
-
-                    return File.Exists(dismPath) ? dismPath : null;
-                }
-            }
-        }
+        public static string? WADK10DismApiPath => GetKitsRoot("KitsRoot10");
 
         /// <summary>
         /// Gets file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 8 generation of tools (WADK).
         /// Otherwise, returns NULL.
         /// </summary>
-        public static string WADK80DISMAPIPath
-        {
-            get
-            {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots"))
-                {
-                    if (key?.GetValue("KitsRoot")?.ToString() == null)
-                    {
-                        return null;
-                    }
-
-                    string dismPath = Path.Combine(
-                        key.GetValue("KitsRoot").ToString(),
-                        $"Assessment and Deployment Kit\\Deployment Tools\\{(Environment.Is64BitProcess ? "amd64" : "x86")}\\DISM\\dismapi.dll");
-
-                    return File.Exists(dismPath) ? dismPath : null;
-                }
-            }
-        }
+        public static string? WADK80DISMAPIPath => GetKitsRoot("KitsRoot");
 
         /// <summary>
         /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 8.1 generation of tools (WADK).
         /// Otherwise, returns NULL.
         /// </summary>
-        public static string WADK81DISMAPIPath
-        {
-            get
-            {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots"))
-                {
-                    if (key?.GetValue("KitsRoot81")?.ToString() == null)
-                    {
-                        return null;
-                    }
-
-                    string dismPath = Path.Combine(
-                        key.GetValue("KitsRoot81").ToString(),
-                        $"Assessment and Deployment Kit\\Deployment Tools\\{(Environment.Is64BitProcess ? "amd64" : "x86")}\\DISM\\dismapi.dll");
-
-                    return File.Exists(dismPath) ? dismPath : null;
-                }
-            }
-        }
+        public static string? WADK81DISMAPIPath => GetKitsRoot("KitsRoot81");
 
         /// <summary>
         /// Gets the file path of "dism.exe", if installed, which is the entry point for the DISM API in the Windows 7 generation of tools (WAIK).
         /// Otherwise, returns NULL.
         /// </summary>
-        public static string WAIKDISMAPIPath
+        public static string? WAIKDISMAPIPath
         {
             get
             {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Microsoft\\ComponentStudio\\6.1.7600.16385"))
+                using (RegistryKey? key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Microsoft\\ComponentStudio\\6.1.7600.16385") !)
                 {
-                    if (key?.GetValue("ServicingPath")?.ToString() == null)
+                    if (key == null)
                     {
                         return null;
                     }
 
-                    string dismPath = Path.Combine(key.GetValue("ServicingPath").ToString(), "dism.exe");
+                    object? obj = key.GetValue("ServicingPath");
 
-                    return File.Exists(dismPath) ? dismPath : null;
+                    if (obj == null)
+                    {
+                        return null;
+                    }
+
+                    string servicingPath = obj.ToString();
+
+                    if (string.IsNullOrEmpty(servicingPath))
+                    {
+                        return null;
+                    }
+
+                    FileInfo dismPath = new FileInfo(Path.Combine(servicingPath, "dism.exe"));
+
+                    return dismPath.Exists ? dismPath.FullName : null;
                 }
             }
         }
@@ -255,7 +215,7 @@ namespace Microsoft.Dism
                 return false;
             }
 
-            string dismApiPath = string.Empty;
+            string? dismApiPath = null;
 
             switch (generation)
             {
@@ -279,7 +239,7 @@ namespace Microsoft.Dism
                     return false;
             }
 
-            return (_hDismApi = NativeMethods.LoadLibrary(dismApiPath)) != IntPtr.Zero;
+            return (_hDismApi = NativeMethods.LoadLibrary(dismApiPath!)) != IntPtr.Zero;
         }
 
         /// <summary>
@@ -299,7 +259,7 @@ namespace Microsoft.Dism
         /// <param name="hresult">An HRESULT value from a function return to check.</param>
         /// <param name="session">An optional <see cref="DismSession" /> to reload if necessary.</param>
         /// <param name="callerMemberName">The name of the calling member.</param>
-        internal static void ThrowIfFail(int hresult, DismSession session = null, [CallerMemberName] string callerMemberName = null)
+        internal static void ThrowIfFail(int hresult, DismSession? session = null, [CallerMemberName] string? callerMemberName = null)
         {
             if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED)
             {
@@ -327,6 +287,35 @@ namespace Microsoft.Dism
                 }
 
                 throw DismException.GetDismExceptionForHResult(hresult) ?? new DismException(hresult, $"The {callerMemberName} function returned the error code 0x{hresult:X8}");
+            }
+        }
+
+        private static string? GetKitsRoot(string keyName)
+        {
+            using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots") !)
+            {
+                if (key == null)
+                {
+                    return null;
+                }
+
+                object? value = key.GetValue(keyName);
+
+                if (value == null)
+                {
+                    return null;
+                }
+
+                string kitsRoot = value.ToString();
+
+                if (string.IsNullOrWhiteSpace(kitsRoot))
+                {
+                    return null;
+                }
+
+                FileInfo dismPath = new FileInfo(Path.Combine(kitsRoot, "Assessment and Deployment Kit", "Deployment Tools", Environment.Is64BitProcess ? "amd64" : "x86", "DISM", "dismapi.dll"));
+
+                return dismPath.Exists ? dismPath.FullName : null;
             }
         }
 

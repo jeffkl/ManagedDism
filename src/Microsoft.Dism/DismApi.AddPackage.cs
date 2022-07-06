@@ -22,7 +22,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismPackageNotApplicableException">When the package is not applicable to the specified session.</exception>
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending)
         {
-            AddPackage(session, packagePath, ignoreCheck, preventPending, null);
+            AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback: null);
         }
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace Microsoft.Dism
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         /// <exception cref="DismPackageNotApplicableException">When the package is not applicable to the specified session.</exception>
-        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback)
+        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback? progressCallback)
         {
-            AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, null);
+            AddPackage(session, packagePath, ignoreCheck, preventPending, progressCallback, userData: null);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Microsoft.Dism
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         /// <exception cref="DismPackageNotApplicableException">When the package is not applicable to the specified session.</exception>
-        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback progressCallback, object userData)
+        public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
             DismProgress progress = new DismProgress(progressCallback, userData);

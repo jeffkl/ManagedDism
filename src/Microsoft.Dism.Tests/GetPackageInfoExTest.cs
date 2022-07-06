@@ -21,7 +21,7 @@ namespace Microsoft.Dism.Tests
         {
             using (DismSession session = DismApi.OpenOnlineSession())
             {
-                DismPackage package = DismApi.GetPackages(session).FirstOrDefault(i => i.PackageState == DismPackageFeatureState.Installed);
+                DismPackage? package = DismApi.GetPackages(session).FirstOrDefault(i => i.PackageState == DismPackageFeatureState.Installed);
 
                 package.ShouldNotBeNull();
 

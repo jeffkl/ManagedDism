@@ -4,7 +4,6 @@
 
 using System;
 
-// ReSharper disable InconsistentNaming
 namespace Microsoft.Dism
 {
     /// <summary>
