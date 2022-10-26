@@ -202,12 +202,8 @@ namespace Microsoft.Dism
         /// Only a single DISM generation library may be loaded at a given time. To switch versions, the caller can use LoadDismGenerationLibrary() and UnloadDismGenerationLibrary()
         /// to switch between DISM generations (WAIK and/or WADK) and/or what's natively available on the local system (System32).
         /// </summary>
-        /// <param name="generation">
-        /// The DismGeneration to be loaded.
-        /// </param>
-        /// <returns>
-        /// TRUE if successful, otherwise FALSE.
-        /// </returns>
+        /// <param name="generation">The DismGeneration to be loaded.</param>
+        /// <returns><c>true</c> if successful, otherwise <c>false</c>.</returns>
         public static bool LoadDismGenerationLibrary(DismGeneration generation)
         {
             if (_hDismApi != IntPtr.Zero)
