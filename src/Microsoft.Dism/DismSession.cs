@@ -74,7 +74,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Releases the DismSession handle.
         /// </summary>
-        /// <returns>true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false.</returns>
+        /// <returns><c>true</c> if the handle is released successfully; otherwise, in the event of a catastrophic failure, <c>false</c>.</returns>
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {

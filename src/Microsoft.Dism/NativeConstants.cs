@@ -127,7 +127,7 @@ namespace Microsoft.Dism
         /// One or several parent features are disabled so current feature can not be enabled.
         /// Solutions:
         /// 1 Call function DismGetFeatureParent to get all parent features and enable all of them. Or
-        /// 2 Set EnableAll to TRUE when calling function DismEnableFeature.
+        /// 2 Set EnableAll to <c>true</c> when calling function DismEnableFeature.
         /// </summary>
         public const uint DISMAPI_E_PARENT_FEATURE_DISABLED = 0xC004000D;
 
