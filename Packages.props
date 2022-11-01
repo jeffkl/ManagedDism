@@ -11,7 +11,7 @@
     <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3" />
   </ItemGroup>
   <ItemGroup>
-    <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="4.0.4" />
+    <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="4.1.0" />
     <GlobalPackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" Condition="'$(TargetFramework)' == 'net40'" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.5.113" />
