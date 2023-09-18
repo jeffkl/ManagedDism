@@ -1,6 +1,14 @@
 <Project>
-  <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
   <PropertyGroup>
+    <Authors>jeffkl</Authors>
+    <Copyright>Copyright ©. All rights reserved.</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jeffkl/ManagedDism</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jeffkl/ManagedDism.git</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    
     <DebugType Condition="'$(TargetFramework)' == 'net40'">Full</DebugType>
   </PropertyGroup>
   <ItemGroup>

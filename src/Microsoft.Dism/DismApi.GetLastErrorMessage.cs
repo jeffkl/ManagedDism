@@ -12,7 +12,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the error message in the current thread immediately after a failure.
         /// </summary>
-        /// <returns>An error message if one is found, otherwise null.</returns>
+        /// <returns>An error message if one is found, otherwise <see langword="null" />.</returns>
         public static string? GetLastErrorMessage()
         {
             // Allow this method to be overridden by an internal test hook

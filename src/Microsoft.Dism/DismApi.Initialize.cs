@@ -32,7 +32,7 @@ namespace Microsoft.Dism
         /// Initializes DISM API. Initialize must be called once per process before calling any other DISM API functions.
         /// </summary>
         /// <param name="logLevel">Indicates the level of logging.</param>
-        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
+        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If <see langword="null" />, the default log path, <c>%WinDir%\Logs\DISM\dism.log</c>, will be used.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string? logFilePath)
         {
@@ -43,8 +43,8 @@ namespace Microsoft.Dism
         /// Initializes DISM API. Initialize must be called once per process before calling any other DISM API functions.
         /// </summary>
         /// <param name="logLevel">Indicates the level of logging.</param>
-        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
-        /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If null, the default temp directory, \Windows\%Temp%, will be used.</param>
+        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If <see langword="null" />, the default log path, <c>%WinDir%\Logs\DISM\dism.log</c>, will be used.</param>
+        /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If <see langword="null" />, the default temp directory, <c>%WinDir%\Temp</c>, will be used.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void Initialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory)
         {
@@ -67,7 +67,7 @@ namespace Microsoft.Dism
             /// Initializes DISM API. DismInitialize must be called once per process before calling any other DISM API functions.
             /// </summary>
             /// <param name="logLevel">A DismLogLevel Enumeration value, such as DismLogErrorsWarnings.</param>
-            /// <param name="logFilePath">Optional. A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
+            /// <param name="logFilePath">Optional. A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %WinDir%\Logs\DISM\dism.log, will be used.</param>
             /// <param name="scratchDirectory">Optional. A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If NULL, the default temp directory, \Windows\%Temp%, will be used.</param>
             /// <returns>Returns S_OK on success.
             ///

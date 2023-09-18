@@ -47,7 +47,7 @@ namespace Microsoft.Dism
             public string OriginalFileName;
 
             /// <summary>
-            /// <c>true</c> if the driver is included on the Windows distribution media and automatically installed as part of Windows®, otherwise <c>false</c>.
+            /// <see langword="true" /> if the driver is included on the Windows distribution media and automatically installed as part of Windows®, otherwise <see langword="false" />.
             /// </summary>
             public bool InBox;
 
@@ -72,7 +72,7 @@ namespace Microsoft.Dism
             public string ClassDescription;
 
             /// <summary>
-            /// <c>true</c> if the driver is boot-critical, otherwise <c>false</c>.
+            /// <see langword="true" /> if the driver is boot-critical, otherwise <see langword="false" />.
             /// </summary>
             public bool BootCritical;
 
@@ -202,7 +202,7 @@ namespace Microsoft.Dism
         /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />, otherwise <see langword="false" />.</returns>
         public override bool Equals(object? obj)
         {
             return obj != null && Equals(obj as DismDriverPackage);
@@ -212,7 +212,7 @@ namespace Microsoft.Dism
         /// Determines whether the specified <see cref="DismDriverPackage" /> is equal to the current <see cref="DismDriverPackage" />.
         /// </summary>
         /// <param name="other">The <see cref="DismDriverPackage" /> object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="DismDriverPackage" /> is equal to the current <see cref="DismDriverPackage" />, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the specified <see cref="DismDriverPackage" /> is equal to the current <see cref="DismDriverPackage" />, otherwise <see langword="false" />.</returns>
         public bool Equals(DismDriverPackage? other)
         {
             return other != null

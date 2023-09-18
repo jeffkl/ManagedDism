@@ -85,7 +85,7 @@ namespace Microsoft.Dism
         /// Initializes DISM API, using the latest installed DISM Generation. Initialize must be called once per process before calling any other DISM API functions.
         /// </summary>
         /// <param name="logLevel">Indicates the level of logging.</param>
-        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
+        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If <see langword="null" />, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
         /// <exception cref="Exception">If an error occurs loading the latest DISM Generational Library.</exception>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel, string? logFilePath)
@@ -97,8 +97,8 @@ namespace Microsoft.Dism
         /// Initializes DISM API, using the latest installed DISM Generation. Initialize must be called once per process before calling any other DISM API functions.
         /// </summary>
         /// <param name="logLevel">Indicates the level of logging.</param>
-        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
-        /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If null, the default temp directory, \Windows\%Temp%, will be used.</param>
+        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If <see langword="null" />, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
+        /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If <see langword="null" />, the default temp directory, <c>%WinDir%\Temp</c>, will be used.</param>
         /// /// <exception cref="Exception">If an error occurs loading the latest DISM Generational Library.</exception>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void InitializeEx(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory)
@@ -110,8 +110,8 @@ namespace Microsoft.Dism
         /// Initializes DISM API, using the specified DISM Generation. Initialize must be called once per process before calling any other DISM API functions.
         /// </summary>
         /// <param name="logLevel">Indicates the level of logging.</param>
-        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If NULL, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
-        /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If null, the default temp directory, \Windows\%Temp%, will be used.</param>
+        /// <param name="logFilePath">A relative or absolute path to a log file. All messages generated will be logged to this path. If <see langword="null" />, the default log path, %windir%\Logs\DISM\dism.log, will be used.</param>
+        /// <param name="scratchDirectory">A relative or absolute path to a scratch directory. DISM API will use this directory for internal operations. If <see langword="null" />, the default temp directory, <c>%WinDir%\Temp</c>, will be used.</param>
         /// <param name="dismGeneration">The DISM Generational Library to be used.</param>
         /// /// <exception cref="Exception">If an error occurs loading the latest DISM Generational Library.</exception>
         /// <exception cref="DismException">When a failure occurs.</exception>

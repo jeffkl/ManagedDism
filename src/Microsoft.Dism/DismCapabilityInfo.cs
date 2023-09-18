@@ -108,7 +108,7 @@ namespace Microsoft.Dism
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <see langword="false" />.</returns>
         public override bool Equals(object? obj)
         {
             return obj != null && Equals(obj as DismCapabilityInfo);
@@ -118,7 +118,7 @@ namespace Microsoft.Dism
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter, otherwise <see langword="false" />.</returns>
         public bool Equals(DismCapabilityInfo? other)
         {
             return other != null

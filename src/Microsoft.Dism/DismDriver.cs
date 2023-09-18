@@ -121,7 +121,7 @@ namespace Microsoft.Dism
         /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />, otherwise <see langword="false" />.</returns>
         public override bool Equals(object? obj)
         {
             return obj != null && Equals(obj as DismDriver);
@@ -131,7 +131,7 @@ namespace Microsoft.Dism
         /// Determines whether the specified <see cref="DismDriver" /> is equal to the current <see cref="DismDriver" />.
         /// </summary>
         /// <param name="other">The <see cref="DismDriver" /> object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="DismDriver" /> is equal to the current <see cref="DismDriver" />, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the specified <see cref="DismDriver" /> is equal to the current <see cref="DismDriver" />, otherwise <see langword="false" />.</returns>
         public bool Equals(DismDriver? other)
         {
             return other != null

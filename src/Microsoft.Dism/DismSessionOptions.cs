@@ -11,7 +11,7 @@ namespace Microsoft.Dism
     {
         /// <summary>
         /// Gets or sets a value indicating whether or not an exception will be thrown if a reboot is required.
-        /// If this value is set to false, the caller should check the <see cref="DismSession.RebootRequired"/> property to determine if reboot is required.
+        /// If this value is set to false, the caller should check the <see cref="DismSession.RebootRequired" /> property to determine if reboot is required.
         /// <para>
         /// The default value is true.
         /// </para>

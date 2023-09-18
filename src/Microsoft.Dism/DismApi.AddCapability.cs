@@ -22,7 +22,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void AddCapability(DismSession session, string capabilityName)
         {
-            AddCapability(session, capabilityName, false, sourcePaths: null, progressCallback: null, userData: null);
+            AddCapability(session, capabilityName, limitAccess: false, sourcePaths: null, progressCallback: null, userData: null);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;;net6.0;net7.0</TargetFrameworks>
     <Platforms>x64</Platforms>
     <NoWarn>$(NoWarn);SA0001;SA1600;RS0016</NoWarn>
   </PropertyGroup>
