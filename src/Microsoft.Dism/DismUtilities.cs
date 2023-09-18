@@ -112,26 +112,22 @@ namespace Microsoft.Dism
         private static IntPtr _hDismApi;
 
         /// <summary>
-        /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 10.x generation of tools (WADK).
-        /// Otherwise, returns NULL.
+        /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 10.x generation of tools (WADK), otherwise <see langword="null" />.
         /// </summary>
         public static string? WADK10DismApiPath => GetKitsRoot("KitsRoot10");
 
         /// <summary>
-        /// Gets file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 8 generation of tools (WADK).
-        /// Otherwise, returns NULL.
+        /// Gets file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 8 generation of tools (WADK), otherwise <see langword="null" />.
         /// </summary>
         public static string? WADK80DISMAPIPath => GetKitsRoot("KitsRoot");
 
         /// <summary>
-        /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 8.1 generation of tools (WADK).
-        /// Otherwise, returns NULL.
+        /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 8.1 generation of tools (WADK), otherwise <see langword="null" />.
         /// </summary>
         public static string? WADK81DISMAPIPath => GetKitsRoot("KitsRoot81");
 
         /// <summary>
-        /// Gets the file path of "dism.exe", if installed, which is the entry point for the DISM API in the Windows 7 generation of tools (WAIK).
-        /// Otherwise, returns NULL.
+        /// Gets the file path of "dism.exe", if installed, which is the entry point for the DISM API in the Windows 7 generation of tools (WAIK), otherwise <see langword="null" />.
         /// </summary>
         public static string? WAIKDISMAPIPath
         {
@@ -203,7 +199,7 @@ namespace Microsoft.Dism
         /// to switch between DISM generations (WAIK and/or WADK) and/or what's natively available on the local system (System32).
         /// </summary>
         /// <param name="generation">The DismGeneration to be loaded.</param>
-        /// <returns><c>true</c> if successful, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if successful, otherwise <see langword="false" />.</returns>
         public static bool LoadDismGenerationLibrary(DismGeneration generation)
         {
             if (_hDismApi != IntPtr.Zero)

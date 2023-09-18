@@ -23,8 +23,8 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="imagePath">An absolute or relative path to the root directory of an offline Windows image, an absolute or relative path to the root directory of a mounted Windows image, or DISM_ONLINE_IMAGE to associate with the online Windows installation.</param>
         /// <param name="windowsDirectory">A relative or absolute path to the Windows directory. The path is relative to the mount point.</param>
-        /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If SystemDrive is NULL, the default value of the drive containing the mount point is used.</param>
-        /// <param name="options">A <see cref="DismSessionOptions"/> object that contains the options for the session.</param>
+        /// <param name="systemDrive">The letter of the system drive that contains the boot manager. If <paramref name="systemDrive" /> is <see langword="null" />, the default value of the drive containing the mount point is used.</param>
+        /// <param name="options">A <see cref="DismSessionOptions" /> object that contains the options for the session.</param>
         internal DismSession(string imagePath, string? windowsDirectory, string? systemDrive, DismSessionOptions? options = null)
             : base(true)
         {
@@ -74,7 +74,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Releases the DismSession handle.
         /// </summary>
-        /// <returns><c>true</c> if the handle is released successfully; otherwise, in the event of a catastrophic failure, <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the handle is released successfully; otherwise, in the event of a catastrophic failure, <see langword="false" />.</returns>
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {

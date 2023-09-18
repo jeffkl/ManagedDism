@@ -11,14 +11,4 @@
     <SignAssembly>true</SignAssembly>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup>
-    <Authors>jeffkl</Authors>
-    <Copyright>Copyright ©. All rights reserved.</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/jeffkl/ManagedDism</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/jeffkl/ManagedDism.git</RepositoryUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-  </PropertyGroup>
 </Project>
