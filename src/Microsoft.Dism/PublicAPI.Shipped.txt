@@ -45,9 +45,7 @@ Microsoft.Dism.DismCapabilityCollection
 Microsoft.Dism.DismCapabilityInfo
 Microsoft.Dism.DismCapabilityInfo.Description.get -> string!
 Microsoft.Dism.DismCapabilityInfo.DisplayName.get -> string!
-Microsoft.Dism.DismCapabilityInfo.DownloadSize.get -> int
 Microsoft.Dism.DismCapabilityInfo.Equals(Microsoft.Dism.DismCapabilityInfo? other) -> bool
-Microsoft.Dism.DismCapabilityInfo.InstallSize.get -> int
 Microsoft.Dism.DismCapabilityInfo.Name.get -> string!
 Microsoft.Dism.DismCapabilityInfo.State.get -> Microsoft.Dism.DismPackageFeatureState
 Microsoft.Dism.DismCustomProperty
