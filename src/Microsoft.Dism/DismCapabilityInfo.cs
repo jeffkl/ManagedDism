@@ -49,12 +49,12 @@ namespace Microsoft.Dism
             /// <summary>
             /// The download size of the capability in bytes.
             /// </summary>
-            public UInt32 DownloadSize;
+            public uint DownloadSize;
 
             /// <summary>
             /// The install size of the capability in bytes.
             /// </summary>
-            public UInt32 InstallSize;
+            public uint InstallSize;
         }
     }
 
@@ -70,8 +70,17 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="capabilityPtr">An <see cref="IntPtr" /> of a <see cref="DismApi.DismCapabilityInfo_" /> structure.</param>
         internal DismCapabilityInfo(IntPtr capabilityPtr)
+            : this(capabilityPtr.ToStructure<DismApi.DismCapabilityInfo_>())
         {
-            _capabilityInfo = capabilityPtr.ToStructure<DismApi.DismCapabilityInfo_>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismCapabilityInfo" /> class.
+        /// </summary>
+        /// <param name="capabilityInfo">A <see cref="DismApi.DismCapabilityInfo_" /> structure containing the capability information.</param>
+        internal DismCapabilityInfo(DismApi.DismCapabilityInfo_ capabilityInfo)
+        {
+            _capabilityInfo = capabilityInfo;
         }
 
         /// <summary>
@@ -97,12 +106,12 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the download size of the capability in bytes.
         /// </summary>
-        public int DownloadSize => (int)_capabilityInfo.DownloadSize;
+        public uint DownloadSize => _capabilityInfo.DownloadSize;
 
         /// <summary>
         /// Gets the install size of the capability in bytes.
         /// </summary>
-        public int InstallSize => (int)_capabilityInfo.InstallSize;
+        public uint InstallSize => _capabilityInfo.InstallSize;
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
@@ -140,8 +149,8 @@ namespace Microsoft.Dism
                 ^ State.GetHashCode()
                 ^ (string.IsNullOrEmpty(DisplayName) ? 0 : DisplayName.GetHashCode())
                 ^ (string.IsNullOrEmpty(Description) ? 0 : Description.GetHashCode())
-                ^ DownloadSize
-                ^ InstallSize;
+                ^ (int)DownloadSize
+                ^ (int)InstallSize;
         }
     }
 }

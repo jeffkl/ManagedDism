@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using Shouldly;
+using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
@@ -27,14 +28,29 @@ namespace Microsoft.Dism.Tests
 
         protected override object Struct => _capabilityInfo;
 
+        [Fact]
+        public void DownloadAndInstallSizeDoNotOverflow()
+        {
+            DismApi.DismCapabilityInfo_ dismCapabilityInfo = new DismApi.DismCapabilityInfo_
+            {
+                DownloadSize = (uint)int.MaxValue + 1,
+                InstallSize = (uint)int.MaxValue + 10,
+            };
+
+            DismCapabilityInfo capabilityInfo = new DismCapabilityInfo(dismCapabilityInfo);
+
+            capabilityInfo.DownloadSize.ShouldBe((uint)int.MaxValue + 1);
+            capabilityInfo.InstallSize.ShouldBe((uint)int.MaxValue + 10);
+        }
+
         protected override void VerifyProperties(DismCapabilityInfo item)
         {
             item.Name.ShouldBe(_capabilityInfo.Name);
             item.DisplayName.ShouldBe(_capabilityInfo.DisplayName);
             item.Description.ShouldBe(_capabilityInfo.Description);
             item.State.ShouldBe(_capabilityInfo.State);
-            item.DownloadSize.ShouldBe((int)_capabilityInfo.DownloadSize);
-            item.InstallSize.ShouldBe((int)_capabilityInfo.InstallSize);
+            item.DownloadSize.ShouldBe(_capabilityInfo.DownloadSize);
+            item.InstallSize.ShouldBe(_capabilityInfo.InstallSize);
         }
     }
 }
