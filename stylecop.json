@@ -1,11 +1,11 @@
 {
-  "$schema":
-    "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "orderingRules": {
       "usingDirectivesPlacement": "outsideNamespace",
       "systemUsingDirectivesFirst": false,
-      "blankLinesBetweenUsingGroups": "require"
+      "blankLinesBetweenUsingGroups": "require",
+
     },
     "documentationRules": {
       "companyName": "",

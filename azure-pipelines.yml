@@ -8,7 +8,7 @@ variables:
   DotNet7Version: '7.x'
   DotNet8Version: '8.x'
   ContinuousIntegrationBuild: 'true'
-  MSBuildArguments: '"/Property:Platform=$(BuildPlatform);Configuration=$(BuildConfiguration)" "/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
+  MSBuildArguments: '"/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
   CommonTestArguments: '/noautorsp --no-restore --no-build --configuration:$(BuildConfiguration)'
   DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
@@ -62,25 +62,8 @@ jobs:
     displayName: 'Run Unit Tests (.NET Framework)'
     inputs:
       command: 'test'
-      arguments: '$(CommonTestArguments) --framework net472 --collect:"XPlat Code Coverage" --logger trx --results-directory TestResults_net472'
-      publishTestResults: false
-    condition: succeededOrFailed()
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Unit Test Results (.NET Framework)'
-    inputs:
-      testResultsFormat: 'VSTest'
-      testResultsFiles: '*.trx' 
-      searchFolder: 'TestResults_net472'
+      arguments: '$(CommonTestArguments) --framework net472'
       testRunTitle: '.NET Framework v4.7.2'
-      buildPlatform: $(BuildPlatform)
-      buildConfiguration: $(BuildConfiguration)
-
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Publish Code Coverage Results (.NET Framework)'
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: 'TestResults_net472\VssAdministrator*\**\coverage.cobertura.xml'
     condition: succeededOrFailed()
 
   - task: DotNetCoreCLI@2
@@ -88,6 +71,7 @@ jobs:
     inputs:
       command: 'test'
       arguments: '$(CommonTestArguments) --framework net7.0'
+      testRunTitle: '.NET 7.0'
     condition: succeededOrFailed()
 
   - task: DotNetCoreCLI@2
@@ -95,6 +79,7 @@ jobs:
     inputs:
       command: 'test'
       arguments: '$(CommonTestArguments) --framework net8.0'
+      testRunTitle: '.NET 8.0'
     condition: succeededOrFailed()
 
   - task: PublishBuildArtifacts@1
