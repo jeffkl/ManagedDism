@@ -18,11 +18,31 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismDriverCollection GetDriverInfo(DismSession session, string driverPath)
         {
+            return GetDriverInfo(session, driverPath, out _);
+        }
+
+        /// <summary>
+        /// Gets information about an .inf file in a specified image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="driverPath">A relative or absolute path to the driver .inf file.</param>
+        /// <param name="driverPackage">Receives a <see cref="DismDriverPackage" /> containing information about the driver package if available.</param>
+        /// <returns>A <see cref="DismDriverCollection" /> object containing a collection of <see cref="DismDriver" /> objects.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static DismDriverCollection GetDriverInfo(DismSession session, string driverPath, out DismDriverPackage? driverPackage)
+        {
+            driverPackage = null;
+
             int hresult = NativeMethods.DismGetDriverInfo(session, driverPath, out IntPtr driverInfoPtr, out UInt32 driverInfoCount, out IntPtr driverPackagePtr);
 
             try
             {
                 DismUtilities.ThrowIfFail(hresult, session);
+
+                if (driverPackagePtr != IntPtr.Zero)
+                {
+                    driverPackage = new DismDriverPackage(driverPackagePtr.ToStructure<DismDriverPackage_>());
+                }
 
                 return new DismDriverCollection(driverInfoPtr, driverInfoCount);
             }
