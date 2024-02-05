@@ -1,4 +1,1 @@
 ﻿#nullable enable
-Microsoft.Dism.DismCapabilityInfo.DownloadSize.get -> uint
-Microsoft.Dism.DismCapabilityInfo.InstallSize.get -> uint
-static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession! session, string! driverPath, out Microsoft.Dism.DismDriverPackage? driverPackage) -> Microsoft.Dism.DismDriverCollection!

@@ -45,7 +45,9 @@ Microsoft.Dism.DismCapabilityCollection
 Microsoft.Dism.DismCapabilityInfo
 Microsoft.Dism.DismCapabilityInfo.Description.get -> string!
 Microsoft.Dism.DismCapabilityInfo.DisplayName.get -> string!
+Microsoft.Dism.DismCapabilityInfo.DownloadSize.get -> uint
 Microsoft.Dism.DismCapabilityInfo.Equals(Microsoft.Dism.DismCapabilityInfo? other) -> bool
+Microsoft.Dism.DismCapabilityInfo.InstallSize.get -> uint
 Microsoft.Dism.DismCapabilityInfo.Name.get -> string!
 Microsoft.Dism.DismCapabilityInfo.State.get -> Microsoft.Dism.DismPackageFeatureState
 Microsoft.Dism.DismCustomProperty
@@ -350,6 +352,7 @@ static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSess
 static Microsoft.Dism.DismApi.GetCapabilities(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismCapabilityCollection!
 static Microsoft.Dism.DismApi.GetCapabilityInfo(Microsoft.Dism.DismSession! session, string! capabilityName) -> Microsoft.Dism.DismCapabilityInfo!
 static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession! session, string! driverPath) -> Microsoft.Dism.DismDriverCollection!
+static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession! session, string! driverPath, out Microsoft.Dism.DismDriverPackage? driverPackage) -> Microsoft.Dism.DismDriverCollection!
 static Microsoft.Dism.DismApi.GetDrivers(Microsoft.Dism.DismSession! session, bool allDrivers) -> Microsoft.Dism.DismDriverPackageCollection!
 static Microsoft.Dism.DismApi.GetFeatureInfo(Microsoft.Dism.DismSession! session, string! featureName) -> Microsoft.Dism.DismFeatureInfo!
 static Microsoft.Dism.DismApi.GetFeatureInfoByPackageName(Microsoft.Dism.DismSession! session, string! featureName, string! packageName) -> Microsoft.Dism.DismFeatureInfo!
