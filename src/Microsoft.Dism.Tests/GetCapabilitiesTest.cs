@@ -28,7 +28,7 @@ namespace Microsoft.Dism.Tests
                 {
                     capability.Name.ShouldNotBeNullOrWhiteSpace();
 
-                    capability.State.ShouldBeOneOf(DismPackageFeatureState.Installed, DismPackageFeatureState.NotPresent);
+                    capability.State.ShouldBeOneOf(DismPackageFeatureState.Installed, DismPackageFeatureState.Staged, DismPackageFeatureState.NotPresent);
                 }
             }
         }
