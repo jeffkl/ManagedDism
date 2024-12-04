@@ -1,1 +1,2 @@
 ﻿#nullable enable
+static Microsoft.Dism.DismApi.GetCurrentEdition(Microsoft.Dism.DismSession! session) -> string?
