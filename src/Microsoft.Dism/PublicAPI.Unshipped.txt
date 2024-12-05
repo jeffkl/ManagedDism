@@ -1,2 +1,4 @@
 ﻿#nullable enable
+Microsoft.Dism.DismEditionCollection
 static Microsoft.Dism.DismApi.GetCurrentEdition(Microsoft.Dism.DismSession! session) -> string!
+static Microsoft.Dism.DismApi.GetTargetEditions(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismEditionCollection!
