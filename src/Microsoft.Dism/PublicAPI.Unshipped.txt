@@ -16,4 +16,5 @@ static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, st
 static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey) -> void
 static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
 static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> void
 static Microsoft.Dism.DismApi.ValidateProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> bool
