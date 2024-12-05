@@ -1,4 +1,5 @@
 ﻿#nullable enable
+const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_PRODUCT = 2147944005 -> uint
 Microsoft.Dism.DismEditionCollection
 Microsoft.Dism.DismProductKeyInfo
 Microsoft.Dism.DismProductKeyInfo.Channel.get -> string!
@@ -15,3 +16,4 @@ static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, st
 static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey) -> void
 static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
 static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.ValidateProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> bool
