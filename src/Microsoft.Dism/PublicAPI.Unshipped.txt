@@ -2,3 +2,9 @@
 Microsoft.Dism.DismEditionCollection
 static Microsoft.Dism.DismApi.GetCurrentEdition(Microsoft.Dism.DismSession! session) -> string!
 static Microsoft.Dism.DismApi.GetTargetEditions(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismEditionCollection!
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
