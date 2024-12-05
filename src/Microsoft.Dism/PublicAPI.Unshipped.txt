@@ -1,6 +1,13 @@
 ﻿#nullable enable
 Microsoft.Dism.DismEditionCollection
+Microsoft.Dism.DismProductKeyInfo
+Microsoft.Dism.DismProductKeyInfo.Channel.get -> string!
+Microsoft.Dism.DismProductKeyInfo.EditionId.get -> string!
+Microsoft.Dism.DismProductKeyInfo.Equals(Microsoft.Dism.DismProductKeyInfo? other) -> bool
+override Microsoft.Dism.DismProductKeyInfo.Equals(object? obj) -> bool
+override Microsoft.Dism.DismProductKeyInfo.GetHashCode() -> int
 static Microsoft.Dism.DismApi.GetCurrentEdition(Microsoft.Dism.DismSession! session) -> string!
+static Microsoft.Dism.DismApi.GetProductKeyInfo(Microsoft.Dism.DismSession! session, string! productKey) -> Microsoft.Dism.DismProductKeyInfo!
 static Microsoft.Dism.DismApi.GetTargetEditions(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismEditionCollection!
 static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId) -> void
 static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
