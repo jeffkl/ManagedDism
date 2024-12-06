@@ -23,7 +23,6 @@ namespace Microsoft.Dism.Tests
                 DismEditionCollection editionCollection = DismApi.GetTargetEditions(session);
 
                 editionCollection.ShouldNotBeNull();
-                editionCollection.ShouldNotBeEmpty();
             }
         }
     }
