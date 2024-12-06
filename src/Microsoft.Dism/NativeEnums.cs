@@ -311,6 +311,52 @@ namespace Microsoft.Dism
     }
 
     /// <summary>
+    /// Specifies a registry hive.
+    /// </summary>
+    public enum DismRegistryHive : uint
+    {
+        /// <summary>
+        /// The <strong>HKLM\SOFTWARE</strong> registry hive.
+        /// </summary>
+        Software = 0,
+
+        /// <summary>
+        /// The <strong>HKLM\SYSTEM</strong> registry hive.
+        /// </summary>
+        System,
+
+        /// <summary>
+        /// The <strong>HKLM\SECURITY</strong> registry hive.
+        /// </summary>
+        Security,
+
+        /// <summary>
+        /// The <strong>HKLM\SAM</strong> registry hive.
+        /// </summary>
+        SAM,
+
+        /// <summary>
+        /// The <strong>HKU\.DEFAULT</strong> registry hive.
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// The <strong>HKCU</strong> registry hive.
+        /// </summary>
+        HKCU,
+
+        /// <summary>
+        /// The <strong>COMPONENTS</strong> registry hive.
+        /// </summary>
+        Components,
+
+        /// <summary>
+        /// The <strong>DRIVERS</strong> registry hive.
+        /// </summary>
+        Drivers,
+    }
+
+    /// <summary>
     /// Specifies the release type of a package.
     /// </summary>
     /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824783.aspx" />
