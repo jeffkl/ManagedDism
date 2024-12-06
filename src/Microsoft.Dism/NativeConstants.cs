@@ -147,6 +147,11 @@ namespace Microsoft.Dism
         public const uint DISMAPI_E_UNKNOWN_FEATURE = 0x800f080c;
 
         /// <summary>
+        /// The product is unknown, e.g. invalid product key.
+        /// </summary>
+        public const uint DISMAPI_E_UNKNOWN_PRODUCT = 0x80070645;
+
+        /// <summary>
         /// The request was cancelled.
         /// </summary>
         internal const uint ERROR_CANCELLED = 0x000004C7; // 1223
