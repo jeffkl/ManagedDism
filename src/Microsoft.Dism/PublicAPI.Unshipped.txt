@@ -1,1 +1,20 @@
 ﻿#nullable enable
+const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_PRODUCT = 2147944005 -> uint
+Microsoft.Dism.DismEditionCollection
+Microsoft.Dism.DismProductKeyInfo
+Microsoft.Dism.DismProductKeyInfo.Channel.get -> string!
+Microsoft.Dism.DismProductKeyInfo.EditionId.get -> string!
+Microsoft.Dism.DismProductKeyInfo.Equals(Microsoft.Dism.DismProductKeyInfo? other) -> bool
+override Microsoft.Dism.DismProductKeyInfo.Equals(object? obj) -> bool
+override Microsoft.Dism.DismProductKeyInfo.GetHashCode() -> int
+static Microsoft.Dism.DismApi.GetCurrentEdition(Microsoft.Dism.DismSession! session) -> string!
+static Microsoft.Dism.DismApi.GetProductKeyInfo(Microsoft.Dism.DismSession! session, string! productKey) -> Microsoft.Dism.DismProductKeyInfo!
+static Microsoft.Dism.DismApi.GetTargetEditions(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismEditionCollection!
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> void
+static Microsoft.Dism.DismApi.ValidateProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> bool
