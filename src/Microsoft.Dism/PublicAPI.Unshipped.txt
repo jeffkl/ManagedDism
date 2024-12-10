@@ -1,11 +1,1 @@
 ﻿#nullable enable
-Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.Components = 6 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.Default = 4 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.Drivers = 7 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.HKCU = 5 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.SAM = 3 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.Security = 2 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.Software = 0 -> Microsoft.Dism.DismRegistryHive
-Microsoft.Dism.DismRegistryHive.System = 1 -> Microsoft.Dism.DismRegistryHive
-static Microsoft.Dism.DismApi.GetRegistryMountPoint(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismRegistryHive registryHive) -> string!
