@@ -253,6 +253,15 @@ Microsoft.Dism.DismRebootRequiredException
 Microsoft.Dism.DismRebootRequiredException.DismRebootRequiredException() -> void
 Microsoft.Dism.DismRebootRequiredException.DismRebootRequiredException(string! message) -> void
 Microsoft.Dism.DismRebootRequiredException.DismRebootRequiredException(string! message, System.Exception! innerException) -> void
+Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.Components = 6 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.Default = 4 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.Drivers = 7 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.HKCU = 5 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.SAM = 3 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.Security = 2 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.Software = 0 -> Microsoft.Dism.DismRegistryHive
+Microsoft.Dism.DismRegistryHive.System = 1 -> Microsoft.Dism.DismRegistryHive
 Microsoft.Dism.DismReleaseType
 Microsoft.Dism.DismReleaseType.CriticalUpdate = 0 -> Microsoft.Dism.DismReleaseType
 Microsoft.Dism.DismReleaseType.Driver = 1 -> Microsoft.Dism.DismReleaseType
@@ -381,6 +390,7 @@ static Microsoft.Dism.DismApi.GetPackageInfoExByPath(Microsoft.Dism.DismSession!
 static Microsoft.Dism.DismApi.GetPackages(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismPackageCollection!
 static Microsoft.Dism.DismApi.GetProductKeyInfo(Microsoft.Dism.DismSession! session, string! productKey) -> Microsoft.Dism.DismProductKeyInfo!
 static Microsoft.Dism.DismApi.GetProvisionedAppxPackages(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismAppxPackageCollection!
+static Microsoft.Dism.DismApi.GetRegistryMountPoint(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismRegistryHive registryHive) -> string!
 static Microsoft.Dism.DismApi.GetTargetEditions(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismEditionCollection!
 static Microsoft.Dism.DismApi.Initialize(Microsoft.Dism.DismLogLevel logLevel) -> void
 static Microsoft.Dism.DismApi.Initialize(Microsoft.Dism.DismLogLevel logLevel, string? logFilePath) -> void
