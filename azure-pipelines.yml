@@ -5,8 +5,8 @@ variables:
   ArtifactsDirectoryName: 'artifacts'
   BuildConfiguration: 'Debug'
   BuildPlatform: 'Any CPU'
-  DotNet7Version: '7.x'
   DotNet8Version: '8.x'
+  DotNet9Version: '9.x'
   ContinuousIntegrationBuild: 'true'
   MSBuildArguments: '"/BinaryLogger:$(Build.SourcesDirectory)\$(ArtifactsDirectoryName)\msbuild.binlog"'
   CommonTestArguments: '/noautorsp --no-restore --no-build --configuration:$(BuildConfiguration)'
@@ -42,14 +42,14 @@ jobs:
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
 
   - task: UseDotNet@2
-    displayName: 'Install .NET $(DotNet7Version)'
-    inputs:
-      version: '$(DotNet7Version)'
-      
-  - task: UseDotNet@2
     displayName: 'Install .NET $(DotNet8Version)'
     inputs:
       version: '$(DotNet8Version)'
+
+  - task: UseDotNet@2
+    displayName: 'Install .NET $(DotNet9Version)'
+    inputs:
+      version: '$(DotNet9Version)'
 
   - task: MSBuild@1
     displayName: 'Build Solution'
@@ -67,19 +67,19 @@ jobs:
     condition: succeededOrFailed()
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run Unit Tests (.NET 7.0)'
-    inputs:
-      command: 'test'
-      arguments: '$(CommonTestArguments) --framework net7.0'
-      testRunTitle: '.NET 7.0'
-    condition: succeededOrFailed()
-
-  - task: DotNetCoreCLI@2
     displayName: 'Run Unit Tests (.NET 8.0)'
     inputs:
       command: 'test'
       arguments: '$(CommonTestArguments) --framework net8.0'
       testRunTitle: '.NET 8.0'
+    condition: succeededOrFailed()
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Unit Tests (.NET 9.0)'
+    inputs:
+      command: 'test'
+      arguments: '$(CommonTestArguments) --framework net9.0'
+      testRunTitle: '.NET 9.0'
     condition: succeededOrFailed()
 
   - task: PublishBuildArtifacts@1
