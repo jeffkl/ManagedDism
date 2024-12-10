@@ -15,6 +15,7 @@ const Microsoft.Dism.DismApi.DISMAPI_E_PARENT_FEATURE_DISABLED = 3221487629 -> u
 const Microsoft.Dism.DismApi.DISMAPI_E_SHUTDOWN_IN_PROGRESS = 3221487618 -> uint
 const Microsoft.Dism.DismApi.DISMAPI_E_UNABLE_TO_UNMOUNT_IMAGE_PATH = 3221487623 -> uint
 const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_FEATURE = 2148468748 -> uint
+const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_PRODUCT = 2147944005 -> uint
 const Microsoft.Dism.DismApi.DISM_COMMIT_APPEND = 131072 -> uint
 const Microsoft.Dism.DismApi.DISM_COMMIT_GENERATE_INTEGRITY = 65536 -> uint
 const Microsoft.Dism.DismApi.DISM_COMMIT_IMAGE = 0 -> uint
@@ -85,6 +86,7 @@ Microsoft.Dism.DismDriverSignature
 Microsoft.Dism.DismDriverSignature.Signed = 2 -> Microsoft.Dism.DismDriverSignature
 Microsoft.Dism.DismDriverSignature.Unknown = 0 -> Microsoft.Dism.DismDriverSignature
 Microsoft.Dism.DismDriverSignature.Unsigned = 1 -> Microsoft.Dism.DismDriverSignature
+Microsoft.Dism.DismEditionCollection
 Microsoft.Dism.DismException
 Microsoft.Dism.DismException.DismException() -> void
 Microsoft.Dism.DismException.DismException(int error) -> void
@@ -235,6 +237,10 @@ Microsoft.Dism.DismProcessorArchitecture.IA64 = 6 -> Microsoft.Dism.DismProcesso
 Microsoft.Dism.DismProcessorArchitecture.Intel = 0 -> Microsoft.Dism.DismProcessorArchitecture
 Microsoft.Dism.DismProcessorArchitecture.Neutral = 11 -> Microsoft.Dism.DismProcessorArchitecture
 Microsoft.Dism.DismProcessorArchitecture.None = -1 -> Microsoft.Dism.DismProcessorArchitecture
+Microsoft.Dism.DismProductKeyInfo
+Microsoft.Dism.DismProductKeyInfo.Channel.get -> string!
+Microsoft.Dism.DismProductKeyInfo.EditionId.get -> string!
+Microsoft.Dism.DismProductKeyInfo.Equals(Microsoft.Dism.DismProductKeyInfo? other) -> bool
 Microsoft.Dism.DismProgress
 Microsoft.Dism.DismProgress.Cancel.get -> bool
 Microsoft.Dism.DismProgress.Cancel.set -> void
@@ -310,6 +316,8 @@ override Microsoft.Dism.DismPackageInfo.Equals(object? obj) -> bool
 override Microsoft.Dism.DismPackageInfo.GetHashCode() -> int
 override Microsoft.Dism.DismPackageInfoEx.Equals(object? obj) -> bool
 override Microsoft.Dism.DismPackageInfoEx.GetHashCode() -> int
+override Microsoft.Dism.DismProductKeyInfo.Equals(object? obj) -> bool
+override Microsoft.Dism.DismProductKeyInfo.GetHashCode() -> int
 override Microsoft.Dism.DismWimCustomizedInfo.Equals(object? obj) -> bool
 override Microsoft.Dism.DismWimCustomizedInfo.GetHashCode() -> int
 static Microsoft.Dism.DismApi.AddCapability(Microsoft.Dism.DismSession! session, string! capabilityName) -> void
@@ -351,6 +359,7 @@ static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSess
 static Microsoft.Dism.DismApi.EnableFeatureByPackagePath(Microsoft.Dism.DismSession! session, string! featureName, string! packagePath, bool limitAccess, bool enableAll, System.Collections.Generic.List<string!>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
 static Microsoft.Dism.DismApi.GetCapabilities(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismCapabilityCollection!
 static Microsoft.Dism.DismApi.GetCapabilityInfo(Microsoft.Dism.DismSession! session, string! capabilityName) -> Microsoft.Dism.DismCapabilityInfo!
+static Microsoft.Dism.DismApi.GetCurrentEdition(Microsoft.Dism.DismSession! session) -> string!
 static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession! session, string! driverPath) -> Microsoft.Dism.DismDriverCollection!
 static Microsoft.Dism.DismApi.GetDriverInfo(Microsoft.Dism.DismSession! session, string! driverPath, out Microsoft.Dism.DismDriverPackage? driverPackage) -> Microsoft.Dism.DismDriverCollection!
 static Microsoft.Dism.DismApi.GetDrivers(Microsoft.Dism.DismSession! session, bool allDrivers) -> Microsoft.Dism.DismDriverPackageCollection!
@@ -370,7 +379,9 @@ static Microsoft.Dism.DismApi.GetPackageInfoByPath(Microsoft.Dism.DismSession! s
 static Microsoft.Dism.DismApi.GetPackageInfoExByName(Microsoft.Dism.DismSession! session, string! packageName) -> Microsoft.Dism.DismPackageInfoEx!
 static Microsoft.Dism.DismApi.GetPackageInfoExByPath(Microsoft.Dism.DismSession! session, string! packagePath) -> Microsoft.Dism.DismPackageInfoEx!
 static Microsoft.Dism.DismApi.GetPackages(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismPackageCollection!
+static Microsoft.Dism.DismApi.GetProductKeyInfo(Microsoft.Dism.DismSession! session, string! productKey) -> Microsoft.Dism.DismProductKeyInfo!
 static Microsoft.Dism.DismApi.GetProvisionedAppxPackages(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismAppxPackageCollection!
+static Microsoft.Dism.DismApi.GetTargetEditions(Microsoft.Dism.DismSession! session) -> Microsoft.Dism.DismEditionCollection!
 static Microsoft.Dism.DismApi.Initialize(Microsoft.Dism.DismLogLevel logLevel) -> void
 static Microsoft.Dism.DismApi.Initialize(Microsoft.Dism.DismLogLevel logLevel, string? logFilePath) -> void
 static Microsoft.Dism.DismApi.Initialize(Microsoft.Dism.DismLogLevel logLevel, string? logFilePath, string? scratchDirectory) -> void
@@ -414,8 +425,16 @@ static Microsoft.Dism.DismApi.RestoreImageHealth(Microsoft.Dism.DismSession! ses
 static Microsoft.Dism.DismApi.RestoreImageHealth(Microsoft.Dism.DismSession! session, bool limitAccess, System.Collections.Generic.List<string!>? sourcePaths) -> void
 static Microsoft.Dism.DismApi.RestoreImageHealth(Microsoft.Dism.DismSession! session, bool limitAccess, System.Collections.Generic.List<string!>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
 static Microsoft.Dism.DismApi.RestoreImageHealth(Microsoft.Dism.DismSession! session, bool limitAccess, System.Collections.Generic.List<string!>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.SetEdition(Microsoft.Dism.DismSession! session, string! editionId, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.SetEditionAndProductKey(Microsoft.Dism.DismSession! session, string! editionId, string! productKey, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.SetProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> void
 static Microsoft.Dism.DismApi.Shutdown() -> void
 static Microsoft.Dism.DismApi.SplitFfuImage(string! imagePath, string! partPath, long partSize) -> void
 static Microsoft.Dism.DismApi.UnmountImage(string! mountPath, bool commitChanges) -> void
 static Microsoft.Dism.DismApi.UnmountImage(string! mountPath, bool commitChanges, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
 static Microsoft.Dism.DismApi.UnmountImage(string! mountPath, bool commitChanges, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.ValidateProductKey(Microsoft.Dism.DismSession! session, string! productKey) -> bool
