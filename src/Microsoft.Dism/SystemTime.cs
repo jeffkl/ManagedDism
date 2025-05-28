@@ -100,9 +100,16 @@ namespace Microsoft.Dism
         /// <param name="systemTime">The time to convert.</param>
         public static implicit operator DateTime(SystemTime systemTime)
         {
-            return systemTime.Year == 0
-                ? DateTime.MinValue
-                : new DateTime(systemTime.Year, systemTime.Month, systemTime.Day, systemTime.Hour, systemTime.Minute, systemTime.Second, DateTimeKind.Utc);
+            try
+            {
+                return systemTime.Year == 0
+                        ? DateTime.MinValue
+                        : new DateTime(systemTime.Year, systemTime.Month, systemTime.Day, systemTime.Hour > 24 ? systemTime.Hour - 12 : systemTime.Hour, systemTime.Minute, systemTime.Second, DateTimeKind.Utc);
+            }
+            catch (Exception)
+            {
+                return DateTime.MinValue;
+            }
         }
     }
 }
