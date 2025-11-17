@@ -79,7 +79,7 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="errorCode">The error code to get an exception for.</param>
         /// <returns>A <see cref="DismException" /> or <see cref="Exception" /> that represents the error code.</returns>
-        internal static Exception GetDismExceptionForHResult(int errorCode)
+        internal static Exception? GetDismExceptionForHResult(int errorCode)
         {
             // Look for known error codes
             switch ((uint)errorCode)
@@ -116,7 +116,7 @@ namespace Microsoft.Dism
             }
 
             // Return an Exception for the HResult
-            return Marshal.GetExceptionForHR(errorCode) ?? new Exception(String.Format(CultureInfo.CurrentCulture, "Unknown error. The error code was {0}", errorCode));
+            return Marshal.GetExceptionForHR(errorCode);
         }
     }
 
