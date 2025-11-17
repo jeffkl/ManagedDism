@@ -38,7 +38,7 @@ jobs:
       run: dotnet build "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}\build.binlog"
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: success()
       with:
         name: ${{ env.ArtifactsDirectoryName }}
