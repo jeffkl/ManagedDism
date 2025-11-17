@@ -31,9 +31,9 @@ namespace Microsoft.Dism
             /// </summary>
             /// <param name="dismString">The <see cref="DismString" /> object to convert.</param>
             /// <returns>The current <see cref="DismString" /> as a <see cref="string" />.</returns>
-            public static implicit operator string?(DismString dismString)
+            public static implicit operator string?(DismString? dismString)
             {
-                return dismString.value;
+                return dismString?.value;
             }
 
             /// <summary>
@@ -41,12 +41,14 @@ namespace Microsoft.Dism
             /// </summary>
             /// <param name="str">The string to convert.</param>
             /// <returns>The current <see cref="string" /> as a <see cref="DismString" /> object.</returns>
-            public static implicit operator DismString(string? str)
+            public static implicit operator DismString?(string? str)
             {
-                return new DismString
-                {
-                    value = str,
-                };
+                return str is null
+                    ? null
+                    : new DismString
+                    {
+                        value = str,
+                    };
             }
         }
     }

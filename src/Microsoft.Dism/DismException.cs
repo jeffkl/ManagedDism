@@ -5,6 +5,7 @@
 using Microsoft.Dism.Properties;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -115,7 +116,7 @@ namespace Microsoft.Dism
             }
 
             // Return an Exception for the HResult
-            return Marshal.GetExceptionForHR(errorCode);
+            return Marshal.GetExceptionForHR(errorCode) ?? new Exception(String.Format(CultureInfo.CurrentCulture, "Unknown error. The error code was {0}", errorCode));
         }
     }
 

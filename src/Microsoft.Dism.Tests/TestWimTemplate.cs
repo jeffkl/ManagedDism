@@ -51,12 +51,10 @@ namespace Microsoft.Dism.Tests
             {
                 string filePath = Path.Combine(path, $"TestFile{Guid.NewGuid()}.txt");
 
-                using (StreamWriter fs = File.CreateText(filePath))
+                using StreamWriter fs = File.CreateText(filePath);
+                for (int x = 0; x < lineCount; x++)
                 {
-                    for (int x = 0; x < lineCount; x++)
-                    {
-                        fs.WriteLine(Guid.NewGuid().ToString());
-                    }
+                    fs.WriteLine(Guid.NewGuid().ToString());
                 }
             }
         }
@@ -86,9 +84,7 @@ namespace Microsoft.Dism.Tests
 
                 for (int i = 0; i < ImageCount; i++)
                 {
-                    using (WimHandle imageHandle = WimgApi.CaptureImage(wimHandle, capturePath, WimCaptureImageOptions.DisableDirectoryAcl | WimCaptureImageOptions.DisableFileAcl | WimCaptureImageOptions.DisableRPFix))
-                    {
-                    }
+                    using WimHandle imageHandle = WimgApi.CaptureImage(wimHandle, capturePath, WimCaptureImageOptions.DisableDirectoryAcl | WimCaptureImageOptions.DisableFileAcl | WimCaptureImageOptions.DisableRPFix);
                 }
 
                 XPathNavigator xml = WimgApi.GetImageInformation(wimHandle!) !.CreateNavigator() !;

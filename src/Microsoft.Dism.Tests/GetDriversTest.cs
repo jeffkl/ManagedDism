@@ -18,12 +18,10 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void GetDriversFromOnlineSession()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
-            {
-                DismDriverPackageCollection drivers = DismApi.GetDrivers(session, allDrivers: false);
+            using DismSession session = DismApi.OpenOnlineSession();
+            DismDriverPackageCollection drivers = DismApi.GetDrivers(session, allDrivers: false);
 
-                ValidateDrivers(drivers);
-            }
+            ValidateDrivers(drivers);
         }
 
         [Fact]

@@ -18,18 +18,16 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void GetCapabilitiesOnlineSession()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
+            using DismSession session = DismApi.OpenOnlineSession();
+            DismCapabilityCollection capabilities = DismApi.GetCapabilities(session);
+
+            capabilities.Count.ShouldBeGreaterThan(0);
+
+            foreach (DismCapability capability in capabilities)
             {
-                DismCapabilityCollection capabilities = DismApi.GetCapabilities(session);
+                capability.Name.ShouldNotBeNullOrWhiteSpace();
 
-                capabilities.Count.ShouldBeGreaterThan(0);
-
-                foreach (DismCapability capability in capabilities)
-                {
-                    capability.Name.ShouldNotBeNullOrWhiteSpace();
-
-                    capability.State.ShouldBeOneOf(DismPackageFeatureState.Installed, DismPackageFeatureState.Staged, DismPackageFeatureState.NotPresent);
-                }
+                capability.State.ShouldBeOneOf(DismPackageFeatureState.Installed, DismPackageFeatureState.Staged, DismPackageFeatureState.NotPresent);
             }
         }
     }

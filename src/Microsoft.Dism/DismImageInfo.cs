@@ -181,7 +181,7 @@ namespace Microsoft.Dism
         {
             _imageInfo = imageInfo;
 
-            _languages = _imageInfo.Language.ToList<CultureInfo, DismApi.DismLanguage>(_imageInfo.LanguageCount, language => CultureInfo.GetCultureInfo(language));
+            _languages = _imageInfo.Language.ToList<CultureInfo, DismApi.DismLanguage>(_imageInfo.LanguageCount, language => CultureInfo.GetCultureInfo(language!));
 
             // Parse the OS version from the various fields
             ProductVersion = new Version((int)imageInfo.MajorVersion, (int)imageInfo.MinorVersion, (int)imageInfo.Build, (int)imageInfo.SpBuild);

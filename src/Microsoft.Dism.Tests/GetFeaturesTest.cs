@@ -22,10 +22,8 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void GetFeaturesFromOnlineSession()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
-            {
-                ValidateFeatures(DismApi.GetFeatures(session));
-            }
+            using DismSession session = DismApi.OpenOnlineSession();
+            ValidateFeatures(DismApi.GetFeatures(session));
         }
 
         internal static void ValidateFeatures(DismFeatureCollection features)

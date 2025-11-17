@@ -19,12 +19,10 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void CheckImageHealthOnlineSession()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
-            {
-                DismImageHealthState imageHealthState = DismApi.CheckImageHealth(session, scanImage: false, progressCallback: null, userData: null);
+            using DismSession session = DismApi.OpenOnlineSession();
+            DismImageHealthState imageHealthState = DismApi.CheckImageHealth(session, scanImage: false, progressCallback: null, userData: null);
 
-                imageHealthState.ShouldBe(DismImageHealthState.Healthy);
-            }
+            imageHealthState.ShouldBe(DismImageHealthState.Healthy);
         }
 
         [Fact]
@@ -37,32 +35,30 @@ namespace Microsoft.Dism.Tests
             int current = -1;
             int total = -1;
 
-            using (DismSession session = DismApi.OpenOnlineSession())
+            using DismSession session = DismApi.OpenOnlineSession();
+            try
             {
-                try
-                {
-                    DismApi.CheckImageHealth(
-                        session: session,
-                        scanImage: true, // Setting scanImage to true seems to trigger the callback being called
-                        progressCallback: progress =>
-                        {
-                            userData = progress.UserData as string;
-                            current = progress.Current;
-                            total = progress.Total;
+                DismApi.CheckImageHealth(
+                    session: session,
+                    scanImage: true, // Setting scanImage to true seems to trigger the callback being called
+                    progressCallback: progress =>
+                    {
+                        userData = progress.UserData as string;
+                        current = progress.Current;
+                        total = progress.Total;
 
-                            // Cancel the operation, otherwise it takes ~1 min
-                            progress.Cancel = true;
-                        },
-                        userData: expectedUserData);
-                }
-                catch (OperationCanceledException)
-                {
-                }
-
-                userData.ShouldBe(expectedUserData);
-                current.ShouldBe(50);
-                total.ShouldBeGreaterThanOrEqualTo(1000);
+                        // Cancel the operation, otherwise it takes ~1 min
+                        progress.Cancel = true;
+                    },
+                    userData: expectedUserData);
             }
+            catch (OperationCanceledException)
+            {
+            }
+
+            userData.ShouldBe(expectedUserData);
+            current.ShouldBe(50);
+            total.ShouldBeGreaterThanOrEqualTo(1000);
         }
     }
 }

@@ -29,37 +29,35 @@ namespace Microsoft.Dism.Tests
         [ClassData(typeof(SessionOptionsBehaviorData))]
         public void SessionOptionsBehavior(DismSessionOptions options, Func<DismSessionOptions, DismSession> sessionFunc)
         {
-            using (DismSession session = sessionFunc(options))
+            using DismSession session = sessionFunc(options);
+            session.Options.ShouldNotBeNull();
+            session.RebootRequired.ShouldBeFalse();
+
+            if (options == null)
             {
-                session.Options.ShouldNotBeNull();
-                session.RebootRequired.ShouldBeFalse();
-
-                if (options == null)
-                {
-                    session.Options.ThrowExceptionOnRebootRequired.ShouldBeTrue();
-                }
-                else
-                {
-                    session.Options.ShouldBe(options);
-                }
-
-                DismUtilities.ThrowIfFail(DismApi.ERROR_SUCCESS, session);
-                session.RebootRequired.ShouldBeFalse();
-
-                if (session.Options.ThrowExceptionOnRebootRequired)
-                {
-                    Should.Throw<DismRebootRequiredException>(() => DismUtilities.ThrowIfFail(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, session));
-                }
-                else
-                {
-                    DismUtilities.ThrowIfFail(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, session);
-                }
-
-                session.RebootRequired.ShouldBeTrue();
-
-                session.RebootRequired = false;
-                session.RebootRequired.ShouldBeTrue();
+                session.Options.ThrowExceptionOnRebootRequired.ShouldBeTrue();
             }
+            else
+            {
+                session.Options.ShouldBe(options);
+            }
+
+            DismUtilities.ThrowIfFail(DismApi.ERROR_SUCCESS, session);
+            session.RebootRequired.ShouldBeFalse();
+
+            if (session.Options.ThrowExceptionOnRebootRequired)
+            {
+                Should.Throw<DismRebootRequiredException>(() => DismUtilities.ThrowIfFail(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, session));
+            }
+            else
+            {
+                DismUtilities.ThrowIfFail(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, session);
+            }
+
+            session.RebootRequired.ShouldBeTrue();
+
+            session.RebootRequired = false;
+            session.RebootRequired.ShouldBeTrue();
         }
 
         private class SessionOptionsBehaviorData : TheoryData<DismSessionOptions?, Func<DismSessionOptions, DismSession>>
