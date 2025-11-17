@@ -18,12 +18,10 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void GetTargetEditionsOnlineSession()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
-            {
-                DismEditionCollection editionCollection = DismApi.GetTargetEditions(session);
+            using DismSession session = DismApi.OpenOnlineSession();
+            DismEditionCollection editionCollection = DismApi.GetTargetEditions(session);
 
-                editionCollection.ShouldNotBeNull();
-            }
+            editionCollection.ShouldNotBeNull();
         }
     }
 }

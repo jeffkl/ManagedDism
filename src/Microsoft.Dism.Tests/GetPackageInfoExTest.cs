@@ -19,16 +19,14 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void GetPackageInfoExSimple()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
-            {
-                DismPackage? package = DismApi.GetPackages(session).FirstOrDefault(i => i.PackageState == DismPackageFeatureState.Installed);
+            using DismSession session = DismApi.OpenOnlineSession();
+            DismPackage? package = DismApi.GetPackages(session).FirstOrDefault(i => i.PackageState == DismPackageFeatureState.Installed);
 
-                package.ShouldNotBeNull();
+            package.ShouldNotBeNull();
 
-                DismPackageInfoEx packageInfoEx = DismApi.GetPackageInfoExByName(session, package.PackageName);
+            DismPackageInfoEx packageInfoEx = DismApi.GetPackageInfoExByName(session, package.PackageName);
 
-                packageInfoEx.CapabilityId.ShouldNotBeNullOrWhiteSpace();
-            }
+            packageInfoEx.CapabilityId.ShouldNotBeNullOrWhiteSpace();
         }
     }
 }

@@ -18,12 +18,10 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void GetCurrentEditionFromOnlineSession()
         {
-            using (DismSession session = DismApi.OpenOnlineSession())
-            {
-                string edition = DismApi.GetCurrentEdition(session);
+            using DismSession session = DismApi.OpenOnlineSession();
+            string edition = DismApi.GetCurrentEdition(session);
 
-                edition.ShouldNotBeNullOrWhiteSpace();
-            }
+            edition.ShouldNotBeNullOrWhiteSpace();
         }
     }
 }

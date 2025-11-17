@@ -5,6 +5,7 @@
 using Microsoft.Dism.Properties;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
@@ -78,7 +79,7 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="errorCode">The error code to get an exception for.</param>
         /// <returns>A <see cref="DismException" /> or <see cref="Exception" /> that represents the error code.</returns>
-        internal static Exception GetDismExceptionForHResult(int errorCode)
+        internal static Exception? GetDismExceptionForHResult(int errorCode)
         {
             // Look for known error codes
             switch ((uint)errorCode)

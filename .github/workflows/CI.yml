@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+      - rel/*
+  pull_request:
+    branches: 
+      - main
+      - rel/*
+
+env:
+  ArtifactsDirectoryName: 'artifacts'
+  BuildConfiguration: 'Debug'
+  BuildPlatform: 'Any CPU'
+  ContinuousIntegrationBuild: 'true'
+  DotNet8Version: '8.x'
+  DotNet10Version: '10.x'
+
+jobs:
+  BuildAndTest:
+    name: Build and Test
+    runs-on: windows-latest
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET ${{ env.DotNet8Version }} and ${{ env.DotNet10Version }}
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: |
+          ${{ env.DotNet8Version }}
+          ${{ env.DotNet10Version }}
+
+    - name: Build Solution
+      run: dotnet build "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/build.binlog"
+
+    - name: Run Unit Tests (.NET Framework)
+      run: dotnet test --no-restore --no-build --framework net472 "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/test-net472.binlog"
+
+    - name: Run Unit Tests (.NET 10)
+      run: dotnet test --no-restore --no-build --framework net10.0 "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/test-net10.0.binlog"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: artifacts
+        path: ${{ env.ArtifactsDirectoryName }}

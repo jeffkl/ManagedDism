@@ -26,7 +26,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void DismPackageNotApplicableExceptionTest()
         {
-            Exception exception = DismException.GetDismExceptionForHResult(unchecked((int)DismApi.CBS_E_NOT_APPLICABLE));
+            Exception? exception = DismException.GetDismExceptionForHResult(unchecked((int)DismApi.CBS_E_NOT_APPLICABLE));
 
             exception.ShouldBeOfType<DismPackageNotApplicableException>();
 
@@ -60,7 +60,7 @@ namespace Microsoft.Dism.Tests
 
             DismApi.GetLastErrorMessageTestHook = () => null;
 
-            Exception exception = DismException.GetDismExceptionForHResult((int)hresult);
+            Exception? exception = DismException.GetDismExceptionForHResult((int)hresult);
 
             exception.ShouldBeOfType<OperationCanceledException>();
 
@@ -94,7 +94,7 @@ namespace Microsoft.Dism.Tests
 
             DismApi.GetLastErrorMessageTestHook = () => null;
 
-            Exception exception = DismException.GetDismExceptionForHResult(errorCode);
+            Exception? exception = DismException.GetDismExceptionForHResult(errorCode);
 
             exception.ShouldBeOfType<DivideByZeroException>();
 
@@ -104,7 +104,7 @@ namespace Microsoft.Dism.Tests
         private void VerifyDismException<T>(uint errorCode, string message)
             where T : DismException
         {
-            Exception exception = DismException.GetDismExceptionForHResult((int)errorCode);
+            Exception? exception = DismException.GetDismExceptionForHResult((int)errorCode);
             exception.ShouldBeOfType<T>();
 
             DismException dismException = (DismException)exception;

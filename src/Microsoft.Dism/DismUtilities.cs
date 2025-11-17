@@ -133,31 +133,23 @@ namespace Microsoft.Dism
         {
             get
             {
-                using (RegistryKey? key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Microsoft\\ComponentStudio\\6.1.7600.16385") !)
+                using RegistryKey? key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey("SOFTWARE\\Microsoft\\ComponentStudio\\6.1.7600.16385");
+
+                if (key == null)
                 {
-                    if (key == null)
-                    {
-                        return null;
-                    }
-
-                    object? obj = key.GetValue("ServicingPath");
-
-                    if (obj == null)
-                    {
-                        return null;
-                    }
-
-                    string servicingPath = obj.ToString();
-
-                    if (string.IsNullOrEmpty(servicingPath))
-                    {
-                        return null;
-                    }
-
-                    FileInfo dismPath = new FileInfo(Path.Combine(servicingPath, "dism.exe"));
-
-                    return dismPath.Exists ? dismPath.FullName : null;
+                    return null;
                 }
+
+                string? servicingPath = key.GetValue("ServicingPath")?.ToString();
+
+                if (string.IsNullOrEmpty(servicingPath))
+                {
+                    return null;
+                }
+
+                FileInfo dismPath = new FileInfo(Path.Combine(servicingPath, "dism.exe"));
+
+                return dismPath.Exists ? dismPath.FullName : null;
             }
         }
 
@@ -284,31 +276,23 @@ namespace Microsoft.Dism
 
         private static string? GetKitsRoot(string keyName)
         {
-            using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots") !)
+            using RegistryKey? key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey("SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots");
+
+            if (key == null)
             {
-                if (key == null)
-                {
-                    return null;
-                }
-
-                object? value = key.GetValue(keyName);
-
-                if (value == null)
-                {
-                    return null;
-                }
-
-                string kitsRoot = value.ToString();
-
-                if (string.IsNullOrWhiteSpace(kitsRoot))
-                {
-                    return null;
-                }
-
-                FileInfo dismPath = new FileInfo(Path.Combine(kitsRoot, "Assessment and Deployment Kit", "Deployment Tools", Environment.Is64BitProcess ? "amd64" : "x86", "DISM", "dismapi.dll"));
-
-                return dismPath.Exists ? dismPath.FullName : null;
+                return null;
             }
+
+            string? kitsRoot = key.GetValue(keyName)?.ToString();
+
+            if (string.IsNullOrWhiteSpace(kitsRoot))
+            {
+                return null;
+            }
+
+            FileInfo dismPath = new FileInfo(Path.Combine(kitsRoot, "Assessment and Deployment Kit", "Deployment Tools", Environment.Is64BitProcess ? "amd64" : "x86", "DISM", "dismapi.dll"));
+
+            return dismPath.Exists ? dismPath.FullName : null;
         }
 
         /// <summary>
