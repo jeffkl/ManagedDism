@@ -13,3 +13,12 @@ updates:
       - "jeffkl"
     labels:
       - "maintenance"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    assignees:
+      - "jeffkl"
+    labels:
+      - "maintenance"
