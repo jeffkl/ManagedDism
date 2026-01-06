@@ -49,7 +49,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetMountedImageInfo(_Outptr_result_buffer_(*Count) DismMountedImageInfo** MountedImageInfo, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetMountedImageInfo(out IntPtr mountedImageInfo, out UInt32 count);
         }
     }

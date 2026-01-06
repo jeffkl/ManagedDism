@@ -44,7 +44,6 @@ namespace Microsoft.Dism
             /// <param name="info">Pointer that will receive the info of capability.</param>
             /// <returns>Returns S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetCapabilityInfo(DismSession session, string name, out IntPtr info);
         }
     }

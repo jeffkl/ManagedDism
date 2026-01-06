@@ -121,7 +121,6 @@ namespace Microsoft.Dism
             ///   _In_ DismStubPackageOption stubPackageOption);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismAddProvisionedAppxPackage(
                 DismSession Session,
                 [MarshalAs(UnmanagedType.LPWStr)]

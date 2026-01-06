@@ -39,7 +39,6 @@ namespace Microsoft.Dism
             /// <param name="PartPath">An optional file pattern that matches the names of split FFU images.</param>
             /// <returns>Returns S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismApplyFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string ApplyPath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath);
         }
     }

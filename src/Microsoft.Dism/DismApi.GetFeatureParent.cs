@@ -78,7 +78,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetFeatureParent (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _Outptr_result_buffer_(*Count) DismFeature** Feature, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetFeatureParent(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr feature, out UInt32 count);
         }
     }

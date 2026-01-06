@@ -124,7 +124,6 @@ namespace Microsoft.Dism
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             [DllImport(DismDllName, EntryPoint = "_DismSetEdition", CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismSetEdition(
                 DismSession session,
                 [MarshalAs(UnmanagedType.LPWStr)] string editionID,

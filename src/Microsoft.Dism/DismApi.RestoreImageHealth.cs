@@ -96,7 +96,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismRestoreImageHealth(_In_ DismSession Session, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_ BOOL LimitAccess, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismRestoreImageHealth(DismSession session, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }

@@ -42,7 +42,6 @@ namespace Microsoft.Dism
             /// <param name="packageCount">Receives the count of packages.</param>
             /// <returns>Returns S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismGetProvisionedAppxPackages(DismSession session, out IntPtr packageBufPtr, out UInt32 packageCount);
         }
     }

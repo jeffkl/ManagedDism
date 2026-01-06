@@ -50,7 +50,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismShutdown( );
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismShutdown();
         }
     }

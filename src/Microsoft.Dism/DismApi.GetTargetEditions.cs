@@ -41,7 +41,6 @@ namespace Microsoft.Dism
             /// <param name="count">The number of edition IDs that are returned.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             [DllImport(DismDllName, EntryPoint = "_DismGetTargetEditions")]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetTargetEditions(DismSession session, out IntPtr editionIds, out uint count);
         }
     }

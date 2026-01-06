@@ -36,7 +36,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismRemountImage(_In_ PCWSTR MountPath);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismRemountImage(string mountPath);
         }
     }

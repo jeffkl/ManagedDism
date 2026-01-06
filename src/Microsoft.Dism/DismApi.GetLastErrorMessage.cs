@@ -63,7 +63,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetLastErrorMessage(_Out_ DismString** ErrorMessage);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetLastErrorMessage(out IntPtr errorMessage);
         }
     }

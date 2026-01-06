@@ -30,7 +30,6 @@ namespace Microsoft.Dism
             /// <param name="packageName">The package name.</param>
             /// <returns>Returns S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismRemoveProvisionedAppxPackage(DismSession session, [MarshalAs(UnmanagedType.LPWStr)] string packageName);
         }
     }

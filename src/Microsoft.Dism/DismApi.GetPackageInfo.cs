@@ -74,7 +74,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetPackageInfo (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _Out_ DismPackageInfo** PackageInfo);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetPackageInfo(DismSession dismSession, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr packageInfo);
         }
     }

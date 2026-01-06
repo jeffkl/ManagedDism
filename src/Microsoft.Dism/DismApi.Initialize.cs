@@ -80,7 +80,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismInitialize(_In_ DismLogLevel LogLevel, _In_opt_ PCWSTR LogFilePath, _In_opt_ PCWSTR ScratchDirectory);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismInitialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory);
         }
     }

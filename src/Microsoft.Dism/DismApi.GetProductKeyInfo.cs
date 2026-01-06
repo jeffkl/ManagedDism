@@ -47,7 +47,6 @@ namespace Microsoft.Dism
             /// <param name="channelPtr">Pointer that will receive a <see cref="DismString"/> with the channel name.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             [DllImport(DismDllName, EntryPoint = "_DismGetProductKeyInfo", CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetProductKeyInfo(DismSession session, string productKey, out IntPtr editionIdPtr, out IntPtr channelPtr);
         }
     }

@@ -126,7 +126,6 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824732.aspx" />
             /// HRESULT WINAPI DismRemovePackage (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismRemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, SafeWaitHandle cancelEvent, DismProgressCallback? progress, IntPtr userData);
         }
     }

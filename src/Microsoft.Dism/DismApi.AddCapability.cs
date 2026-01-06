@@ -82,7 +82,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismAddCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_ BOOL LimitAccess, _In_ PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismAddCapability(DismSession session, string name, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }

@@ -58,7 +58,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismRemoveCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismRemoveCapability(DismSession session, string name, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }

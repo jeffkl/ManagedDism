@@ -54,7 +54,6 @@ namespace Microsoft.Dism
             /// CDATA[HRESULT WINAPI DismAddDriver (_In_ DismSession Session, _In_ PCWSTR DriverPath, _In_ BOOL ForceUnsigned);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismAddDriver(DismSession session, string driverPath, [MarshalAs(UnmanagedType.Bool)] bool forceUnsigned);
         }
     }

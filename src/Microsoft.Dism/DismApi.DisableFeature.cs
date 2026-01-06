@@ -88,7 +88,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismDisableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR PackageName, _In_ BOOL RemovePayload, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismDisableFeature(DismSession session, string featureName, string packageName, [MarshalAs(UnmanagedType.Bool)] bool removePayload, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }

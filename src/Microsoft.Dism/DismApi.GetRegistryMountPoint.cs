@@ -45,7 +45,6 @@ namespace Microsoft.Dism
             /// <param name="registryMountPointPtr">A pointer which will receive the <see cref="DismString"/> wrapped mount point.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             [DllImport(DismDllName, EntryPoint = "_DismGetRegistryMountPoint")]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetRegistryMountPoint(DismSession session, DismRegistryHive registryHive, out IntPtr registryMountPointPtr);
         }
     }

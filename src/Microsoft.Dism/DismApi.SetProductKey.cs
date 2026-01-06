@@ -30,7 +30,6 @@ namespace Microsoft.Dism
             /// <param name="productKey">The product key.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             [DllImport(DismDllName, EntryPoint = "_DismSetProductKey", CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismSetProductKey(DismSession session, string productKey);
         }
     }

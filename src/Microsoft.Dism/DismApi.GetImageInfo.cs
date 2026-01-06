@@ -50,7 +50,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetImageInfo(_In_ PCWSTR ImageFilePath, _Outptr_result_buffer_(*Count) DismImageInfo** ImageInfo, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetImageInfo(string imageFilePath, out IntPtr imageInfo, out UInt32 count);
         }
     }

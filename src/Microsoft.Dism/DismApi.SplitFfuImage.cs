@@ -29,7 +29,6 @@ namespace Microsoft.Dism
             /// <param name="PartSize">The maximum size in megabytes (MB) for each created file.</param>
             /// <returns>Retrusn S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int _DismSplitFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath, ulong PartSize);
         }
     }

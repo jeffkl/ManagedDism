@@ -32,7 +32,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismDelete(_In_ VOID* DismStructure);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismDelete(IntPtr dismStructure);
         }
     }

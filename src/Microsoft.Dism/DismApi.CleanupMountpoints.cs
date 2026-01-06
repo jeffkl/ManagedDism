@@ -29,7 +29,6 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824743.aspx" />
             /// HRESULT WINAPI DismCleanupMountpoints( );
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismCleanupMountpoints();
         }
     }

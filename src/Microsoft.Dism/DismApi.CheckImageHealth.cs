@@ -76,7 +76,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismCheckImageHealth(_In_ DismSession Session, _In_ BOOL ScanImage, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData, _Out_ DismImageHealthState* ImageHealth);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismCheckImageHealth(DismSession session, [MarshalAs(UnmanagedType.Bool)] bool scanImage, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData, out DismImageHealthState imageHealth);
         }
     }

@@ -36,7 +36,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismApplyUnattend (_In_ DismSession Session, _In_ PCWSTR UnattendFile, _In_ BOOL SingleSession);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismApplyUnattend(DismSession session, string unattendFile, [MarshalAs(UnmanagedType.Bool)] bool singleSession);
         }
     }

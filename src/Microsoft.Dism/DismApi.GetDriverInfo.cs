@@ -71,7 +71,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetDriverInfo (_In_ DismSession Session, _In_ PCWSTR DriverPath, _Outptr_result_buffer_(*Count) DismDriver** Driver, _Out_ UINT* Count, _Out_opt_ DismDriverPackage** DriverPackage);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetDriverInfo(DismSession session, string driverPath, out IntPtr driver, out UInt32 count, out IntPtr driverPackage);
         }
     }

@@ -85,7 +85,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismAddPackage (_In_ DismSession Session, _In_ PCWSTR PackagePath, _In_ BOOL IgnoreCheck, _In_ BOOL PreventPending _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData)
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismAddPackage(DismSession session, string packagePath, [MarshalAs(UnmanagedType.Bool)] bool ignoreCheck, [MarshalAs(UnmanagedType.Bool)] bool preventPending, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }

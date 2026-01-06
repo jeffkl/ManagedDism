@@ -74,7 +74,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismCommitImage(_In_ DismSession Session, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismCommitImage(DismSession session, UInt32 flags, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
         }
     }

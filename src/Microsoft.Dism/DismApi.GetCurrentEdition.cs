@@ -42,7 +42,6 @@ namespace Microsoft.Dism
             /// <param name="editionId">Recieves a pointer to a <see cref="DismString"/> structure containing the edition ID of the image.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             [DllImport(DismDllName, EntryPoint = "_DismGetCurrentEdition")]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetCurrentEdition(DismSession session, out IntPtr editionId);
         }
     }

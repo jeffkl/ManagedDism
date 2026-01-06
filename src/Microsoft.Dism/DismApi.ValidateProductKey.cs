@@ -44,7 +44,6 @@ namespace Microsoft.Dism
             /// </list>
             /// </returns>
             [DllImport(DismDllName, EntryPoint = "_DismValidateProductKey", CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismValidateProductKey(DismSession session, string productKey);
         }
     }

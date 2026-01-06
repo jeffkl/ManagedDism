@@ -48,7 +48,6 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismGetDrivers (_In_ DismSession Session, _In_ BOOL AllDrivers, _Outptr_result_buffer_(*Count) DismDriverPackage** DriverPackage, _Out_ UINT* Count);
             /// </remarks>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetDrivers(DismSession Session, [MarshalAs(UnmanagedType.Bool)] bool AllDrivers, out IntPtr DriverPackage, out UInt32 Count);
         }
     }

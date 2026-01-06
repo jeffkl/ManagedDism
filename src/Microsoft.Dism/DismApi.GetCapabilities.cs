@@ -41,7 +41,6 @@ namespace Microsoft.Dism
             /// <param name="count">The number of DismCapability structures that were returned.</param>
             /// <returns>Returns S_OK on success.</returns>
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            [return: MarshalAs(UnmanagedType.Error)]
             public static extern int DismGetCapabilities(DismSession session, out IntPtr capability, out UInt32 count);
         }
     }
