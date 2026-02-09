@@ -16,7 +16,6 @@ env:
   BuildConfiguration: 'Debug'
   BuildPlatform: 'Any CPU'
   ContinuousIntegrationBuild: 'true'
-  DotNet8Version: '8.x'
   DotNet10Version: '10.x'
 
 jobs:
@@ -30,11 +29,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install .NET ${{ env.DotNet8Version }} and ${{ env.DotNet10Version }}
+    - name: Install .NET ${{ env.DotNet10Version }}
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
-          ${{ env.DotNet8Version }}
           ${{ env.DotNet10Version }}
 
     - name: Build Solution
