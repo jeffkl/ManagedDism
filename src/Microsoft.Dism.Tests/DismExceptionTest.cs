@@ -79,6 +79,8 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void UnknownErrorThrowsDismExceptionWithHResult()
         {
+            DismApi.GetLastErrorMessageTestHook = () => null;
+
             DismException exception = Should.Throw<DismException>(() => DismUtilities.ThrowIfFail(3));
 
             exception.HResult.ShouldBe(3);

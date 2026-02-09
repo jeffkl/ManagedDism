@@ -4,9 +4,7 @@
 
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Microsoft.Dism.Tests
 {
@@ -27,7 +25,7 @@ namespace Microsoft.Dism.Tests
 
         [Theory]
         [ClassData(typeof(SessionOptionsBehaviorData))]
-        public void SessionOptionsBehavior(DismSessionOptions options, Func<DismSessionOptions, DismSession> sessionFunc)
+        public void SessionOptionsBehavior(DismSessionOptions? options, Func<DismSessionOptions?, DismSession> sessionFunc)
         {
             using DismSession session = sessionFunc(options);
             session.Options.ShouldNotBeNull();

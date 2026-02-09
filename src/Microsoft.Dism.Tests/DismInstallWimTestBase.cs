@@ -3,7 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace Microsoft.Dism.Tests
 {

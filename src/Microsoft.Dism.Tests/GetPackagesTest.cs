@@ -6,7 +6,6 @@ using Shouldly;
 using System;
 using System.Linq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Microsoft.Dism.Tests
 {

@@ -5,7 +5,6 @@
 using Shouldly;
 using System.Linq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Microsoft.Dism.Tests
 {
