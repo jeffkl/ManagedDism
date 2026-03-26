@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -35,8 +35,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824778.aspx" />
             /// HRESULT WINAPI DismRemountImage(_In_ PCWSTR MountPath);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismRemountImage(string mountPath);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismRemountImage(string mountPath);
+            #endif
         }
     }
 }

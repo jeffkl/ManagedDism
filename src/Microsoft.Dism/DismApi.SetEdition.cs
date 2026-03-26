@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -123,6 +123,16 @@ namespace Microsoft.Dism
             /// <param name="progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismSetEdition", StringMarshalling = DismStringMarshalling)]
+            public static partial int DismSetEdition(
+                DismSession session,
+                [MarshalAs(UnmanagedType.LPWStr)] string editionID,
+                [MarshalAs(UnmanagedType.LPWStr)] string? productKey,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallback progress,
+                IntPtr userData);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismSetEdition", CharSet = DismCharacterSet)]
             public static extern int DismSetEdition(
                 DismSession session,
@@ -131,6 +141,7 @@ namespace Microsoft.Dism
                 SafeWaitHandle cancelEvent,
                 DismProgressCallback progress,
                 IntPtr userData);
+            #endif
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -266,8 +266,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824737.aspx" />
             /// HRESULT WINAPI DismEnableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _In_ BOOL LimitAccess, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismEnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool enableAll, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismEnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool enableAll, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            #endif
         }
     }
 }

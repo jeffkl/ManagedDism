@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -79,8 +79,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824803.aspx" />
             /// HRESULT WINAPI DismInitialize(_In_ DismLogLevel LogLevel, _In_opt_ PCWSTR LogFilePath, _In_opt_ PCWSTR ScratchDirectory);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismInitialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismInitialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory);
+            #endif
         }
     }
 }

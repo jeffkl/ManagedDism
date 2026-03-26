@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -86,8 +86,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824800.aspx" />
             /// HRESULT WINAPI DismOpenSession(_In_ PCWSTR ImagePath, _In_opt_ PCWSTR WindowsDirectory, _In_opt_ WCHAR* SystemDrive, _Out_ DismSession* Session);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismOpenSession(string imagePath, string? windowsDirectory, string? systemDrive, out IntPtr session);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismOpenSession(string imagePath, string? windowsDirectory, string? systemDrive, out IntPtr session);
+            #endif
         }
     }
 }

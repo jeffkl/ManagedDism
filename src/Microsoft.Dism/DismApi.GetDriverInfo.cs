@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -70,8 +70,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824733.aspx" />
             /// HRESULT WINAPI DismGetDriverInfo (_In_ DismSession Session, _In_ PCWSTR DriverPath, _Outptr_result_buffer_(*Count) DismDriver** Driver, _Out_ UINT* Count, _Out_opt_ DismDriverPackage** DriverPackage);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismGetDriverInfo(DismSession session, string driverPath, out IntPtr driver, out UInt32 count, out IntPtr driverPackage);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismGetDriverInfo(DismSession session, string driverPath, out IntPtr driver, out UInt32 count, out IntPtr driverPackage);
+            #endif
         }
     }
 }

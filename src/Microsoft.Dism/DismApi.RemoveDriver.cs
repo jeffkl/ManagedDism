@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -38,8 +38,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824729.aspx" />
             /// HRESULT WINAPI DismRemoveDriver (_In_ DismSession Session, _In_ PCWSTR DriverPath);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismRemoveDriver(DismSession session, string driverPath);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismRemoveDriver(DismSession session, string driverPath);
+            #endif
         }
     }
 }

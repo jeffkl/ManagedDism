@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -53,8 +53,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824764.aspx" />
             /// CDATA[HRESULT WINAPI DismAddDriver (_In_ DismSession Session, _In_ PCWSTR DriverPath, _In_ BOOL ForceUnsigned);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismAddDriver(DismSession session, string driverPath, [MarshalAs(UnmanagedType.Bool)] bool forceUnsigned);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismAddDriver(DismSession session, string driverPath, [MarshalAs(UnmanagedType.Bool)] bool forceUnsigned);
+            #endif
         }
     }
 }

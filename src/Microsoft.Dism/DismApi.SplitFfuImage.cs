@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -28,8 +28,13 @@ namespace Microsoft.Dism
             /// <param name="PartPath">The path to the SFU file to create.</param>
             /// <param name="PartSize">The maximum size in megabytes (MB) for each created file.</param>
             /// <returns>Retrusn S_OK on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int _DismSplitFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath, ulong PartSize);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int _DismSplitFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath, ulong PartSize);
+            #endif
         }
     }
 }

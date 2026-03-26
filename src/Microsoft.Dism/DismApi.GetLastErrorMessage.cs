@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -62,8 +62,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824754.aspx" />
             /// HRESULT WINAPI DismGetLastErrorMessage(_Out_ DismString** ErrorMessage);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismGetLastErrorMessage(out IntPtr errorMessage);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismGetLastErrorMessage(out IntPtr errorMessage);
+            #endif
         }
     }
 }

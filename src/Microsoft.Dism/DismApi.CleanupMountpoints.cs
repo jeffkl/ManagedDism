@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -28,8 +28,13 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824743.aspx" />
             /// HRESULT WINAPI DismCleanupMountpoints( );
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismCleanupMountpoints();
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismCleanupMountpoints();
+            #endif
         }
     }
 }

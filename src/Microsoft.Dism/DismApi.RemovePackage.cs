@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -125,8 +125,13 @@ namespace Microsoft.Dism
             /// <remarks>The DismRemovePackage function does not support .msu files.</remarks>
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824732.aspx" />
             /// HRESULT WINAPI DismRemovePackage (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismRemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, SafeWaitHandle cancelEvent, DismProgressCallback? progress, IntPtr userData);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismRemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, SafeWaitHandle cancelEvent, DismProgressCallback? progress, IntPtr userData);
+            #endif
         }
     }
 }

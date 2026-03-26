@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -75,8 +75,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824769.aspx" />
             /// HRESULT WINAPI DismCheckImageHealth(_In_ DismSession Session, _In_ BOOL ScanImage, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData, _Out_ DismImageHealthState* ImageHealth);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismCheckImageHealth(DismSession session, [MarshalAs(UnmanagedType.Bool)] bool scanImage, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData, out DismImageHealthState imageHealth);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismCheckImageHealth(DismSession session, [MarshalAs(UnmanagedType.Bool)] bool scanImage, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData, out DismImageHealthState imageHealth);
+            #endif
         }
     }
 }

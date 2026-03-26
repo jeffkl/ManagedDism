@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <ArtifactsBasePath>$(MSBuildThisFileDirectory)artifacts\</ArtifactsBasePath>
+    <ArtifactsPath>$(ArtifactsBasePath)$(MSBuildProjectName)</ArtifactsPath>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)key.snk</AssemblyOriginatorKeyFile>
     <DefaultItemExcludes>*log</DefaultItemExcludes>
     <Deterministic>true</Deterministic>

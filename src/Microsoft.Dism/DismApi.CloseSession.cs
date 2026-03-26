@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -36,8 +36,13 @@ namespace Microsoft.Dism
             /// <remarks>The DISMSession will be shut down after this call is completed but the image will not be unmounted. To unmount the image, use the DismUnmountImage Function once all sessions are closed.</remarks>
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825839.aspx" />
             /// HRESULT WINAPI DismCloseSession(_In_ DismSession Session);
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismCloseSession(IntPtr session);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismCloseSession(IntPtr session);
+            #endif
         }
     }
 }

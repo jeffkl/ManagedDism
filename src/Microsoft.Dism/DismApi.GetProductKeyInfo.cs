@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -46,8 +46,13 @@ namespace Microsoft.Dism
             /// <param name="editionIdPtr">Pointer that will receive a <see cref="DismString"/> with the edition ID.</param>
             /// <param name="channelPtr">Pointer that will receive a <see cref="DismString"/> with the channel name.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismGetProductKeyInfo", StringMarshalling = DismStringMarshalling)]
+            public static partial int DismGetProductKeyInfo(DismSession session, string productKey, out IntPtr editionIdPtr, out IntPtr channelPtr);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismGetProductKeyInfo", CharSet = DismCharacterSet)]
             public static extern int DismGetProductKeyInfo(DismSession session, string productKey, out IntPtr editionIdPtr, out IntPtr channelPtr);
+            #endif
         }
     }
 }
