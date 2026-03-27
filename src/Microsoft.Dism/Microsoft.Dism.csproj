@@ -4,6 +4,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Managed API for Deployment Image Servicing and Management (DISM)</Description>
+    <ArtifactsPath>$(ArtifactsBasePath)$(MSBuildProjectName)</ArtifactsPath>
     <PackageTags>Dism</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
