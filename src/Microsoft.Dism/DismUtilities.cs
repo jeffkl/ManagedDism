@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -104,7 +104,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Provides utility functions related to DismApi.
     /// </summary>
-    internal static class DismUtilities
+    internal static partial class DismUtilities
     {
         /// <summary>
         /// The handle of the loaded DISM generational library.
@@ -298,7 +298,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Native methods necessary for manually loading and unloading Win32 libraries.
         /// </summary>
-        internal static class NativeMethods
+        internal static partial class NativeMethods
         {
             /// <summary>
             /// Frees the loaded dynamic-link library (DLL) module and, if necessary, decrements its reference count. When the reference count reaches zero, the module is unloaded from the address space of the calling process and the handle is no longer valid.
@@ -307,8 +307,14 @@ namespace Microsoft.Dism
             /// <returns>If the function succeeds, the return value is a handle to the module.
             ///
             /// If the function fails, the return value is NULL.To get extended error information, call <see cref="Marshal.GetLastWin32Error" />.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport("kernel32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static partial bool FreeLibrary(IntPtr hModule);
+            #else
             [DllImport("kernel32.dll")]
             public static extern bool FreeLibrary(IntPtr hModule);
+            #endif
 
             /// <summary>
             /// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
@@ -317,8 +323,13 @@ namespace Microsoft.Dism
             /// <returns>If the function succeeds, the return value is a handle to the module.
             ///
             /// If the function fails, the return value is NULL.To get extended error information, call <see cref="Marshal.GetLastWin32Error" />.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport("kernel32.dll")]
+            public static partial IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
+            #else
             [DllImport("kernel32.dll")]
             public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
+            #endif
         }
     }
 }

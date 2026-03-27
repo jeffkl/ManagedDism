@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -81,8 +81,13 @@ namespace Microsoft.Dism
             /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684919.aspx" />
             /// HRESULT WINAPI DismAddCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_ BOOL LimitAccess, _In_ PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismAddCapability(DismSession session, string name, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismAddCapability(DismSession session, string name, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            #endif
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -83,8 +83,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824771.aspx" />
             /// HRESULT WINAPI DismGetFeatures (_In_ DismSession Session, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _Outptr_result_buffer_(*Count) DismFeature** Feature, _Out_ UINT* Count);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismGetFeatures(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr feature, out UInt32 count);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismGetFeatures(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr feature, out UInt32 count);
+            #endif
         }
     }
 }

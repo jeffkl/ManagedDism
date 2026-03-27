@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -35,8 +35,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825840.aspx" />
             /// HRESULT WINAPI DismApplyUnattend (_In_ DismSession Session, _In_ PCWSTR UnattendFile, _In_ BOOL SingleSession);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismApplyUnattend(DismSession session, string unattendFile, [MarshalAs(UnmanagedType.Bool)] bool singleSession);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismApplyUnattend(DismSession session, string unattendFile, [MarshalAs(UnmanagedType.Bool)] bool singleSession);
+            #endif
         }
     }
 }

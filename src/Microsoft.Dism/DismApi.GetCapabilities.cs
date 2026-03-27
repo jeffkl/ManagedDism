@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -40,8 +40,13 @@ namespace Microsoft.Dism
             /// <param name="capability">Pointer that will receive the info of capability.</param>
             /// <param name="count">The number of DismCapability structures that were returned.</param>
             /// <returns>Returns S_OK on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismGetCapabilities(DismSession session, out IntPtr capability, out UInt32 count);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismGetCapabilities(DismSession session, out IntPtr capability, out UInt32 count);
+            #endif
         }
     }
 }

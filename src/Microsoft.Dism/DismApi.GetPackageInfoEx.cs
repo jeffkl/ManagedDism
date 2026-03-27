@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -71,8 +71,13 @@ namespace Microsoft.Dism
             /// <remarks>
             /// HRESULT WINAPI DismGetPackageInfoEx (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _Out_ DismPackageInfoEx** PackageInfoEx);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismGetPackageInfoEx(DismSession dismSession, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr packageInfoEx);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismGetPackageInfoEx(DismSession dismSession, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr packageInfoEx);
+            #endif
         }
     }
 }

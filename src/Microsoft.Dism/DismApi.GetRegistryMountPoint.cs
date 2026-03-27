@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -44,8 +44,13 @@ namespace Microsoft.Dism
             /// <param name="registryHive">The <see cref="DismRegistryHive"/> to get the mount point for.</param>
             /// <param name="registryMountPointPtr">A pointer which will receive the <see cref="DismString"/> wrapped mount point.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismGetRegistryMountPoint")]
+            public static partial int DismGetRegistryMountPoint(DismSession session, DismRegistryHive registryHive, out IntPtr registryMountPointPtr);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismGetRegistryMountPoint")]
             public static extern int DismGetRegistryMountPoint(DismSession session, DismRegistryHive registryHive, out IntPtr registryMountPointPtr);
+            #endif
         }
     }
 }

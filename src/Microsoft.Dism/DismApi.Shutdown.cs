@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -49,8 +49,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824773.aspx" />
             /// HRESULT WINAPI DismShutdown( );
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismShutdown();
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismShutdown();
+            #endif
         }
     }
 }

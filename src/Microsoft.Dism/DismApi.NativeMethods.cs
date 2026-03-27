@@ -13,8 +13,13 @@ namespace Microsoft.Dism
         /// </summary>
         internal static partial class NativeMethods
         {
+#if !NET7_0_OR_GREATER
             private const CharSet DismCharacterSet = CharSet.Unicode;
+#endif
             private const string DismDllName = "DismApi";
+#if NET7_0_OR_GREATER
+            private const StringMarshalling DismStringMarshalling = StringMarshalling.Utf16;
+#endif
         }
     }
 }

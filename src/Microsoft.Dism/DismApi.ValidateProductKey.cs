@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -43,8 +43,13 @@ namespace Microsoft.Dism
             ///   <item><see cref="DISMAPI_E_UNKNOWN_PRODUCT"/> if the key is invalid</item>
             /// </list>
             /// </returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismValidateProductKey", StringMarshalling = DismStringMarshalling)]
+            public static partial int DismValidateProductKey(DismSession session, string productKey);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismValidateProductKey", CharSet = DismCharacterSet)]
             public static extern int DismValidateProductKey(DismSession session, string productKey);
+            #endif
         }
     }
 }

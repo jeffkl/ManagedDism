@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -31,8 +31,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824768.aspx" />
             /// HRESULT WINAPI DismDelete(_In_ VOID* DismStructure);
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismDelete(IntPtr dismStructure);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismDelete(IntPtr dismStructure);
+            #endif
         }
     }
 }

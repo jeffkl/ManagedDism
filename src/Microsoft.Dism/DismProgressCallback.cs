@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
 {
@@ -24,6 +25,7 @@ namespace Microsoft.Dism
         /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824734.aspx" />
         /// void DismProgressCallback(_In_ UINT Current, _In_ UINT Total, _In_ PVOID UserData)
         /// </remarks>
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         internal delegate void DismProgressCallback(UInt32 current, UInt32 total, IntPtr userData);
     }
 }

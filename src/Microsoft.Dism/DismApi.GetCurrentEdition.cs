@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -41,8 +41,13 @@ namespace Microsoft.Dism
             /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
             /// <param name="editionId">Recieves a pointer to a <see cref="DismString"/> structure containing the edition ID of the image.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismGetCurrentEdition")]
+            public static partial int DismGetCurrentEdition(DismSession session, out IntPtr editionId);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismGetCurrentEdition")]
             public static extern int DismGetCurrentEdition(DismSession session, out IntPtr editionId);
+            #endif
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -84,8 +84,13 @@ namespace Microsoft.Dism
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824788.aspx" />
             /// HRESULT WINAPI DismAddPackage (_In_ DismSession Session, _In_ PCWSTR PackagePath, _In_ BOOL IgnoreCheck, _In_ BOOL PreventPending _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData)
             /// </remarks>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int DismAddPackage(DismSession session, string packagePath, [MarshalAs(UnmanagedType.Bool)] bool ignoreCheck, [MarshalAs(UnmanagedType.Bool)] bool preventPending, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int DismAddPackage(DismSession session, string packagePath, [MarshalAs(UnmanagedType.Bool)] bool ignoreCheck, [MarshalAs(UnmanagedType.Bool)] bool preventPending, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
+            #endif
         }
     }
 }

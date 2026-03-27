@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -29,8 +29,13 @@ namespace Microsoft.Dism
             /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
             /// <param name="productKey">The product key.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismSetProductKey", StringMarshalling = DismStringMarshalling)]
+            public static partial int DismSetProductKey(DismSession session, string productKey);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismSetProductKey", CharSet = DismCharacterSet)]
             public static extern int DismSetProductKey(DismSession session, string productKey);
+            #endif
         }
     }
 }

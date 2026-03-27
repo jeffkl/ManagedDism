@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -38,8 +38,13 @@ namespace Microsoft.Dism
             /// <param name="ApplyPath">The drive path to apply the image to.</param>
             /// <param name="PartPath">An optional file pattern that matches the names of split FFU images.</param>
             /// <returns>Returns S_OK on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
+            public static partial int _DismApplyFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string ApplyPath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath);
+            #else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
             public static extern int _DismApplyFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string ApplyPath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath);
+            #endif
         }
     }
 }

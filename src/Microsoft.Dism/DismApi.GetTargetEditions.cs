@@ -1,4 +1,4 @@
-﻿// Copyright (c). All rights reserved.
+// Copyright (c). All rights reserved.
 //
 // Licensed under the MIT license.
 
@@ -40,8 +40,13 @@ namespace Microsoft.Dism
             /// <param name="editionIds">Pointer to an array of <see cref="DismString"/> structures containing the target edition IDs of the image.</param>
             /// <param name="count">The number of edition IDs that are returned.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
+            #if NET7_0_OR_GREATER
+            [LibraryImport(DismDllName, EntryPoint = "_DismGetTargetEditions")]
+            public static partial int DismGetTargetEditions(DismSession session, out IntPtr editionIds, out uint count);
+            #else
             [DllImport(DismDllName, EntryPoint = "_DismGetTargetEditions")]
             public static extern int DismGetTargetEditions(DismSession session, out IntPtr editionIds, out uint count);
+            #endif
         }
     }
 }
