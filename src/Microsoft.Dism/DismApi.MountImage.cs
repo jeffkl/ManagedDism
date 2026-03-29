@@ -232,7 +232,7 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        public static Task MountImageAsync(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task MountImageAsync(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
             return MountImageAsync(imageFilePath, mountPath, imageIndex, null, DismImageIdentifier.ImageIndex, readOnly, options, progress, cancellationToken);
         }
@@ -250,7 +250,7 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        public static Task MountImageAsync(string imageFilePath, string mountPath, string? imageName, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task MountImageAsync(string imageFilePath, string mountPath, string? imageName, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
             return MountImageAsync(imageFilePath, mountPath, 0, imageName, DismImageIdentifier.ImageName, readOnly, options, progress, cancellationToken);
         }
