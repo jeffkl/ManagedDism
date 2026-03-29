@@ -6,6 +6,8 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -62,6 +64,70 @@ namespace Microsoft.Dism
 
             DismUtilities.ThrowIfFail(hresult, session);
         }
+
+#if !NET40
+        /// <summary>
+        /// Asynchronously adds a capability to an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="capabilityName">The name of the capability that is being added.</param>
+        /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
+        /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task AddCapabilityAsync(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            var ctsRegistration = default(CancellationTokenRegistration);
+
+            Task.Factory.StartNew(
+                () =>
+            {
+                try
+                {
+                    string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+
+                    var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+
+                    ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+
+                    int hresult = NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        tcs.TrySetCanceled(cancellationToken);
+                    }
+                    else
+                    {
+                        DismUtilities.ThrowIfFail(hresult, session);
+                        tcs.TrySetResult(true);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    tcs.TrySetCanceled(cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
+                finally
+                {
+                    ctsRegistration.Dispose();
+                }
+            },
+            cancellationToken,
+            TaskCreationOptions.LongRunning,
+            TaskScheduler.Default);
+
+            return tcs.Task;
+        }
+#endif
 
         internal static partial class NativeMethods
         {
