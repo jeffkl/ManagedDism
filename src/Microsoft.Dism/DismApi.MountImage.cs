@@ -291,43 +291,43 @@ namespace Microsoft.Dism
 
             Task.Factory.StartNew(
                 () =>
-            {
-                try
                 {
-                    uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
+                    try
+                    {
+                        uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
 
-                    var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
 
-                    ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                    int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                        int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                    if (cancellationToken.IsCancellationRequested)
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            tcs.TrySetCanceled(cancellationToken);
+                        }
+                        else
+                        {
+                            DismUtilities.ThrowIfFail(hresult);
+                            tcs.TrySetResult(true);
+                        }
+                    }
+                    catch (OperationCanceledException)
                     {
                         tcs.TrySetCanceled(cancellationToken);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        DismUtilities.ThrowIfFail(hresult);
-                        tcs.TrySetResult(true);
+                        tcs.TrySetException(ex);
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    tcs.TrySetCanceled(cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    tcs.TrySetException(ex);
-                }
-                finally
-                {
-                    ctsRegistration.Dispose();
-                }
-            },
-            cancellationToken,
-            TaskCreationOptions.LongRunning,
-            TaskScheduler.Default);
+                    finally
+                    {
+                        ctsRegistration.Dispose();
+                    }
+                },
+                cancellationToken,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
 
             return tcs.Task;
         }

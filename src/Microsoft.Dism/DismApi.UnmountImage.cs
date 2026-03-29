@@ -77,43 +77,43 @@ namespace Microsoft.Dism
 
             Task.Factory.StartNew(
                 () =>
-            {
-                try
                 {
-                    uint flags = commitChanges ? DISM_COMMIT_IMAGE : DISM_DISCARD_IMAGE;
+                    try
+                    {
+                        uint flags = commitChanges ? DISM_COMMIT_IMAGE : DISM_DISCARD_IMAGE;
 
-                    var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
 
-                    ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                    int hresult = NativeMethods.DismUnmountImage(mountPath, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                        int hresult = NativeMethods.DismUnmountImage(mountPath, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                    if (cancellationToken.IsCancellationRequested)
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            tcs.TrySetCanceled(cancellationToken);
+                        }
+                        else
+                        {
+                            DismUtilities.ThrowIfFail(hresult);
+                            tcs.TrySetResult(true);
+                        }
+                    }
+                    catch (OperationCanceledException)
                     {
                         tcs.TrySetCanceled(cancellationToken);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        DismUtilities.ThrowIfFail(hresult);
-                        tcs.TrySetResult(true);
+                        tcs.TrySetException(ex);
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    tcs.TrySetCanceled(cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    tcs.TrySetException(ex);
-                }
-                finally
-                {
-                    ctsRegistration.Dispose();
-                }
-            },
-            cancellationToken,
-            TaskCreationOptions.LongRunning,
-            TaskScheduler.Default);
+                    finally
+                    {
+                        ctsRegistration.Dispose();
+                    }
+                },
+                cancellationToken,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
 
             return tcs.Task;
         }
