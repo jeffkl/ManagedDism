@@ -5,6 +5,8 @@
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -67,6 +69,70 @@ namespace Microsoft.Dism
 
             DismUtilities.ThrowIfFail(hresult, session);
         }
+
+#if !NET40
+        /// <summary>
+        /// Asynchronously disables a feature in the current image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that you want to disable. To disable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packageName">Optional. The name of the parent package that the feature is a part of.
+        ///
+        /// This is an optional parameter. If no package is specified, then the default Windows® Foundation package is used.</param>
+        /// <param name="removePayload">Specifies whether to remove the files required to enable the feature.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task DisableFeatureAsync(DismSession session, string featureName, string packageName, bool removePayload, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            var ctsRegistration = default(CancellationTokenRegistration);
+
+            Task.Factory.StartNew(
+                () =>
+            {
+                try
+                {
+                    var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+
+                    ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+
+                    int hresult = NativeMethods.DismDisableFeature(session, featureName, packageName, removePayload, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        tcs.TrySetCanceled(cancellationToken);
+                    }
+                    else
+                    {
+                        DismUtilities.ThrowIfFail(hresult, session);
+                        tcs.TrySetResult(true);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    tcs.TrySetCanceled(cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    tcs.TrySetException(ex);
+                }
+                finally
+                {
+                    ctsRegistration.Dispose();
+                }
+            },
+            cancellationToken,
+            TaskCreationOptions.LongRunning,
+            TaskScheduler.Default);
+
+            return tcs.Task;
+        }
+#endif
 
         internal static partial class NativeMethods
         {
