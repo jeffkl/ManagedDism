@@ -93,26 +93,6 @@ namespace Microsoft.Dism
             SetEdition(session, editionId, productKey, progressCallback, userData);
         }
 
-        /// <summary>
-        /// Changes an offline Windows image to a higher edition and optionaly sets the product key.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
-        /// <param name="editionId">The edition to set the image to.</param>
-        /// <param name="productKey">Optional. A product key for the specified edition.</param>
-        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
-        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        private static void SetEdition(DismSession session, string editionId, string? productKey, Dism.DismProgressCallback? progressCallback, object? userData)
-        {
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
-
-            int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            DismUtilities.ThrowIfFail(hresult, session);
-        }
-
 #if !NET40
         /// <summary>
         /// Asynchronously changes an offline Windows image to a higher edition.
@@ -197,6 +177,26 @@ namespace Microsoft.Dism
             return tcs.Task;
         }
 #endif
+
+        /// <summary>
+        /// Changes an offline Windows image to a higher edition and optionaly sets the product key.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="productKey">Optional. A product key for the specified edition.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        private static void SetEdition(DismSession session, string editionId, string? productKey, Dism.DismProgressCallback? progressCallback, object? userData)
+        {
+            // Create a DismProgress object to wrap the callback and allow cancellation
+            DismProgress progress = new DismProgress(progressCallback, userData);
+
+            int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            DismUtilities.ThrowIfFail(hresult, session);
+        }
 
         internal static partial class NativeMethods
         {
