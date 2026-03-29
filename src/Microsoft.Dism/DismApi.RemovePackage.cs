@@ -94,24 +94,6 @@ namespace Microsoft.Dism
             RemovePackage(session, packagePath, DismPackageIdentifier.Path, progressCallback, userData);
         }
 
-        /// <summary>
-        /// Removes a package from an image.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the PackageIdentifier parameter value.</param>
-        /// <param name="packageIdentifier">A DismPackageIdentifier Enumeration.</param>
-        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
-        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, Dism.DismProgressCallback? progressCallback, object? userData)
-        {
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
-
-            int hresult = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            DismUtilities.ThrowIfFail(hresult, session);
-        }
-
 #if !NET40
         /// <summary>
         /// Asynchronously removes a package from an image by name.
@@ -195,6 +177,24 @@ namespace Microsoft.Dism
             return tcs.Task;
         }
 #endif
+
+        /// <summary>
+        /// Removes a package from an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="identifier">Either an absolute path to a .cab file or the package name, depending on the PackageIdentifier parameter value.</param>
+        /// <param name="packageIdentifier">A DismPackageIdentifier Enumeration.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, Dism.DismProgressCallback? progressCallback, object? userData)
+        {
+            // Create a DismProgress object to wrap the callback and allow cancellation
+            DismProgress progress = new DismProgress(progressCallback, userData);
+
+            int hresult = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            DismUtilities.ThrowIfFail(hresult, session);
+        }
 
         internal static partial class NativeMethods
         {

@@ -207,43 +207,6 @@ namespace Microsoft.Dism
             EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
 
-        /// <summary>
-        /// Enables a feature from the specified package path.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="identifier">A package name or absolute path.</param>
-        /// <param name="packageIdentifier">A DismPackageIdentifier value.</param>
-        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
-        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
-        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
-        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
-        {
-            // Get the list of source paths as an array
-            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
-
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
-
-            int hresult = NativeMethods.DismEnableFeature(
-                session: session,
-                featureName: featureName,
-                identifier: identifier,
-                packageIdentifier: identifier == null ? DismPackageIdentifier.None : packageIdentifier,
-                limitAccess: limitAccess,
-                sourcePaths: sourcePathsArray,
-                sourcePathCount: (uint)sourcePathsArray.Length,
-                enableAll: enableAll,
-                cancelEvent: progress.EventHandle,
-                progress: progress.DismProgressCallbackNative,
-                userData: IntPtr.Zero);
-
-            DismUtilities.ThrowIfFail(hresult, session);
-        }
-
 #if !NET40
         /// <summary>
         /// Asynchronously enables a feature from the default package.
@@ -356,6 +319,43 @@ namespace Microsoft.Dism
             return tcs.Task;
         }
 #endif
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="identifier">A package name or absolute path.</param>
+        /// <param name="packageIdentifier">A DismPackageIdentifier value.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        {
+            // Get the list of source paths as an array
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+
+            // Create a DismProgress object to wrap the callback and allow cancellation
+            DismProgress progress = new DismProgress(progressCallback, userData);
+
+            int hresult = NativeMethods.DismEnableFeature(
+                session: session,
+                featureName: featureName,
+                identifier: identifier,
+                packageIdentifier: identifier == null ? DismPackageIdentifier.None : packageIdentifier,
+                limitAccess: limitAccess,
+                sourcePaths: sourcePathsArray,
+                sourcePathCount: (uint)sourcePathsArray.Length,
+                enableAll: enableAll,
+                cancelEvent: progress.EventHandle,
+                progress: progress.DismProgressCallbackNative,
+                userData: IntPtr.Zero);
+
+            DismUtilities.ThrowIfFail(hresult, session);
+        }
 
         internal static partial class NativeMethods
         {
