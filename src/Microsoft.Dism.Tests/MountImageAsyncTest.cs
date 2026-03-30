@@ -48,7 +48,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task MountImageAsyncByIndexCancellation()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -68,7 +68,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task MountImageAsyncByNameCancellation()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -97,9 +97,9 @@ namespace Microsoft.Dism.Tests
 
             DismApi.CleanupMountpoints();
 
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
 
-            var progress = new SynchronousProgress<DismProgress>(_ =>
+            SynchronousProgress<DismProgress> progress = new(_ =>
             {
                 progressCalled = true;
             });

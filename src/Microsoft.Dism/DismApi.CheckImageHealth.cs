@@ -51,7 +51,7 @@ namespace Microsoft.Dism
         public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
 
@@ -73,16 +73,16 @@ namespace Microsoft.Dism
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         public static Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            var tcs = new TaskCompletionSource<DismImageHealthState>();
+            TaskCompletionSource<DismImageHealthState> tcs = new();
 
-            var ctsRegistration = default(CancellationTokenRegistration);
+            CancellationTokenRegistration ctsRegistration = default;
 
             Task.Factory.StartNew(
                 () =>
                 {
                     try
                     {
-                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
 
                         ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 

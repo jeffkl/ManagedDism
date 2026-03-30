@@ -12,7 +12,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismImageInfoCollectionTest : DismCollectionTest<DismImageInfoCollection, DismImageInfo>
     {
-        private readonly List<DismApi.DismImageInfo_> _items = new List<DismApi.DismImageInfo_>
+        private readonly List<DismApi.DismImageInfo_> _items = new()
         {
             new DismApi.DismImageInfo_
             {
@@ -37,8 +37,8 @@ namespace Microsoft.Dism.Tests
                 InstallationType = "InstallationType",
                 Language = new List<DismApi.DismLanguage>
                 {
-                    new DismApi.DismLanguage("en-us"),
-                    new DismApi.DismLanguage("es-es"),
+                    new("en-us"),
+                    new("es-es"),
                 }.ToPtr(),
                 LanguageCount = 2,
                 MajorVersion = 2,
@@ -73,7 +73,7 @@ namespace Microsoft.Dism.Tests
                 InstallationType = "InstallationType",
                 Language = new List<DismApi.DismLanguage>
                 {
-                    new DismApi.DismLanguage("es-es"),
+                    new("es-es"),
                 }.ToPtr(),
                 LanguageCount = 1,
                 MajorVersion = 2,

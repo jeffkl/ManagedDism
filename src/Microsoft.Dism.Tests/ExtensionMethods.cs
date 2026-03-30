@@ -21,7 +21,7 @@ namespace Microsoft.Dism.Tests
 
             for (int i = 0; i < list.Count; i++)
             {
-                IntPtr currentPtr = new IntPtr(startPtr + (i * structSize));
+                IntPtr currentPtr = new(startPtr + (i * structSize));
 
                 Marshal.StructureToPtr(list[i] !, currentPtr, false);
             }

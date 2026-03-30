@@ -37,7 +37,7 @@ namespace Microsoft.Dism
         public static void RemoveCapability(DismSession session, string capabilityName, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismRemoveCapability(session, capabilityName, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -58,16 +58,16 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static Task RemoveCapabilityAsync(DismSession session, string capabilityName, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            var tcs = new TaskCompletionSource<bool>();
+            TaskCompletionSource<bool> tcs = new();
 
-            var ctsRegistration = default(CancellationTokenRegistration);
+            CancellationTokenRegistration ctsRegistration = default;
 
             Task.Factory.StartNew(
                 () =>
                 {
                     try
                     {
-                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
 
                         ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 

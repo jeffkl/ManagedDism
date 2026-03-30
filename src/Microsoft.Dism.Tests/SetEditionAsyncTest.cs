@@ -20,7 +20,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task SetEditionAsyncCancellation()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -40,7 +40,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task SetEditionAndProductKeyAsyncCancellation()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -60,9 +60,9 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task SetEditionAsyncWithProgress()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
 
-            var progress = new SynchronousProgress<DismProgress>(_ =>
+            SynchronousProgress<DismProgress> progress = new(_ =>
             {
                 cts.Cancel();
             });

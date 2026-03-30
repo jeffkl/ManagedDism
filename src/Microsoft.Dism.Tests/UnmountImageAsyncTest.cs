@@ -20,7 +20,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task UnmountImageAsyncCancellation()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -49,9 +49,9 @@ namespace Microsoft.Dism.Tests
             DismApi.CleanupMountpoints();
             DismApi.MountImage(InstallWimPath.FullName, MountPath.FullName, 1);
 
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
 
-            var progress = new SynchronousProgress<DismProgress>(_ =>
+            SynchronousProgress<DismProgress> progress = new(_ =>
             {
             });
 

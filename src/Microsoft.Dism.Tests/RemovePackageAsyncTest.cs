@@ -21,7 +21,7 @@ namespace Microsoft.Dism.Tests
         public async Task RemovePackageByNameAsyncCancellation()
         {
             using DismSession session = DismApi.OpenOnlineSession();
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -42,7 +42,7 @@ namespace Microsoft.Dism.Tests
         public async Task RemovePackageByPathAsyncCancellation()
         {
             using DismSession session = DismApi.OpenOnlineSession();
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -63,9 +63,9 @@ namespace Microsoft.Dism.Tests
         public async Task RemovePackageByNameAsyncWithProgress()
         {
             using DismSession session = DismApi.OpenOnlineSession();
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
 
-            var progress = new SynchronousProgress<DismProgress>(_ =>
+            SynchronousProgress<DismProgress> progress = new(_ =>
             {
                 cts.Cancel();
             });

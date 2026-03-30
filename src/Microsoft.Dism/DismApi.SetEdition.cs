@@ -132,16 +132,16 @@ namespace Microsoft.Dism
         /// </summary>
         private static Task SetEditionAsync(DismSession session, string editionId, string? productKey, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
-            var tcs = new TaskCompletionSource<bool>();
+            TaskCompletionSource<bool> tcs = new();
 
-            var ctsRegistration = default(CancellationTokenRegistration);
+            CancellationTokenRegistration ctsRegistration = default;
 
             Task.Factory.StartNew(
                 () =>
                 {
                     try
                     {
-                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
 
                         ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
@@ -191,7 +191,7 @@ namespace Microsoft.Dism
         private static void SetEdition(DismSession session, string editionId, string? productKey, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 

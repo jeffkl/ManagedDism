@@ -18,7 +18,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void SessionOptionsDefaults()
         {
-            DismSessionOptions options = new DismSessionOptions();
+            DismSessionOptions options = new();
 
             options.ThrowExceptionOnRebootRequired.ShouldBeTrue();
         }
