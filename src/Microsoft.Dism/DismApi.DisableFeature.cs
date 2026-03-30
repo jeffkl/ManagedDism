@@ -126,7 +126,7 @@ namespace Microsoft.Dism
                         ctsRegistration.Dispose();
                     }
                 },
-                cancellationToken,
+                CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
 
