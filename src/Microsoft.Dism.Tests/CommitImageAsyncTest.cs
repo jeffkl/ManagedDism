@@ -20,7 +20,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task CommitImageAsyncCancellation()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
             cts.Cancel();
 
             bool canceled = false;
@@ -40,9 +40,9 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task CommitImageAsyncWithProgress()
         {
-            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new();
 
-            var progress = new SynchronousProgress<DismProgress>(_ =>
+            SynchronousProgress<DismProgress> progress = new(_ =>
             {
                 cts.Cancel();
             });

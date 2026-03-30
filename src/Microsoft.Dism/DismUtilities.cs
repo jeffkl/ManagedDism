@@ -147,7 +147,7 @@ namespace Microsoft.Dism
                     return null;
                 }
 
-                FileInfo dismPath = new FileInfo(Path.Combine(servicingPath, "dism.exe"));
+                FileInfo dismPath = new(Path.Combine(servicingPath, "dism.exe"));
 
                 return dismPath.Exists ? dismPath.FullName : null;
             }
@@ -290,7 +290,7 @@ namespace Microsoft.Dism
                 return null;
             }
 
-            FileInfo dismPath = new FileInfo(Path.Combine(kitsRoot, "Assessment and Deployment Kit", "Deployment Tools", Environment.Is64BitProcess ? "amd64" : "x86", "DISM", "dismapi.dll"));
+            FileInfo dismPath = new(Path.Combine(kitsRoot, "Assessment and Deployment Kit", "Deployment Tools", Environment.Is64BitProcess ? "amd64" : "x86", "DISM", "dismapi.dll"));
 
             return dismPath.Exists ? dismPath.FullName : null;
         }

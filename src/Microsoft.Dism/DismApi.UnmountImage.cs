@@ -51,7 +51,7 @@ namespace Microsoft.Dism
             uint flags = commitChanges ? DISM_COMMIT_IMAGE : DISM_DISCARD_IMAGE;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismUnmountImage(mountPath, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -71,9 +71,9 @@ namespace Microsoft.Dism
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         public static Task UnmountImageAsync(string mountPath, bool commitChanges, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            var tcs = new TaskCompletionSource<bool>();
+            TaskCompletionSource<bool> tcs = new();
 
-            var ctsRegistration = default(CancellationTokenRegistration);
+            CancellationTokenRegistration ctsRegistration = default;
 
             Task.Factory.StartNew(
                 () =>
@@ -82,7 +82,7 @@ namespace Microsoft.Dism
                     {
                         uint flags = commitChanges ? DISM_COMMIT_IMAGE : DISM_DISCARD_IMAGE;
 
-                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
 
                         ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 

@@ -11,7 +11,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismDriverCollectionTest : DismCollectionTest<DismDriverCollection, DismDriver>
     {
-        private static readonly List<DismApi.DismDriver_> Items = new List<DismApi.DismDriver_>
+        private static readonly List<DismApi.DismDriver_> Items = new()
         {
             new DismApi.DismDriver_
             {

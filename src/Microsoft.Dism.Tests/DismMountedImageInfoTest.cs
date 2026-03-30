@@ -11,7 +11,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismMountedImageInfoCollectionTest : DismCollectionTest<DismMountedImageInfoCollection, DismMountedImageInfo>
     {
-        private static readonly List<DismApi.DismMountedImageInfo_> Items = new List<DismApi.DismMountedImageInfo_>
+        private static readonly List<DismApi.DismMountedImageInfo_> Items = new()
         {
             new DismApi.DismMountedImageInfo_
             {

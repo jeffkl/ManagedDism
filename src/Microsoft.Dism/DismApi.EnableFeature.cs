@@ -272,18 +272,18 @@ namespace Microsoft.Dism
         /// </summary>
         private static Task EnableFeatureAsync(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
-            var tcs = new TaskCompletionSource<bool>();
+            TaskCompletionSource<bool> tcs = new();
 
-            var ctsRegistration = default(CancellationTokenRegistration);
+            CancellationTokenRegistration ctsRegistration = default;
 
             Task.Factory.StartNew(
                 () =>
                 {
                     try
                     {
-                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
-                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
 
                         ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
@@ -336,10 +336,10 @@ namespace Microsoft.Dism
         private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Get the list of source paths as an array
-            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismEnableFeature(
                 session: session,

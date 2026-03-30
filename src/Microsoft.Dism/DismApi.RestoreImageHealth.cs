@@ -67,10 +67,10 @@ namespace Microsoft.Dism
         public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Get the list of source paths as an array
-            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -92,18 +92,18 @@ namespace Microsoft.Dism
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
         public static Task RestoreImageHealthAsync(DismSession session, bool limitAccess, List<string>? sourcePaths = null, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            var tcs = new TaskCompletionSource<bool>();
+            TaskCompletionSource<bool> tcs = new();
 
-            var ctsRegistration = default(CancellationTokenRegistration);
+            CancellationTokenRegistration ctsRegistration = default;
 
             Task.Factory.StartNew(
                 () =>
                 {
                     try
                     {
-                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
-                        var dismProgress = new DismProgress(progress != null ? p => progress.Report(p) : null, null);
+                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
 
                         ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 

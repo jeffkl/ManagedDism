@@ -43,7 +43,7 @@ namespace Microsoft.Dism.Tests
         public void CollectionTest_Empty()
         {
             TCollection actual = GetActual(IntPtr.Zero);
-            ReadOnlyCollection<TItem> expected = new ReadOnlyCollection<TItem>(new List<TItem>(0));
+            ReadOnlyCollection<TItem> expected = new(new List<TItem>(0));
             actual.ShouldBe(expected);
         }
 
