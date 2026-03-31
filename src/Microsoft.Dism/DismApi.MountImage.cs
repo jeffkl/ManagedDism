@@ -258,53 +258,30 @@ namespace Microsoft.Dism
         /// <summary>
         /// Asynchronously mounts a WIM or VHD image file to a specified location.
         /// </summary>
-        private static Task MountImageAsync(string imageFilePath, string mountPath, int imageIndex, string? imageName, DismImageIdentifier imageIdentifier, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        private static async Task MountImageAsync(string imageFilePath, string mountPath, int imageIndex, string? imageName, DismImageIdentifier imageIdentifier, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
-            TaskCompletionSource<bool> tcs = new();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
+            await Task.Factory.StartNew(
                 () =>
                 {
-                    try
-                    {
-                        uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
+                    uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
 
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                    int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                        int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
 
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    DismUtilities.ThrowIfFail(hresult);
                 },
                 CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
-
-            return tcs.Task;
         }
 #endif
 

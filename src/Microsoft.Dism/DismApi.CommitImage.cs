@@ -69,53 +69,30 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        public static Task CommitImageAsync(DismSession session, bool discardChanges, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static async Task CommitImageAsync(DismSession session, bool discardChanges, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<bool> tcs = new();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
+            await Task.Factory.StartNew(
                 () =>
                 {
-                    try
-                    {
-                        UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;
+                    UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;
 
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                    int hresult = NativeMethods.DismCommitImage(session, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                        int hresult = NativeMethods.DismCommitImage(session, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
 
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    DismUtilities.ThrowIfFail(hresult, session);
                 },
                 CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
-
-            return tcs.Task;
         }
 #endif
 

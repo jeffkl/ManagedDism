@@ -90,53 +90,30 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task RestoreImageHealthAsync(DismSession session, bool limitAccess, List<string>? sourcePaths = null, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static async Task RestoreImageHealthAsync(DismSession session, bool limitAccess, List<string>? sourcePaths = null, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<bool> tcs = new();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
+            await Task.Factory.StartNew(
                 () =>
                 {
-                    try
-                    {
-                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
+                    string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                    int hresult = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                        int hresult = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
 
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    DismUtilities.ThrowIfFail(hresult, session);
                 },
                 CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
-
-            return tcs.Task;
         }
 #endif
 

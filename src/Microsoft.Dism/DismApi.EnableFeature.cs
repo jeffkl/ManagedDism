@@ -270,53 +270,30 @@ namespace Microsoft.Dism
         /// <summary>
         /// Asynchronously enables a feature in an image.
         /// </summary>
-        private static Task EnableFeatureAsync(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        private static async Task EnableFeatureAsync(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
-            TaskCompletionSource<bool> tcs = new();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
+            await Task.Factory.StartNew(
                 () =>
                 {
-                    try
-                    {
-                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
+                    string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                    int hresult = NativeMethods.DismEnableFeature(session, featureName, identifier, identifier == null ? DismPackageIdentifier.None : packageIdentifier, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, enableAll, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                        int hresult = NativeMethods.DismEnableFeature(session, featureName, identifier, identifier == null ? DismPackageIdentifier.None : packageIdentifier, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, enableAll, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
 
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    DismUtilities.ThrowIfFail(hresult, session);
                 },
                 CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
-
-            return tcs.Task;
         }
 #endif
 

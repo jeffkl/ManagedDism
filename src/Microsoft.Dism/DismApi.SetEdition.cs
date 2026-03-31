@@ -130,51 +130,28 @@ namespace Microsoft.Dism
         /// <summary>
         /// Asynchronously changes an offline Windows image to a higher edition and optionally sets the product key.
         /// </summary>
-        private static Task SetEditionAsync(DismSession session, string editionId, string? productKey, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        private static async Task SetEditionAsync(DismSession session, string editionId, string? productKey, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
         {
-            TaskCompletionSource<bool> tcs = new();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
+            await Task.Factory.StartNew(
                 () =>
                 {
-                    try
-                    {
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                    int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
 
-                        int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
 
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    DismUtilities.ThrowIfFail(hresult, session);
                 },
                 CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
-
-            return tcs.Task;
         }
 #endif
 

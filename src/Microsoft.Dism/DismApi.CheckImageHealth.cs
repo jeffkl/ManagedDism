@@ -71,51 +71,29 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="Task{DismImageHealthState}" /> representing the asynchronous operation, containing the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        public static Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static async Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<DismImageHealthState> tcs = new();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
+            return await Task.Factory.StartNew(
                 () =>
                 {
-                    try
-                    {
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+                    int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
 
-                        int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
 
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(imageHealthState);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    DismUtilities.ThrowIfFail(hresult, session);
+                    return imageHealthState;
                 },
                 CancellationToken.None,
                 TaskCreationOptions.LongRunning,
                 TaskScheduler.Default);
-
-            return tcs.Task;
         }
 #endif
 
