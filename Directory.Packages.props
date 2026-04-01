@@ -13,7 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.Build.Artifacts" Version="6.1.63" />
-    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.103" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.201" />
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.9.50" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <Compile Include="$(MSBuildThisFileDirectory)src\GlobalSuppressions.cs" Link="%(Filename)%(Extension)" />
