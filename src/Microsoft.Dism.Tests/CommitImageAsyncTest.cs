@@ -27,7 +27,7 @@ namespace Microsoft.Dism.Tests
 
             try
             {
-                await DismApi.CommitImageAsync(Session, discardChanges: true, cancellationToken: cts.Token);
+                await DismApi.CommitImageAsync(Session, discardChanges: false, cancellationToken: cts.Token);
             }
             catch (OperationCanceledException)
             {
@@ -49,7 +49,7 @@ namespace Microsoft.Dism.Tests
 
             try
             {
-                await DismApi.CommitImageAsync(Session, discardChanges: true, progress: progress, cancellationToken: cts.Token);
+                await DismApi.CommitImageAsync(Session, discardChanges: false, progress: progress, cancellationToken: cts.Token);
             }
             catch (OperationCanceledException)
             {
@@ -61,7 +61,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public async Task CommitImageAsyncHappyPath()
         {
-            await DismApi.CommitImageAsync(Session, discardChanges: true, cancellationToken: TestContext.Current.CancellationToken);
+            await DismApi.CommitImageAsync(Session, discardChanges: false, cancellationToken: TestContext.Current.CancellationToken);
         }
 
         private sealed class SynchronousProgress<T> : IProgress<T>
