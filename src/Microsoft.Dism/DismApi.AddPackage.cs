@@ -5,6 +5,8 @@
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -58,12 +60,52 @@ namespace Microsoft.Dism
         public static void AddPackage(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
             DismUtilities.ThrowIfFail(hresult, session);
         }
+
+#if !NET40
+        /// <summary>
+        /// Asynchronously adds a single .cab or .msu file to a Windows® image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the OpenSession method.</param>
+        /// <param name="packagePath">A relative or absolute path to the .cab or .msu file being added or a folder containing the expanded files of a single .cab file.</param>
+        /// <param name="ignoreCheck">Specifies whether to ignore the internal applicability checks that are done when a package is added.</param>
+        /// <param name="preventPending">Specifies whether to add a package if it has pending online actions.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        /// <exception cref="DismPackageNotApplicableException">When the package is not applicable to the specified session.</exception>
+        public static async Task AddPackageAsync(DismSession session, string packagePath, bool ignoreCheck, bool preventPending, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await Task.Factory.StartNew(
+                () =>
+                {
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+
+                    int hresult = NativeMethods.DismAddPackage(session, packagePath, ignoreCheck, preventPending, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
+
+                    DismUtilities.ThrowIfFail(hresult, session);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
+        }
+#endif
 
         internal static partial class NativeMethods
         {

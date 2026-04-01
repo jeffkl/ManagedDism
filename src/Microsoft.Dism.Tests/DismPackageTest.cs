@@ -11,7 +11,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismPackageCollectionTest : DismCollectionTest<DismPackageCollection, DismPackage>
     {
-        private static readonly List<DismApi.DismPackage_> Items = new List<DismApi.DismPackage_>
+        private static readonly List<DismApi.DismPackage_> Items = new()
         {
             new DismApi.DismPackage_
             {

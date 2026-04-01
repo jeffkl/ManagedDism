@@ -9,7 +9,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismCapabilityInfoTest : DismStructTest<DismCapabilityInfo>
     {
-        private readonly DismApi.DismCapabilityInfo_ _capabilityInfo = new DismApi.DismCapabilityInfo_
+        private readonly DismApi.DismCapabilityInfo_ _capabilityInfo = new()
         {
             Name = "6CDAF47E-B7D8-4A46-9B83-E13CDA1706A7",
             DisplayName = "6411A803-B0CB-4570-9BE7-19644412B3C4",
@@ -24,20 +24,20 @@ namespace Microsoft.Dism.Tests
         {
         }
 
-        protected override DismCapabilityInfo Item => new DismCapabilityInfo(ItemPtr);
+        protected override DismCapabilityInfo Item => new(ItemPtr);
 
         protected override object Struct => _capabilityInfo;
 
         [Fact]
         public void DownloadAndInstallSizeDoNotOverflow()
         {
-            DismApi.DismCapabilityInfo_ dismCapabilityInfo = new DismApi.DismCapabilityInfo_
+            DismApi.DismCapabilityInfo_ dismCapabilityInfo = new()
             {
                 DownloadSize = (uint)int.MaxValue + 1,
                 InstallSize = (uint)int.MaxValue + 10,
             };
 
-            DismCapabilityInfo capabilityInfo = new DismCapabilityInfo(dismCapabilityInfo);
+            DismCapabilityInfo capabilityInfo = new(dismCapabilityInfo);
 
             capabilityInfo.DownloadSize.ShouldBe((uint)int.MaxValue + 1);
             capabilityInfo.InstallSize.ShouldBe((uint)int.MaxValue + 10);

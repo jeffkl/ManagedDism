@@ -11,7 +11,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismPackageInfoTest : DismStructTest<DismPackageInfo>
     {
-        private readonly DismApi.DismPackageInfo_ _packageInfo = new DismApi.DismPackageInfo_
+        private readonly DismApi.DismPackageInfo_ _packageInfo = new()
         {
             Applicable = true,
             Company = "Company",
@@ -19,14 +19,12 @@ namespace Microsoft.Dism.Tests
             CreationTime = DateTime.Today.AddDays(-5),
             CustomProperty = new List<DismApi.DismCustomProperty_>
             {
-                new DismApi.DismCustomProperty_
-                {
+                new() {
                     Name = "Name1",
                     Path = "Path1",
                     Value = "Value1",
                 },
-                new DismApi.DismCustomProperty_
-                {
+                new() {
                     Name = "Name2",
                     Path = "Path2",
                     Value = "Value2",
@@ -37,13 +35,11 @@ namespace Microsoft.Dism.Tests
             DisplayName = "DisplayName",
             Feature = new List<DismApi.DismFeature_>
             {
-                new DismApi.DismFeature_
-                {
+                new() {
                     FeatureName = "FeatureName1",
                     State = DismPackageFeatureState.Installed,
                 },
-                new DismApi.DismFeature_
-                {
+                new() {
                     FeatureName = "FeatureName2",
                     State = DismPackageFeatureState.Superseded,
                 },
@@ -68,7 +64,7 @@ namespace Microsoft.Dism.Tests
         {
         }
 
-        protected override DismPackageInfo Item => new DismPackageInfo(ItemPtr);
+        protected override DismPackageInfo Item => new(ItemPtr);
 
         protected override object Struct => _packageInfo;
 

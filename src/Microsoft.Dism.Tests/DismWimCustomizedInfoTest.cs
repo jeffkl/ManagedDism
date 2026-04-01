@@ -9,7 +9,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismWimCustomizedInfoTest : DismStructTest<DismWimCustomizedInfo>
     {
-        private readonly DismApi.DismWimCustomizedInfo_ _customizedInfo = new DismApi.DismWimCustomizedInfo_
+        private readonly DismApi.DismWimCustomizedInfo_ _customizedInfo = new()
         {
             CreatedTime = DateTime.Today.AddDays(-15),
             DirectoryCount = 123,
@@ -23,7 +23,7 @@ namespace Microsoft.Dism.Tests
         {
         }
 
-        protected override DismWimCustomizedInfo Item => new DismWimCustomizedInfo(_customizedInfo);
+        protected override DismWimCustomizedInfo Item => new(_customizedInfo);
 
         protected override object Struct => _customizedInfo;
 

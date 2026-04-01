@@ -5,6 +5,8 @@
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -216,6 +218,73 @@ namespace Microsoft.Dism
             MountImage(imageFilePath, mountPath, 0, imageName, DismImageIdentifier.ImageName, readOnly, options, progressCallback, userData);
         }
 
+#if !NET40
+        /// <summary>
+        /// Asynchronously mounts a WIM or VHD image file to a specified location using an image index.
+        /// </summary>
+        /// <param name="imageFilePath">The path to the WIM or VHD file on the local computer. A .wim, .vhd, or .vhdx file name extension is required.</param>
+        /// <param name="mountPath">The path of the location where the image should be mounted. This mount path must already exist on the computer. The Windows image in a .wim, .vhd, or .vhdx file can be mounted to an empty folder on an NTFS formatted drive. A Windows image in a .vhd or .vhdx file can also be mounted to an unassigned drive letter. You cannot mount an image to the root of the existing drive.</param>
+        /// <param name="imageIndex">The index of the image in the WIM file that you want to mount. For a VHD file, you must specify an index of 1.</param>
+        /// <param name="readOnly">Specifies if the image should be mounted in read-only mode.</param>
+        /// <param name="options">Specifies options to use when mounting an image.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task MountImageAsync(string imageFilePath, string mountPath, int imageIndex, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        {
+            return MountImageAsync(imageFilePath, mountPath, imageIndex, null, DismImageIdentifier.ImageIndex, readOnly, options, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously mounts a WIM or VHD image file to a specified location using an image name.
+        /// </summary>
+        /// <param name="imageFilePath">The path to the WIM or VHD file on the local computer. A .wim, .vhd, or .vhdx file name extension is required.</param>
+        /// <param name="mountPath">The path of the location where the image should be mounted. This mount path must already exist on the computer. The Windows image in a .wim, .vhd, or .vhdx file can be mounted to an empty folder on an NTFS formatted drive. A Windows image in a .vhd or .vhdx file can also be mounted to an unassigned drive letter. You cannot mount an image to the root of the existing drive.</param>
+        /// <param name="imageName">The name of the image that you want to mount.</param>
+        /// <param name="readOnly">Specifies if the image should be mounted in read-only mode.</param>
+        /// <param name="options">Specifies options to use when mounting an image.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task MountImageAsync(string imageFilePath, string mountPath, string? imageName, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        {
+            return MountImageAsync(imageFilePath, mountPath, 0, imageName, DismImageIdentifier.ImageName, readOnly, options, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously mounts a WIM or VHD image file to a specified location.
+        /// </summary>
+        private static async Task MountImageAsync(string imageFilePath, string mountPath, int imageIndex, string? imageName, DismImageIdentifier imageIdentifier, bool readOnly, DismMountImageOptions options, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await Task.Factory.StartNew(
+                () =>
+                {
+                    uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
+
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+
+                    int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
+
+                    DismUtilities.ThrowIfFail(hresult);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
+        }
+#endif
+
         /// <summary>
         /// Mounts a WIM or VHD image file to a specified location.
         /// </summary>
@@ -234,7 +303,7 @@ namespace Microsoft.Dism
             uint flags = (readOnly ? DISM_MOUNT_READONLY : DISM_MOUNT_READWRITE) | (uint)options;
 
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismMountImage(imageFilePath, mountPath, (uint)imageIndex, imageName, imageIdentifier, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 

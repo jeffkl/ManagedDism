@@ -11,7 +11,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismCustomPropertyCollectionTest : DismCollectionTest<DismCustomPropertyCollection, DismCustomProperty>
     {
-        private static readonly List<DismApi.DismCustomProperty_> Items = new List<DismApi.DismCustomProperty_>
+        private static readonly List<DismApi.DismCustomProperty_> Items = new()
         {
             new DismApi.DismCustomProperty_
             {

@@ -5,6 +5,8 @@
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -91,6 +93,68 @@ namespace Microsoft.Dism
             SetEdition(session, editionId, productKey, progressCallback, userData);
         }
 
+#if !NET40
+        /// <summary>
+        /// Asynchronously changes an offline Windows image to a higher edition.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task SetEditionAsync(DismSession session, string editionId, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        {
+            return SetEditionAsync(session, editionId, productKey: null, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously changes an offline Windows image to a higher edition and sets the product key.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="productKey">A product key for the specified edition.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task SetEditionAndProductKeyAsync(DismSession session, string editionId, string productKey, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        {
+            return SetEditionAsync(session, editionId, productKey, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously changes an offline Windows image to a higher edition and optionally sets the product key.
+        /// </summary>
+        private static async Task SetEditionAsync(DismSession session, string editionId, string? productKey, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await Task.Factory.StartNew(
+                () =>
+                {
+                    using DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    using CancellationTokenRegistration ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
+
+                    int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException(cancellationToken);
+                    }
+
+                    DismUtilities.ThrowIfFail(hresult, session);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
+        }
+#endif
+
         /// <summary>
         /// Changes an offline Windows image to a higher edition and optionaly sets the product key.
         /// </summary>
@@ -104,7 +168,7 @@ namespace Microsoft.Dism
         private static void SetEdition(DismSession session, string editionId, string? productKey, Dism.DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
