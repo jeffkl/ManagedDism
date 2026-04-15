@@ -9,7 +9,7 @@
     <RepositoryType>Git</RepositoryType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     
-    <DebugType Condition="'$(TargetFramework)' == 'net40'">Full</DebugType>
+    <DebugType Condition="'$(TargetFramework)' == 'net472'">Full</DebugType>
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditMode>All</NuGetAuditMode>
     <NuGetAuditLevel>Low</NuGetAuditLevel>

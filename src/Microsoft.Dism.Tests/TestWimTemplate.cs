@@ -87,7 +87,7 @@ namespace Microsoft.Dism.Tests
                     using WimHandle imageHandle = WimgApi.CaptureImage(wimHandle, capturePath, WimCaptureImageOptions.DisableDirectoryAcl | WimCaptureImageOptions.DisableFileAcl | WimCaptureImageOptions.DisableRPFix);
                 }
 
-                XPathNavigator xml = WimgApi.GetImageInformation(wimHandle!) !.CreateNavigator() !;
+                XPathNavigator xml = WimgApi.GetImageInformation(wimHandle!)!.CreateNavigator()!;
 
                 xml.ShouldNotBeNull();
 
@@ -172,7 +172,7 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [CollectionDefinition(nameof(TestWimTemplate))]
+    [CollectionDefinition(nameof(TestWimTemplate), DisableParallelization = true)]
     public class TestWimTemplateCollectionDefinition : ICollectionFixture<TestWimTemplate>
     {
     }

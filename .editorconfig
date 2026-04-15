@@ -1,11 +1,11 @@
 root = true
 
 [*.cs]
-csharp_using_directive_placement = outside_namespace:silent
+csharp_using_directive_placement = outside_namespace:error
 dotnet_sort_system_directives_first = false
-dotnet_separate_import_directive_groups = true
+dotnet_separate_import_directive_groups = false
 file_header_template = Copyright (c). All rights reserved.\n\nLicensed under the MIT license.
-csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_simple_using_statement = true:error
 csharp_prefer_braces = true:silent
 csharp_style_namespace_declarations = block_scoped:silent
 csharp_style_prefer_method_group_conversion = true:silent

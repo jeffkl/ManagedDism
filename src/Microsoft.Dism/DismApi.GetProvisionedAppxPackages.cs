@@ -43,11 +43,15 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int _DismGetProvisionedAppxPackages(DismSession session, out IntPtr packageBufPtr, out UInt32 packageCount);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int _DismGetProvisionedAppxPackages(DismSession session, out IntPtr packageBufPtr, out UInt32 packageCount);
-            #endif
+            public static extern
+#endif
+            int _DismGetProvisionedAppxPackages(
+                DismSession session,
+                out IntPtr packageBufPtr,
+                out UInt32 packageCount);
         }
     }
 }

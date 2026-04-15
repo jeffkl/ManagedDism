@@ -42,11 +42,15 @@ namespace Microsoft.Dism
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, EntryPoint = "_DismGetTargetEditions")]
-            public static partial int DismGetTargetEditions(DismSession session, out IntPtr editionIds, out uint count);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, EntryPoint = "_DismGetTargetEditions")]
-            public static extern int DismGetTargetEditions(DismSession session, out IntPtr editionIds, out uint count);
-            #endif
+            public static extern
+#endif
+            int DismGetTargetEditions(
+                DismSession session,
+                out IntPtr editionIds,
+                out uint count);
         }
     }
 }

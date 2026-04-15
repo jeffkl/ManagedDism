@@ -30,11 +30,12 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismCleanupMountpoints( );
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismCleanupMountpoints();
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismCleanupMountpoints();
-            #endif
+            public static extern
+#endif
+            int DismCleanupMountpoints();
         }
     }
 }

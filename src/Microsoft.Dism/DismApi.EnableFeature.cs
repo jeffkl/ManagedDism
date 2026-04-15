@@ -14,6 +14,127 @@ namespace Microsoft.Dism
     public static partial class DismApi
     {
         /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll)
+        {
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths: null, progressCallback: null, userData: null);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths)
+        {
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback: null, userData: null);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback)
+        {
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData: null);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback, object? userData)
+        {
+            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static Task EnableFeatureAsync(DismSession session, string featureName, bool limitAccess, bool enableAll, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureAsync(session, featureName, limitAccess, enableAll, sourcePaths: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static Task EnableFeatureAsync(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureAsync(session, featureName, limitAccess, enableAll, sourcePaths, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static Task EnableFeatureAsync(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureAsync(session, featureName, limitAccess, enableAll, sourcePaths, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        public static Task EnableFeatureAsync(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureAsync(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progress, userData, cancellationToken);
+        }
+
+        /// <summary>
         /// Enables a feature from the specified package name.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
@@ -57,7 +178,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback)
+        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback)
         {
             EnableFeatureByPackageName(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progressCallback, null);
         }
@@ -76,9 +197,87 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void EnableFeatureByPackageName(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback, object? userData)
         {
             EnableFeature(session, featureName, packageName, DismPackageIdentifier.Name, limitAccess, enableAll, sourcePaths, progressCallback, userData);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package name.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packageName">The name of the package that contains the feature.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task EnableFeatureByPackageNameAsync(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureByPackageNameAsync(session, featureName, packageName, limitAccess, enableAll, sourcePaths: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package name.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packageName">The name of the package that contains the feature.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task EnableFeatureByPackageNameAsync(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureByPackageNameAsync(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package name.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packageName">The name of the package that contains the feature.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task EnableFeatureByPackageNameAsync(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureByPackageNameAsync(session, featureName, packageName, limitAccess, enableAll, sourcePaths, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package name.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packageName">The name of the package that contains the feature.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task EnableFeatureByPackageNameAsync(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureAsync(session, featureName, packageName, DismPackageIdentifier.Name, limitAccess, enableAll, sourcePaths, progress, userData, cancellationToken);
         }
 
         /// <summary>
@@ -125,7 +324,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback)
+        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback)
         {
             EnableFeatureByPackagePath(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progressCallback, userData: null);
         }
@@ -144,7 +343,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void EnableFeatureByPackagePath(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback, object? userData)
         {
             EnableFeature(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progressCallback, userData);
         }
@@ -154,101 +353,21 @@ namespace Microsoft.Dism
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packagePath">The path of the package that contains the feature.</param>
         /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
         /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll)
-        {
-            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths: null, progressCallback: null, userData: null);
-        }
-
-        /// <summary>
-        /// Enables a feature from the specified package path.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
-        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
-        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths)
-        {
-            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback: null, userData: null);
-        }
-
-        /// <summary>
-        /// Enables a feature from the specified package path.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
-        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
-        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback)
-        {
-            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData: null);
-        }
-
-        /// <summary>
-        /// Enables a feature from the specified package path.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
-        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
-        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
-        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        public static void EnableFeature(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
-        {
-            EnableFeature(session, featureName, identifier: null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progressCallback, userData);
-        }
-
-#if !NET40
-        /// <summary>
-        /// Asynchronously enables a feature from the default package.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
-        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
-        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
-        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task EnableFeatureAsync(DismSession session, string featureName, bool limitAccess, bool enableAll, List<string>? sourcePaths = null, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task EnableFeatureByPackagePathAsync(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, CancellationToken cancellationToken = default)
         {
-            return EnableFeatureAsync(session, featureName, null, DismPackageIdentifier.None, limitAccess, enableAll, sourcePaths, progress, cancellationToken);
+            return EnableFeatureByPackagePathAsync(session, featureName, packagePath, limitAccess, enableAll, sourcePaths: null, cancellationToken);
         }
 
         /// <summary>
-        /// Asynchronously enables a feature from the specified package name.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
-        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="packageName">The name of the package that contains the feature.</param>
-        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
-        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
-        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
-        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task EnableFeatureByPackageNameAsync(DismSession session, string featureName, string packageName, bool limitAccess, bool enableAll, List<string>? sourcePaths = null, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
-        {
-            return EnableFeatureAsync(session, featureName, packageName, DismPackageIdentifier.Name, limitAccess, enableAll, sourcePaths, progress, cancellationToken);
-        }
-
-        /// <summary>
-        /// Asynchronously enables a feature from the specified package path.
+        /// Enables a feature from the specified package path.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
@@ -256,90 +375,61 @@ namespace Microsoft.Dism
         /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
         /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
         /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
-        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task EnableFeatureByPackagePathAsync(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths = null, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task EnableFeatureByPackagePathAsync(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, CancellationToken cancellationToken = default)
         {
-            return EnableFeatureAsync(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progress, cancellationToken);
+            return EnableFeatureByPackagePathAsync(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progress: null, cancellationToken);
         }
-
-        /// <summary>
-        /// Asynchronously enables a feature in an image.
-        /// </summary>
-        private static Task EnableFeatureAsync(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
-        {
-            TaskCompletionSource<bool> tcs = new();
-
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
-                () =>
-                {
-                    try
-                    {
-                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
-
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
-
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
-
-                        int hresult = NativeMethods.DismEnableFeature(session, featureName, identifier, identifier == null ? DismPackageIdentifier.None : packageIdentifier, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, enableAll, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
-
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
-                },
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
-
-            return tcs.Task;
-        }
-#endif
 
         /// <summary>
         /// Enables a feature from the specified package path.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
-        /// <param name="identifier">A package name or absolute path.</param>
-        /// <param name="packageIdentifier">A DismPackageIdentifier value.</param>
+        /// <param name="packagePath">The path of the package that contains the feature.</param>
         /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
         /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
         /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
-        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
-        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
-        private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task EnableFeatureByPackagePathAsync(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureByPackagePathAsync(session, featureName, packagePath, limitAccess, enableAll, sourcePaths, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="packagePath">The path of the package that contains the feature.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> that represents the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task EnableFeatureByPackagePathAsync(DismSession session, string featureName, string packagePath, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return EnableFeatureAsync(session, featureName, packagePath, DismPackageIdentifier.Path, limitAccess, enableAll, sourcePaths, progress, userData, cancellationToken);
+        }
+
+        private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgress progress)
         {
             // Get the list of source paths as an array
             string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
-
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new(progressCallback, userData);
 
             int hresult = NativeMethods.DismEnableFeature(
                 session: session,
@@ -355,6 +445,41 @@ namespace Microsoft.Dism
                 userData: IntPtr.Zero);
 
             DismUtilities.ThrowIfFail(hresult, session);
+        }
+
+        /// <summary>
+        /// Enables a feature from the specified package path.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="featureName">The name of the feature that is being enabled. To enable more than one feature, separate each feature name with a semicolon.</param>
+        /// <param name="identifier">A package name or absolute path.</param>
+        /// <param name="packageIdentifier">A DismPackageIdentifier value.</param>
+        /// <param name="limitAccess">Specifies whether Windows Update (WU) should be contacted as a source location for downloading files if none are found in other specified locations. Before checking WU, DISM will check for the files in the SourcePaths provided and in any locations specified in the registry by group policy. If the files required to enable the feature are still present on the computer, this flag is ignored.</param>
+        /// <param name="enableAll">Specifies whether to enable all dependencies of the feature. If the specified feature or any one of its dependencies cannot be enabled, none of them will be changed from their existing state.</param>
+        /// <param name="sourcePaths">A list of source locations to check for files needed to enable the feature.</param>
+        /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
+        /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        private static void EnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, DismProgressCallback? progressCallback, object? userData)
+        {
+            using DismProgress progress = new(progressCallback, userData);
+
+            EnableFeature(session, featureName, identifier, packageIdentifier, limitAccess, enableAll, sourcePaths, progress);
+        }
+
+        private static Task EnableFeatureAsync(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, bool limitAccess, bool enableAll, List<string>? sourcePaths, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    EnableFeature(state.session, state.featureName, state.identifier, state.packageIdentifier, state.limitAccess, state.enableAll, state.sourcePaths, progress);
+
+                    return true;
+                },
+                (session, featureName, identifier, packageIdentifier, limitAccess, enableAll, sourcePaths),
+                progress,
+                userData,
+                cancellationToken);
         }
 
         internal static partial class NativeMethods
@@ -374,20 +499,36 @@ namespace Microsoft.Dism
             /// <param name="progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns S_OK on success.</returns>
-            /// <remarks>If the feature is present in the foundation package, you do not have to specify any package information. If the feature is in an optional package or feature pack that has already been installed in the image, specify a package name in the Identifier parameter and specify DismPackageName as the PackageIdentifier.If the feature cannot be enabled due to the parent feature not being enabled, a special error code will be returned. You can use EnableAll to enable the parent features when you enable the specified features, or you can use the DismGetFeatureParent Function to enumerate the parent features and enable them first.
+            /// <remarks>
+            /// If the feature is present in the foundation package, you do not have to specify any package information. If the feature is in an optional package or feature pack that has already been installed in the image, specify a package name in the Identifier parameter and specify DismPackageName as the PackageIdentifier.If the feature cannot be enabled due to the parent feature not being enabled, a special error code will be returned. You can use EnableAll to enable the parent features when you enable the specified features, or you can use the DismGetFeatureParent Function to enumerate the parent features and enable them first.
             ///
             /// If the feature to be enabled is not a component of the foundation package, you must add the parent optional package with the DismAddPackage Function before you enable the feature. Do not you specify a path to a .cab file of an optional package that has not been added to the image in the Identifier parameter. If you specify a package that has not been added, and you specify DismPackagePath as the PackageIdentifier, the function will complete successfully but the feature will not be enabled.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824737.aspx" />
-            /// HRESULT WINAPI DismEnableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _In_ BOOL LimitAccess, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824737.aspx" /> HRESULT WINAPI DismEnableFeature (_In_ DismSession Session, _In_ PCWSTR FeatureName, _In_opt_ PCWSTR Identifier, _In_opt_ DismPackageIdentifier PackageIdentifier, _In_ BOOL LimitAccess, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismEnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool enableAll, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #else
+            public static partial
+#else
+
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismEnableFeature(DismSession session, string featureName, string? identifier, DismPackageIdentifier packageIdentifier, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool enableAll, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #endif
+            public static extern
+#endif
+            int DismEnableFeature(
+                DismSession session,
+                string featureName,
+                string? identifier,
+                DismPackageIdentifier packageIdentifier,
+                [MarshalAs(UnmanagedType.Bool)]
+                bool limitAccess,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)]
+                string[] sourcePaths,
+                UInt32 sourcePathCount,
+                [MarshalAs(UnmanagedType.Bool)]
+                bool enableAll,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallbackNative progress,
+                IntPtr userData);
         }
     }
 }

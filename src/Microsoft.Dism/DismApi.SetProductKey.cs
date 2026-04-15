@@ -31,11 +31,14 @@ namespace Microsoft.Dism
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, EntryPoint = "_DismSetProductKey", StringMarshalling = DismStringMarshalling)]
-            public static partial int DismSetProductKey(DismSession session, string productKey);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, EntryPoint = "_DismSetProductKey", CharSet = DismCharacterSet)]
-            public static extern int DismSetProductKey(DismSession session, string productKey);
-            #endif
+            public static extern
+#endif
+            int DismSetProductKey(
+                DismSession session,
+                string productKey);
         }
     }
 }

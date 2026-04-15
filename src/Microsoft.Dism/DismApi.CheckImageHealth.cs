@@ -33,7 +33,7 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback? progressCallback)
+        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, DismProgressCallback? progressCallback)
         {
             return CheckImageHealth(session, scanImage, progressCallback, userData: null);
         }
@@ -48,76 +48,77 @@ namespace Microsoft.Dism
         /// <returns>A <see cref="DismImageHealthState" /> indicating the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        public static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, DismProgressCallback? progressCallback, object? userData)
         {
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new(progressCallback, userData);
+            using DismProgress progress = new(progressCallback, userData);
 
-            int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
-
-            DismUtilities.ThrowIfFail(hresult, session);
-
-            return imageHealthState;
+            return CheckImageHealth(session, scanImage, progress);
         }
 
-#if !NET40
+        /// <summary>
+        /// Asynchronously checks whether the image can be serviced or whether it is corrupted.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="scanImage">Specifies whether to scan the image or just check for flags from a previous scan.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task{DismImageHealthState}" /> representing the asynchronous operation, containing the health state of the image.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, CancellationToken cancellationToken = default)
+        {
+            return CheckImageHealthAsync(session, scanImage, progress: null, cancellationToken);
+        }
+
         /// <summary>
         /// Asynchronously checks whether the image can be serviced or whether it is corrupted.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="scanImage">Specifies whether to scan the image or just check for flags from a previous scan.</param>
         /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
         /// <returns>A <see cref="Task{DismImageHealthState}" /> representing the asynchronous operation, containing the health state of the image.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        public static Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<DismImageHealthState> tcs = new();
-
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
-                () =>
-                {
-                    try
-                    {
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
-
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
-
-                        int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
-
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(imageHealthState);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
-                },
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
-
-            return tcs.Task;
+            return CheckImageHealthAsync(session, scanImage, progress, userData: null, cancellationToken);
         }
-#endif
+
+        /// <summary>
+        /// Asynchronously checks whether the image can be serviced or whether it is corrupted.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="scanImage">Specifies whether to scan the image or just check for flags from a previous scan.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task{DismImageHealthState}" /> representing the asynchronous operation, containing the health state of the image.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task<DismImageHealthState> CheckImageHealthAsync(DismSession session, bool scanImage, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    DismImageHealthState imageHealthState = CheckImageHealth(state.session, state.scanImage, progress);
+
+                    return imageHealthState;
+                },
+                (session, scanImage),
+                progress,
+                userData,
+                cancellationToken);
+        }
+
+        private static DismImageHealthState CheckImageHealth(DismSession session, bool scanImage, DismProgress progress)
+        {
+            int hresult = NativeMethods.DismCheckImageHealth(session, scanImage, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero, out DismImageHealthState imageHealthState);
+
+            DismUtilities.ThrowIfFail(hresult, session);
+
+            return imageHealthState;
+        }
 
         internal static partial class NativeMethods
         {
@@ -131,18 +132,25 @@ namespace Microsoft.Dism
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <param name="imageHealth">A pointer to the DismImageHealthState Enumeration. The enumeration value is set during this operation.</param>
             /// <returns>Returns S_OK on success.</returns>
-            /// <remarks>If ScanImage is set to True, this function will take longer to finish.
+            /// <remarks>
+            /// If ScanImage is set to True, this function will take longer to finish.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824769.aspx" />
-            /// HRESULT WINAPI DismCheckImageHealth(_In_ DismSession Session, _In_ BOOL ScanImage, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData, _Out_ DismImageHealthState* ImageHealth);
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824769.aspx" /> HRESULT WINAPI DismCheckImageHealth(_In_ DismSession Session, _In_ BOOL ScanImage, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData, _Out_ DismImageHealthState* ImageHealth);
             /// </remarks>
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismCheckImageHealth(DismSession session, [MarshalAs(UnmanagedType.Bool)] bool scanImage, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData, out DismImageHealthState imageHealth);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismCheckImageHealth(DismSession session, [MarshalAs(UnmanagedType.Bool)] bool scanImage, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData, out DismImageHealthState imageHealth);
-            #endif
+            public static extern
+#endif
+            int DismCheckImageHealth(
+                DismSession session,
+                [MarshalAs(UnmanagedType.Bool)] bool scanImage,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallbackNative progress,
+                IntPtr userData,
+                out DismImageHealthState imageHealth);
         }
     }
 }

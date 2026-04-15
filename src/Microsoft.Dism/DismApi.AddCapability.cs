@@ -5,6 +5,7 @@
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,20 +53,14 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, DismProgressCallback? progressCallback, object? userData)
         {
-            // Get the list of source paths as an array
-            string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
-
             // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new(progressCallback, userData);
+            using DismProgress progress = new(progressCallback, userData);
 
-            int hresult = NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
-
-            DismUtilities.ThrowIfFail(hresult, session);
+            AddCapability(session, capabilityName, limitAccess, sourcePaths, progress);
         }
 
-#if !NET40
         /// <summary>
         /// Asynchronously adds a capability to an image.
         /// </summary>
@@ -73,61 +68,70 @@ namespace Microsoft.Dism
         /// <param name="capabilityName">The name of the capability that is being added.</param>
         /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
         /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
-        /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task AddCapabilityAsync(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task AddCapabilityAsync(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<bool> tcs = new();
-
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
-                () =>
-                {
-                    try
-                    {
-                        string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
-
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
-
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
-
-                        int hresult = NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
-
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
-                },
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
-
-            return tcs.Task;
+            return AddCapabilityAsync(session, capabilityName, limitAccess, sourcePaths, progress: null, cancellationToken);
         }
-#endif
+
+        /// <summary>
+        /// Asynchronously adds a capability to an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="capabilityName">The name of the capability that is being added.</param>
+        /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
+        /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task AddCapabilityAsync(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return AddCapabilityAsync(session, capabilityName, limitAccess, sourcePaths, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously adds a capability to an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="capabilityName">The name of the capability that is being added.</param>
+        /// <param name="limitAccess">The flag indicates whether WU/WSUS should be contacted as a source location for downloading the payload of a capability. If payload of the capability to be added exists, the flag is ignored.</param>
+        /// <param name="sourcePaths">A list of source locations. The function shall look up removed payload files from the locations specified in SourcePaths, and if not found, continue the search by contacting WU/WSUS depending on parameter LimitAccess.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task AddCapabilityAsync(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    AddCapability(state.session, state.capabilityName, state.limitAccess, state.sourcePaths, progress);
+
+                    return true;
+                },
+                (session, capabilityName, limitAccess, sourcePaths),
+                progress, userData, cancellationToken);
+        }
+
+        private static void AddCapability(DismSession session, string capabilityName, bool limitAccess, List<string>? sourcePaths, DismProgress progress)
+        {
+            // Get the list of source paths as an array
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
+
+            int hresult = NativeMethods.DismAddCapability(session, capabilityName, limitAccess, sourcePathsArray, (uint)sourcePathsArray.Length, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
+
+            DismUtilities.ThrowIfFail(hresult, session);
+        }
 
         internal static partial class NativeMethods
         {
@@ -143,17 +147,23 @@ namespace Microsoft.Dism
             /// <param name="progress">Pointer to a client defined callback function to report progress.</param>
             /// <param name="userData">User defined custom data. This will be passed back to the user through the callback.</param>
             /// <returns>Returns S_OK on success.</returns>
-            /// <remarks>
-            /// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684919.aspx" />
-            /// HRESULT WINAPI DismAddCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_ BOOL LimitAccess, _In_ PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK  Progress, _In_opt_ PVOID UserData);
-            /// </remarks>
-            #if NET7_0_OR_GREATER
+            /// <remarks><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt684919.aspx" /> HRESULT WINAPI DismAddCapability(_In_ DismSession Session, _In_ PCWSTR Name, _In_ BOOL LimitAccess, _In_ PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);</remarks>
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismAddCapability(DismSession session, string name, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismAddCapability(DismSession session, string name, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths, UInt32 sourcePathCount, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #endif
+            public static extern
+#endif
+            int DismAddCapability(
+                DismSession session,
+                string name,
+                [MarshalAs(UnmanagedType.Bool)] bool limitAccess,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 6)] string[] sourcePaths,
+                UInt32 sourcePathCount,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallbackNative progress,
+                IntPtr userData);
         }
     }
 }

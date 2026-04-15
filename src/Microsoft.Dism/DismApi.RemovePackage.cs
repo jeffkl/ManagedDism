@@ -33,7 +33,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RemovePackageByName(DismSession session, string packageName, Dism.DismProgressCallback? progressCallback)
+        public static void RemovePackageByName(DismSession session, string packageName, DismProgressCallback? progressCallback)
         {
             RemovePackageByName(session, packageName, progressCallback, userData: null);
         }
@@ -48,7 +48,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RemovePackageByName(DismSession session, string packageName, Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void RemovePackageByName(DismSession session, string packageName, DismProgressCallback? progressCallback, object? userData)
         {
             RemovePackage(session, packageName, DismPackageIdentifier.Name, progressCallback, userData);
         }
@@ -74,7 +74,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RemovePackageByPath(DismSession session, string packagePath, Dism.DismProgressCallback? progressCallback)
+        public static void RemovePackageByPath(DismSession session, string packagePath, DismProgressCallback? progressCallback)
         {
             RemovePackageByPath(session, packagePath, progressCallback, userData: null);
         }
@@ -89,94 +89,126 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RemovePackageByPath(DismSession session, string packagePath, Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void RemovePackageByPath(DismSession session, string packagePath, DismProgressCallback? progressCallback, object? userData)
         {
             RemovePackage(session, packagePath, DismPackageIdentifier.Path, progressCallback, userData);
         }
 
-#if !NET40
         /// <summary>
-        /// Asynchronously removes a package from an image by name.
+        /// Asynchronously removes a package by package name from an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="packageName">The package name.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RemovePackageByNameAsync(DismSession session, string packageName, CancellationToken cancellationToken = default)
+        {
+            return RemovePackageByNameAsync(session, packageName, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously removes a package by package name from an image.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="packageName">The package name.</param>
         /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task RemovePackageByNameAsync(DismSession session, string packageName, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task RemovePackageByNameAsync(DismSession session, string packageName, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
         {
-            return RemovePackageAsync(session, packageName, DismPackageIdentifier.Name, progress, cancellationToken);
+            return RemovePackageByNameAsync(session, packageName, progress, userData: null, cancellationToken);
         }
 
         /// <summary>
-        /// Asynchronously removes a package from an image by path.
+        /// Asynchronously removes a package by package name from an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="packageName">The package name.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RemovePackageByNameAsync(DismSession session, string packageName, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    RemovePackage(state.session, state.packageName, DismPackageIdentifier.Name, progress);
+
+                    return true;
+                },
+                (session, packageName),
+                progress,
+                userData,
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously removes a package by package path from an image.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="packagePath">The package path.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RemovePackageByPathAsync(DismSession session, string packagePath, CancellationToken cancellationToken = default)
+        {
+            return RemovePackageByPathAsync(session, packagePath, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously removes a package by package path from an image.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
         /// <param name="packagePath">The package path.</param>
         /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task RemovePackageByPathAsync(DismSession session, string packagePath, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task RemovePackageByPathAsync(DismSession session, string packagePath, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
         {
-            return RemovePackageAsync(session, packagePath, DismPackageIdentifier.Path, progress, cancellationToken);
+            return RemovePackageByPathAsync(session, packagePath, progress, userData: null, cancellationToken);
         }
 
         /// <summary>
-        /// Asynchronously removes a package from an image.
+        /// Asynchronously removes a package by package path from an image.
         /// </summary>
-        private static Task RemovePackageAsync(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="packagePath">The package path.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RemovePackageByPathAsync(DismSession session, string packagePath, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<bool> tcs = new();
-
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
-                () =>
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
                 {
-                    try
-                    {
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    RemovePackage(state.session, state.packagePath, DismPackageIdentifier.Path, progress);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
-
-                        int hresult = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
-
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    return true;
                 },
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
-
-            return tcs.Task;
+                (session, packagePath),
+                progress,
+                userData,
+                cancellationToken);
         }
-#endif
 
         /// <summary>
         /// Removes a package from an image.
@@ -186,11 +218,15 @@ namespace Microsoft.Dism
         /// <param name="packageIdentifier">A DismPackageIdentifier Enumeration.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
-        private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, Dism.DismProgressCallback? progressCallback, object? userData)
+        private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, DismProgressCallback? progressCallback, object? userData)
         {
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new(progressCallback, userData);
+            using DismProgress progress = new(progressCallback, userData);
 
+            RemovePackage(session, identifier, packageIdentifier, progress);
+        }
+
+        private static void RemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, DismProgress progress)
+        {
             int hresult = NativeMethods.DismRemovePackage(session, identifier, packageIdentifier, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
             DismUtilities.ThrowIfFail(hresult, session);
@@ -211,13 +247,20 @@ namespace Microsoft.Dism
             /// <remarks>The DismRemovePackage function does not support .msu files.</remarks>
             /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824732.aspx" />
             /// HRESULT WINAPI DismRemovePackage (_In_ DismSession Session, _In_ PCWSTR Identifier, _In_ DismPackageIdentifier PackageIdentifier, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismRemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, SafeWaitHandle cancelEvent, DismProgressCallback? progress, IntPtr userData);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismRemovePackage(DismSession session, string identifier, DismPackageIdentifier packageIdentifier, SafeWaitHandle cancelEvent, DismProgressCallback? progress, IntPtr userData);
-            #endif
+            public static extern
+#endif
+            int DismRemovePackage(
+                DismSession session,
+                string identifier,
+                DismPackageIdentifier packageIdentifier,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallbackNative? progress,
+                IntPtr userData);
         }
     }
 }

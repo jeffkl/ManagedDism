@@ -73,11 +73,16 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetPackageInfoEx(DismSession dismSession, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr packageInfoEx);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismGetPackageInfoEx(DismSession dismSession, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr packageInfoEx);
-            #endif
+            public static extern
+#endif
+            int DismGetPackageInfoEx(
+                DismSession dismSession,
+                string identifier,
+                DismPackageIdentifier packageIdentifier,
+                out IntPtr packageInfoEx);
         }
     }
 }

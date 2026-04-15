@@ -3,7 +3,11 @@
 // Licensed under the MIT license.
 
 using Shouldly;
+
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using Xunit;
 
 namespace Microsoft.Dism.Tests
@@ -13,6 +17,67 @@ namespace Microsoft.Dism.Tests
         public CheckImageHealthTest(TestWimTemplate template, ITestOutputHelper testOutput)
             : base(template, testOutput)
         {
+        }
+
+        [Fact]
+        public async Task CheckImageHealthAsyncCancellation()
+        {
+            using DismSession session = DismApi.OpenOnlineSession();
+            using CancellationTokenSource cts = new();
+
+            cts.Cancel();
+
+            bool canceled = false;
+
+            try
+            {
+                await DismApi.CheckImageHealthAsync(session, scanImage: false, cancellationToken: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                canceled = true;
+            }
+
+            canceled.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task CheckImageHealthAsyncOnlineSession()
+        {
+            using DismSession session = DismApi.OpenOnlineSession();
+
+            DismImageHealthState imageHealthState = await DismApi.CheckImageHealthAsync(session, scanImage: false, cancellationToken: TestContext.Current.CancellationToken);
+
+            imageHealthState.ShouldBe(DismImageHealthState.Healthy);
+        }
+
+        [Fact]
+        public async Task CheckImageHealthAsyncWithProgress()
+        {
+            int current = -1;
+            int total = -1;
+
+            using DismSession session = DismApi.OpenOnlineSession();
+            using CancellationTokenSource cts = new();
+
+            Progress<DismProgress> progress = new(dismProgress =>
+            {
+                current = dismProgress.Current;
+                total = dismProgress.Total;
+
+                dismProgress.Cancel = true; // Cancel the operation, otherwise it takes a few minutes
+            });
+
+            try
+            {
+                await DismApi.CheckImageHealthAsync(session, scanImage: true, progress: progress, cancellationToken: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+
+            current.ShouldBeGreaterThan(-1);
+            total.ShouldBeGreaterThan(-1);
         }
 
         [Fact]

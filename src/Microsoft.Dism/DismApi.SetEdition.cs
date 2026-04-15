@@ -32,7 +32,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void SetEdition(DismSession session, string editionId, Dism.DismProgressCallback? progressCallback)
+        public static void SetEdition(DismSession session, string editionId, DismProgressCallback? progressCallback)
         {
             SetEdition(session, editionId, progressCallback, userData: null);
         }
@@ -46,7 +46,7 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void SetEdition(DismSession session, string editionId, Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void SetEdition(DismSession session, string editionId, DismProgressCallback? progressCallback, object? userData)
         {
             SetEdition(session, editionId, productKey: null, progressCallback, userData);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.Dism
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void SetEditionAndProductKey(DismSession session, string editionId, string productKey, Dism.DismProgressCallback? progressCallback)
+        public static void SetEditionAndProductKey(DismSession session, string editionId, string productKey, DismProgressCallback? progressCallback)
         {
             SetEditionAndProductKey(session, editionId, productKey, progressCallback, userData: null);
         }
@@ -88,26 +88,25 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void SetEditionAndProductKey(DismSession session, string editionId, string productKey, Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void SetEditionAndProductKey(DismSession session, string editionId, string productKey, DismProgressCallback? progressCallback, object? userData)
         {
             SetEdition(session, editionId, productKey, progressCallback, userData);
         }
 
-#if !NET40
         /// <summary>
-        /// Asynchronously changes an offline Windows image to a higher edition.
+        /// Asynchronously changes an offline Windows image to a higher edition and sets the product key.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
         /// <param name="editionId">The edition to set the image to.</param>
-        /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <param name="productKey">A product key for the specified edition.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task SetEditionAsync(DismSession session, string editionId, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task SetEditionAndProductKeyAsync(DismSession session, string editionId, string productKey, CancellationToken cancellationToken = default)
         {
-            return SetEditionAsync(session, editionId, productKey: null, progress, cancellationToken);
+            return SetEditionAndProductKeyAsync(session, editionId, productKey, progress: null, cancellationToken);
         }
 
         /// <summary>
@@ -117,66 +116,101 @@ namespace Microsoft.Dism
         /// <param name="editionId">The edition to set the image to.</param>
         /// <param name="productKey">A product key for the specified edition.</param>
         /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
         /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static Task SetEditionAndProductKeyAsync(DismSession session, string editionId, string productKey, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
+        public static Task SetEditionAndProductKeyAsync(DismSession session, string editionId, string productKey, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
         {
-            return SetEditionAsync(session, editionId, productKey, progress, cancellationToken);
+            return SetEditionAndProductKeyAsync(session, editionId, productKey, progress, userData: null, cancellationToken);
         }
 
         /// <summary>
-        /// Asynchronously changes an offline Windows image to a higher edition and optionally sets the product key.
+        /// Asynchronously changes an offline Windows image to a higher edition and sets the product key.
         /// </summary>
-        private static Task SetEditionAsync(DismSession session, string editionId, string? productKey, IProgress<DismProgress>? progress, CancellationToken cancellationToken)
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="productKey">A product key for the specified edition.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task SetEditionAndProductKeyAsync(DismSession session, string editionId, string productKey, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
         {
-            TaskCompletionSource<bool> tcs = new();
-
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
-                () =>
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
                 {
-                    try
-                    {
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
+                    SetEdition(state.session, state.editionId, state.productKey, progress);
 
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
-
-                        int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
-
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
+                    return true;
                 },
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
-
-            return tcs.Task;
+                (session, editionId, productKey),
+                progress,
+                userData,
+                cancellationToken);
         }
-#endif
+
+        /// <summary>
+        /// Asynchronously changes an offline Windows image to a higher edition.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task SetEditionAsync(DismSession session, string editionId, CancellationToken cancellationToken = default)
+        {
+            return SetEditionAsync(session, editionId, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously changes an offline Windows image to a higher edition.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task SetEditionAsync(DismSession session, string editionId, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return SetEditionAsync(session, editionId, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously changes an offline Windows image to a higher edition.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="editionId">The edition to set the image to.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task SetEditionAsync(DismSession session, string editionId, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    SetEdition(state.session, state.editionId, productKey: null, progress);
+
+                    return true;
+                },
+                (session, editionId),
+                progress,
+                userData,
+                cancellationToken);
+        }
 
         /// <summary>
         /// Changes an offline Windows image to a higher edition and optionaly sets the product key.
@@ -188,11 +222,15 @@ namespace Microsoft.Dism
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        private static void SetEdition(DismSession session, string editionId, string? productKey, Dism.DismProgressCallback? progressCallback, object? userData)
+        private static void SetEdition(DismSession session, string editionId, string? productKey, DismProgressCallback? progressCallback, object? userData)
         {
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new(progressCallback, userData);
+            using DismProgress progress = new(progressCallback, userData);
 
+            SetEdition(session, editionId, productKey, progress);
+        }
+
+        private static void SetEdition(DismSession session, string editionId, string? productKey, DismProgress progress)
+        {
             int hresult = NativeMethods.DismSetEdition(session, editionId, productKey, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
             DismUtilities.ThrowIfFail(hresult, session);
@@ -210,25 +248,20 @@ namespace Microsoft.Dism
             /// <param name="progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns <c>S_OK</c> on success.</returns>
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, EntryPoint = "_DismSetEdition", StringMarshalling = DismStringMarshalling)]
-            public static partial int DismSetEdition(
-                DismSession session,
-                [MarshalAs(UnmanagedType.LPWStr)] string editionID,
-                [MarshalAs(UnmanagedType.LPWStr)] string? productKey,
-                SafeWaitHandle cancelEvent,
-                DismProgressCallback progress,
-                IntPtr userData);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, EntryPoint = "_DismSetEdition", CharSet = DismCharacterSet)]
-            public static extern int DismSetEdition(
+            public static extern
+#endif
+            int DismSetEdition(
                 DismSession session,
                 [MarshalAs(UnmanagedType.LPWStr)] string editionID,
                 [MarshalAs(UnmanagedType.LPWStr)] string? productKey,
                 SafeWaitHandle cancelEvent,
-                DismProgressCallback progress,
+                DismProgressCallbackNative progress,
                 IntPtr userData);
-            #endif
         }
     }
 }

@@ -72,11 +72,17 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetDriverInfo(DismSession session, string driverPath, out IntPtr driver, out UInt32 count, out IntPtr driverPackage);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismGetDriverInfo(DismSession session, string driverPath, out IntPtr driver, out UInt32 count, out IntPtr driverPackage);
-            #endif
+            public static extern
+#endif
+            int DismGetDriverInfo(
+                DismSession session,
+                string driverPath,
+                out IntPtr driver,
+                out UInt32 count,
+                out IntPtr driverPackage);
         }
     }
 }

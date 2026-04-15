@@ -16,7 +16,7 @@ namespace Microsoft.Dism
         /// Commits the changes made to a Windows® image in a mounted .wim or .vhd file.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
-        /// <param name="discardChanges">true or false to discard changes made to the image.</param>
+        /// <param name="discardChanges"><see langword="true" /> to discard changes made to the image, otherwise <see langword="false" /> to keep changes made to the image.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static void CommitImage(DismSession session, bool discardChanges)
         {
@@ -27,11 +27,11 @@ namespace Microsoft.Dism
         /// Commits the changes made to a Windows® image in a mounted .wim or .vhd file.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
-        /// <param name="discardChanges">true or false to discard changes made to the image.</param>
+        /// <param name="discardChanges"><see langword="true" /> to discard changes made to the image, otherwise <see langword="false" /> to keep changes made to the image.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback? progressCallback)
+        public static void CommitImage(DismSession session, bool discardChanges, DismProgressCallback? progressCallback)
         {
             CommitImage(session, discardChanges, progressCallback, userData: null);
         }
@@ -40,84 +40,81 @@ namespace Microsoft.Dism
         /// Commits the changes made to a Windows® image in a mounted .wim or .vhd file.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
-        /// <param name="discardChanges">true or false to discard changes made to the image.</param>
+        /// <param name="discardChanges"><see langword="true" /> to discard changes made to the image, otherwise <see langword="false" /> to keep changes made to the image.</param>
         /// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
         /// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
-        public static void CommitImage(DismSession session, bool discardChanges, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void CommitImage(DismSession session, bool discardChanges, DismProgressCallback? progressCallback, object? userData)
         {
-            // Create the flags
-            UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;
+            using DismProgress progress = new(progressCallback, userData);
 
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new(progressCallback, userData);
+            CommitImage(session, discardChanges, progress);
+        }
+
+        /// <summary>
+        /// Asynchronously commits the changes made to a Windows® image in a mounted .wim or .vhd file.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="discardChanges"><see langword="true" /> to discard changes made to the image, otherwise <see langword="false" /> to keep changes made to the image.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task CommitImageAsync(DismSession session, bool discardChanges, CancellationToken cancellationToken = default)
+        {
+            return CommitImageAsync(session, discardChanges, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously commits the changes made to a Windows® image in a mounted .wim or .vhd file.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="discardChanges"><see langword="true" /> to discard changes made to the image, otherwise <see langword="false" /> to keep changes made to the image.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task CommitImageAsync(DismSession session, bool discardChanges, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return CommitImageAsync(session, discardChanges, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously commits the changes made to a Windows® image in a mounted .wim or .vhd file.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
+        /// <param name="discardChanges"><see langword="true" /> to discard changes made to the image, otherwise <see langword="false" /> to keep changes made to the image.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        public static Task CommitImageAsync(DismSession session, bool discardChanges, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    CommitImage(state.session, state.discardChanges, progress);
+
+                    return true;
+                },
+                (session, discardChanges),
+                progress,
+                userData,
+                cancellationToken);
+        }
+
+        private static void CommitImage(DismSession session, bool discardChanges, DismProgress progress)
+        {
+            UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;
 
             int hresult = NativeMethods.DismCommitImage(session, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
             DismUtilities.ThrowIfFail(hresult, session);
         }
-
-#if !NET40
-        /// <summary>
-        /// Asynchronously commits the changes made to a Windows® image in a mounted .wim or .vhd file.
-        /// </summary>
-        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
-        /// <param name="discardChanges">true or false to discard changes made to the image.</param>
-        /// <param name="progress">An optional progress provider to receive progress updates.</param>
-        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
-        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-        /// <exception cref="DismException">When a failure occurs.</exception>
-        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-        public static Task CommitImageAsync(DismSession session, bool discardChanges, IProgress<DismProgress>? progress = null, CancellationToken cancellationToken = default)
-        {
-            TaskCompletionSource<bool> tcs = new();
-
-            CancellationTokenRegistration ctsRegistration = default;
-
-            Task.Factory.StartNew(
-                () =>
-                {
-                    try
-                    {
-                        UInt32 flags = discardChanges ? DISM_DISCARD_IMAGE : DISM_COMMIT_IMAGE;
-
-                        DismProgress dismProgress = new(progress != null ? p => progress.Report(p) : null, null);
-
-                        ctsRegistration = cancellationToken.Register(() => dismProgress.Cancel = true);
-
-                        int hresult = NativeMethods.DismCommitImage(session, flags, dismProgress.EventHandle, dismProgress.DismProgressCallbackNative, IntPtr.Zero);
-
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            tcs.TrySetCanceled(cancellationToken);
-                        }
-                        else
-                        {
-                            DismUtilities.ThrowIfFail(hresult, session);
-                            tcs.TrySetResult(true);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        tcs.TrySetCanceled(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.TrySetException(ex);
-                    }
-                    finally
-                    {
-                        ctsRegistration.Dispose();
-                    }
-                },
-                CancellationToken.None,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
-
-            return tcs.Task;
-        }
-#endif
 
         internal static partial class NativeMethods
         {
@@ -130,19 +127,24 @@ namespace Microsoft.Dism
             /// <param name="progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns S_OK on success.</returns>
-            /// <remarks>The DismCommitImage function does not unmount the image.
+            /// <remarks>
+            /// The DismCommitImage function does not unmount the image.
             /// <para>DismCommitImage can only be used on an image that is mounted within the DISM infrastructure. It does not apply to images mounted by another tool, such as the DiskPart tool, which are serviced using the DismOpenSession Function. You must use the DismMountImage Function to mount an image within the DISM infrastructure.</para>
-            ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825835.aspx" />
-            /// HRESULT WINAPI DismCommitImage(_In_ DismSession Session, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825835.aspx" /> HRESULT WINAPI DismCommitImage(_In_ DismSession Session, _In_ DWORD Flags, _In_opt_ HANDLE CancelEvent, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismCommitImage(DismSession session, UInt32 flags, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismCommitImage(DismSession session, UInt32 flags, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #endif
+            public static extern
+#endif
+            int DismCommitImage(
+                DismSession session,
+                UInt32 flags,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallbackNative progress,
+                IntPtr userData);
         }
     }
 }

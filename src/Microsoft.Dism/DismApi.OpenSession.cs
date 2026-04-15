@@ -88,11 +88,16 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismOpenSession(string imagePath, string? windowsDirectory, string? systemDrive, out IntPtr session);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismOpenSession(string imagePath, string? windowsDirectory, string? systemDrive, out IntPtr session);
-            #endif
+            public static extern
+#endif
+            int DismOpenSession(
+                string imagePath,
+                string? windowsDirectory,
+                string? systemDrive,
+                out IntPtr session);
         }
     }
 }

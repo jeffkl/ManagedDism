@@ -38,11 +38,13 @@ namespace Microsoft.Dism
             /// HRESULT WINAPI DismCloseSession(_In_ DismSession Session);
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismCloseSession(IntPtr session);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismCloseSession(IntPtr session);
-            #endif
+            public static extern
+#endif
+            int DismCloseSession(
+                IntPtr session);
         }
     }
 }

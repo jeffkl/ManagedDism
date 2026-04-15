@@ -63,6 +63,8 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -293,6 +295,43 @@ namespace Microsoft.Dism
             FileInfo dismPath = new(Path.Combine(kitsRoot, "Assessment and Deployment Kit", "Deployment Tools", Environment.Is64BitProcess ? "amd64" : "x86", "DISM", "dismapi.dll"));
 
             return dismPath.Exists ? dismPath.FullName : null;
+        }
+
+        internal static Task<TResult> RunAsync<TState, TResult>(Func<TState, DismProgress, TResult> action, TState state, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            TaskCompletionSource<TResult> taskCompletionSource = new();
+
+            Task.Factory.StartNew(
+                () =>
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        taskCompletionSource.TrySetCanceled(cancellationToken);
+                        return;
+                    }
+
+                    using DismProgress dismProgress = new(progress, userData, cancellationToken);
+
+                    try
+                    {
+                        TResult result = action(state, dismProgress);
+
+                        taskCompletionSource.TrySetResult(result);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        taskCompletionSource.TrySetCanceled(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        taskCompletionSource.TrySetException(ex);
+                    }
+                },
+                CancellationToken.None,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
+
+            return taskCompletionSource.Task;
         }
 
         /// <summary>
