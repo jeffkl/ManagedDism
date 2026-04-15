@@ -46,11 +46,15 @@ namespace Microsoft.Dism
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, EntryPoint = "_DismGetRegistryMountPoint")]
-            public static partial int DismGetRegistryMountPoint(DismSession session, DismRegistryHive registryHive, out IntPtr registryMountPointPtr);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, EntryPoint = "_DismGetRegistryMountPoint")]
-            public static extern int DismGetRegistryMountPoint(DismSession session, DismRegistryHive registryHive, out IntPtr registryMountPointPtr);
-            #endif
+            public static extern
+#endif
+            int DismGetRegistryMountPoint(
+                DismSession session,
+                DismRegistryHive registryHive,
+                out IntPtr registryMountPointPtr);
         }
     }
 }

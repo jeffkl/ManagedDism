@@ -24,6 +24,8 @@ namespace Microsoft.Dism
         /// </summary>
         private readonly EventWaitHandle _eventHandle;
 
+        private readonly CancellationTokenRegistration? _cancellationTokenRegistration;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DismProgress" /> class.
         /// </summary>
@@ -39,6 +41,12 @@ namespace Microsoft.Dism
 
             // Create an EventWaitHandle so the operation can be canceled
             _eventHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+        }
+
+        internal DismProgress(IProgress<DismProgress>? progress, object? userData, CancellationToken? cancellationToken)
+            : this((p) => progress?.Report(p), userData)
+        {
+            _cancellationTokenRegistration = cancellationToken?.Register(() => Cancel = true);
         }
 
         /// <summary>
@@ -87,6 +95,8 @@ namespace Microsoft.Dism
         /// </summary>
         public void Dispose()
         {
+            _cancellationTokenRegistration?.Dispose();
+
             // Clean up the event handle
             _eventHandle?.Dispose();
         }

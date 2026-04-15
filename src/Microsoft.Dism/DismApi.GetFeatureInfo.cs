@@ -91,11 +91,17 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetFeatureInfo(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr featureInfo);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismGetFeatureInfo(DismSession session, string featureName, string identifier, DismPackageIdentifier packageIdentifier, out IntPtr featureInfo);
-            #endif
+            public static extern
+#endif
+            int DismGetFeatureInfo(
+                DismSession session,
+                string featureName,
+                string identifier,
+                DismPackageIdentifier packageIdentifier,
+                out IntPtr featureInfo);
         }
     }
 }

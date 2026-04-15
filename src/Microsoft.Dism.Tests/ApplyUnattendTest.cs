@@ -34,7 +34,7 @@ namespace Microsoft.Dism.Tests
     </settings>
 </unattend>";
 
-            FileInfo unattendXmlFile = new FileInfo(Path.Combine(TestDirectory.FullName, "unattend.xml"));
+            FileInfo unattendXmlFile = new(Path.Combine(TestDirectory.FullName, "unattend.xml"));
 
             unattendXmlFile.WriteAllText(unattendXml);
 

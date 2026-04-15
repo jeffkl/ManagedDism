@@ -10,18 +10,16 @@ namespace Microsoft.Dism.Tests
 {
     public class DismFeatureInfoTest : DismStructTest<DismFeatureInfo>
     {
-        private readonly DismApi.DismFeatureInfo_ _featureInfo = new DismApi.DismFeatureInfo_
+        private readonly DismApi.DismFeatureInfo_ _featureInfo = new()
         {
             CustomProperty = new List<DismApi.DismCustomProperty_>
             {
-                new DismApi.DismCustomProperty_
-                {
+                new() {
                     Name = "Property1",
                     Path = "Path1",
                     Value = "Value1",
                 },
-                new DismApi.DismCustomProperty_
-                {
+                new() {
                     Name = "Property2",
                     Path = "Path2",
                     Value = "Value2",
@@ -40,7 +38,7 @@ namespace Microsoft.Dism.Tests
         {
         }
 
-        protected override DismFeatureInfo Item => new DismFeatureInfo(ItemPtr);
+        protected override DismFeatureInfo Item => new(ItemPtr);
 
         protected override object Struct => _featureInfo;
 

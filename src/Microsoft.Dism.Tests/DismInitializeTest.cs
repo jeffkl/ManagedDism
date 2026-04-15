@@ -56,7 +56,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void InitializeExWithScratchDirectory()
         {
-            FileInfo logFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.log"));
+            FileInfo logFile = new(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.log"));
             DirectoryInfo scratchDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N")));
 
             DismApi.InitializeEx(DismLogLevel.LogErrors, logFile.FullName, scratchDirectory.FullName);
@@ -121,7 +121,7 @@ namespace Microsoft.Dism.Tests
         [Fact]
         public void InitializeWithScratchDirectory()
         {
-            FileInfo logFile = new FileInfo(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.log"));
+            FileInfo logFile = new(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.log"));
             DirectoryInfo scratchDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N")));
 
             DismApi.Initialize(DismLogLevel.LogErrors, logFile.FullName, scratchDirectory.FullName);

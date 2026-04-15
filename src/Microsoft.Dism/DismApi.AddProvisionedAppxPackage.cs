@@ -72,11 +72,11 @@ namespace Microsoft.Dism
             int hresult = NativeMethods._DismAddProvisionedAppxPackage(
                 session,
                 appPath,
-                dependencyPackages?.ToArray() ?? new string[0],
+                dependencyPackages?.ToArray() ?? [],
                 (uint)(dependencyPackages?.Count ?? 0),
-                optionalPackages?.ToArray() ?? new string[0],
+                optionalPackages?.ToArray() ?? [],
                 (uint)(optionalPackages?.Count ?? 0),
-                licensePaths?.ToArray() ?? new string[0],
+                licensePaths?.ToArray() ?? [],
                 (uint)(licensePaths?.Count ?? 0),
                 SkipLicense: licensePaths == null || licensePaths.Count == 0,
                 customDataPath,
@@ -122,7 +122,12 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int _DismAddProvisionedAppxPackage(
+            public static partial
+#else
+            [DllImport(DismDllName, CharSet = DismCharacterSet)]
+            public static extern
+#endif
+            int _DismAddProvisionedAppxPackage(
                 DismSession Session,
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string AppPath,
@@ -141,28 +146,6 @@ namespace Microsoft.Dism
                 [MarshalAs(UnmanagedType.LPWStr)]
                 string? Regions,
                 DismStubPackageOption stubPackageOption);
-            #else
-            [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int _DismAddProvisionedAppxPackage(
-                DismSession Session,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string AppPath,
-                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 3)]
-                string[] DependencyPackages,
-                uint DependencyPackageCount,
-                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 5)]
-                string[] OptionalPackages,
-                uint OptionalPackageCount,
-                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 7)]
-                string[] LicensePaths,
-                uint LicensePathCount,
-                bool SkipLicense,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string CustomDataPath,
-                [MarshalAs(UnmanagedType.LPWStr)]
-                string? Regions,
-                DismStubPackageOption stubPackageOption);
-            #endif
         }
     }
 }

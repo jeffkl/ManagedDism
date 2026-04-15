@@ -48,11 +48,16 @@ namespace Microsoft.Dism
             /// <returns>Returns <c>S_OK</c> on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, EntryPoint = "_DismGetProductKeyInfo", StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetProductKeyInfo(DismSession session, string productKey, out IntPtr editionIdPtr, out IntPtr channelPtr);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, EntryPoint = "_DismGetProductKeyInfo", CharSet = DismCharacterSet)]
-            public static extern int DismGetProductKeyInfo(DismSession session, string productKey, out IntPtr editionIdPtr, out IntPtr channelPtr);
-            #endif
+            public static extern
+#endif
+            int DismGetProductKeyInfo(
+                DismSession session,
+                string productKey,
+                out IntPtr editionIdPtr,
+                out IntPtr channelPtr);
         }
     }
 }

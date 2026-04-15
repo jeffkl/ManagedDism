@@ -6,6 +6,8 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Dism
 {
@@ -46,7 +48,7 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, Dism.DismProgressCallback? progressCallback)
+        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, DismProgressCallback? progressCallback)
         {
             RestoreImageHealth(session, limitAccess, sourcePaths, progressCallback, userData: null);
         }
@@ -62,13 +64,92 @@ namespace Microsoft.Dism
         /// <exception cref="DismException">When a failure occurs.</exception>
         /// <exception cref="OperationCanceledException">When the user requested the operation be canceled.</exception>
         /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
-        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, Dism.DismProgressCallback? progressCallback, object? userData)
+        public static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, DismProgressCallback? progressCallback, object? userData)
         {
-            // Get the list of source paths as an array
-            string[] sourcePathsArray = sourcePaths?.ToArray() ?? new string[0];
+            using DismProgress progress = new(progressCallback, userData);
 
-            // Create a DismProgress object to wrap the callback and allow cancellation
-            DismProgress progress = new DismProgress(progressCallback, userData);
+            RestoreImageHealth(session, limitAccess, sourcePaths, progress);
+        }
+
+        /// <summary>
+        /// Asynchronously repairs a corrupted image that has been identified as repairable by the CheckImageHealth Function.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RestoreImageHealthAsync(DismSession session, bool limitAccess, CancellationToken cancellationToken = default)
+        {
+            return RestoreImageHealthAsync(session, limitAccess, sourcePaths: null, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously repairs a corrupted image that has been identified as repairable by the CheckImageHealth Function.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
+        /// <param name="sourcePaths">List of source locations to check for repair files.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RestoreImageHealthAsync(DismSession session, bool limitAccess, List<string>? sourcePaths, CancellationToken cancellationToken = default)
+        {
+            return RestoreImageHealthAsync(session, limitAccess, sourcePaths, progress: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously repairs a corrupted image that has been identified as repairable by the CheckImageHealth Function.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
+        /// <param name="sourcePaths">List of source locations to check for repair files.</param>
+        /// <param name="progress">An optional progress provider to receive progress updates.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RestoreImageHealthAsync(DismSession session, bool limitAccess, List<string>? sourcePaths, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+        {
+            return RestoreImageHealthAsync(session, limitAccess, sourcePaths, progress, userData: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously repairs a corrupted image that has been identified as repairable by the CheckImageHealth Function.
+        /// </summary>
+        /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the DismOpenSession Function.</param>
+        /// <param name="limitAccess">Specifies whether the RestoreImageHealth method should contact Windows Update (WU) as a source location for downloading repair files. Before checking WU, DISM will check for the files in the sourcePaths provided and in any locations specified in the registry by Group Policy. If the files that are required to enable the feature are found in these other specified locations, this flag is ignored.</param>
+        /// <param name="sourcePaths">List of source locations to check for repair files.</param>
+        /// <param name="progress">An optional <see cref="IProgress{T}" /> provider to receive progress updates.</param>
+        /// <param name="userData">Optional user data to pass to the specified <see cref="IProgress{T}" />.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None" />.</param>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
+        /// <exception cref="DismException">When a failure occurs.</exception>
+        /// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
+        /// <exception cref="DismRebootRequiredException">When the operation requires a reboot to complete.</exception>
+        public static Task RestoreImageHealthAsync(DismSession session, bool limitAccess, List<string>? sourcePaths, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+        {
+            return DismUtilities.RunAsync(
+                static (state, progress) =>
+                {
+                    RestoreImageHealth(state.session, state.limitAccess, state.sourcePaths, progress);
+
+                    return true;
+                },
+                (session, limitAccess, sourcePaths),
+                progress,
+                userData,
+                cancellationToken);
+        }
+
+        private static void RestoreImageHealth(DismSession session, bool limitAccess, List<string>? sourcePaths, DismProgress progress)
+        {
+            string[] sourcePathsArray = sourcePaths?.ToArray() ?? [];
 
             int hresult = NativeMethods.DismRestoreImageHealth(session, sourcePathsArray, (uint)sourcePathsArray.Length, limitAccess, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 
@@ -88,20 +169,28 @@ namespace Microsoft.Dism
             /// <param name="progress">Optional. A pointer to a client-defined DismProgressCallback Function.</param>
             /// <param name="userData">Optional. User defined custom data.</param>
             /// <returns>Returns S_OK on success.</returns>
-            /// <remarks>Run the DismCheckImageHealth Function to determine if the image is corrupted and if the image is repairable. If the DismCheckImageHealth Function returns DismImageRepairable, the DismRestoreImageHealth function can repair the image.
+            /// <remarks>
+            /// Run the DismCheckImageHealth Function to determine if the image is corrupted and if the image is repairable. If the DismCheckImageHealth Function returns DismImageRepairable, the DismRestoreImageHealth function can repair the image.
             ///
             /// If a repair file is not found in any of the locations specified by the SourcePaths parameter or the location paths in the registry specified by Group Policy, the DismRestoreImageHealth function will contact WU to check for a repair file unless the LimitAccess parameter is set to True.
             ///
-            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825836.aspx" />
-            /// HRESULT WINAPI DismRestoreImageHealth(_In_ DismSession Session, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_ BOOL LimitAccess, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
+            /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh825836.aspx" /> HRESULT WINAPI DismRestoreImageHealth(_In_ DismSession Session, _In_reads_opt_(SourcePathCount) PCWSTR* SourcePaths, _In_opt_ UINT SourcePathCount, _In_ BOOL LimitAccess, _In_opt_ DISM_PROGRESS_CALLBACK Progress, _In_opt_ PVOID UserData);
             /// </remarks>
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismRestoreImageHealth(DismSession session, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismRestoreImageHealth(DismSession session, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] sourcePaths, UInt32 sourcePathCount, [MarshalAs(UnmanagedType.Bool)] bool limitAccess, SafeWaitHandle cancelEvent, DismProgressCallback progress, IntPtr userData);
-            #endif
+            public static extern
+#endif
+            int DismRestoreImageHealth(
+                DismSession session,
+                [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] sourcePaths,
+                UInt32 sourcePathCount,
+                [MarshalAs(UnmanagedType.Bool)] bool limitAccess,
+                SafeWaitHandle cancelEvent,
+                DismProgressCallbackNative progress,
+                IntPtr userData);
         }
     }
 }

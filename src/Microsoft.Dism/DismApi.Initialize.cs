@@ -11,7 +11,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Used to lock when initializing or shutting down.
         /// </summary>
-        private static readonly object InitializeShutDownLock = new object();
+        private static readonly object InitializeShutDownLock = new();
 
         /// <summary>
         /// Used to keep track if DismApi has been initialized.
@@ -81,11 +81,15 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismInitialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismInitialize(DismLogLevel logLevel, string? logFilePath, string? scratchDirectory);
-            #endif
+            public static extern
+#endif
+            int DismInitialize(
+                DismLogLevel logLevel,
+                string? logFilePath,
+                string? scratchDirectory);
         }
     }
 }

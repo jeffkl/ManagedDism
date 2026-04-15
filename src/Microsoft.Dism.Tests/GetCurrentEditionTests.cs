@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.Dism.Tests
 {
-    public class GetCurrentEditionTests : DismInstallWimTestBase
+    public class GetCurrentEditionTests : DismTestBase
     {
         public GetCurrentEditionTests(TestWimTemplate template, ITestOutputHelper testOutput)
             : base(template, testOutput)

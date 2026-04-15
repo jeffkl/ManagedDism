@@ -26,6 +26,6 @@ namespace Microsoft.Dism
         /// void DismProgressCallback(_In_ UINT Current, _In_ UINT Total, _In_ PVOID UserData)
         /// </remarks>
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        internal delegate void DismProgressCallback(UInt32 current, UInt32 total, IntPtr userData);
+        internal delegate void DismProgressCallbackNative(UInt32 current, UInt32 total, IntPtr userData);
     }
 }

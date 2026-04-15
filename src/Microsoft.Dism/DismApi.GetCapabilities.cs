@@ -42,11 +42,15 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetCapabilities(DismSession session, out IntPtr capability, out UInt32 count);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismGetCapabilities(DismSession session, out IntPtr capability, out UInt32 count);
-            #endif
+            public static extern
+#endif
+            int DismGetCapabilities(
+                DismSession session,
+                out IntPtr capability,
+                out UInt32 count);
         }
     }
 }

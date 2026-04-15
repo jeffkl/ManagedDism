@@ -33,7 +33,7 @@ namespace Microsoft.Dism
             where T : class
 #endif
         {
-            List<T> list = new List<T>((int)count);
+            List<T> list = new((int)count);
 
             if (ptr != IntPtr.Zero && count > 0)
             {
@@ -48,7 +48,7 @@ namespace Microsoft.Dism
 
                 for (int i = 0; i < count; i++)
                 {
-                    IntPtr currentPtr = new IntPtr(startPtr + (i * structSize));
+                    IntPtr currentPtr = new(startPtr + (i * structSize));
 
                     TStruct? structure = currentPtr.ToStructure<TStruct>();
 

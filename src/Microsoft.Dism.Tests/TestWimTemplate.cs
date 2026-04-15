@@ -26,9 +26,9 @@ namespace Microsoft.Dism.Tests
         public const string ProductType = "WinNT";
         public const int SpLevel = 0;
         public const string SystemRoot = "WINDOWS";
-        public static readonly CultureInfo DefaultLangauge = new CultureInfo("en-US");
-        public static readonly CultureInfo Language = new CultureInfo("en-US");
-        public static readonly Version ProductVersion = new Version(6, 3, 9600, 16384);
+        public static readonly CultureInfo DefaultLangauge = new("en-US");
+        public static readonly CultureInfo Language = new("en-US");
+        public static readonly Version ProductVersion = new(6, 3, 9600, 16384);
 
         private const string TestWimTemplateFilename = @"test_template.wim";
 
@@ -73,7 +73,7 @@ namespace Microsoft.Dism.Tests
                 throw new DirectoryNotFoundException(string.Format(CultureInfo.CurrentCulture, "Could not find part of the path '{0}'", capturePath));
             }
 
-            XmlDocument xmlDocument = new XmlDocument
+            XmlDocument xmlDocument = new()
             {
                 XmlResolver = null,
             };
@@ -87,12 +87,12 @@ namespace Microsoft.Dism.Tests
                     using WimHandle imageHandle = WimgApi.CaptureImage(wimHandle, capturePath, WimCaptureImageOptions.DisableDirectoryAcl | WimCaptureImageOptions.DisableFileAcl | WimCaptureImageOptions.DisableRPFix);
                 }
 
-                XPathNavigator xml = WimgApi.GetImageInformation(wimHandle!) !.CreateNavigator() !;
+                XPathNavigator xml = WimgApi.GetImageInformation(wimHandle!)!.CreateNavigator()!;
 
                 xml.ShouldNotBeNull();
 
-                using (StringReader stringReader = new StringReader(xml.OuterXml))
-                using (XmlTextReader reader = new XmlTextReader(stringReader)
+                using (StringReader stringReader = new(xml.OuterXml))
+                using (XmlTextReader reader = new(stringReader)
                 {
                     DtdProcessing = DtdProcessing.Prohibit,
                 })
@@ -172,7 +172,7 @@ namespace Microsoft.Dism.Tests
         }
     }
 
-    [CollectionDefinition(nameof(TestWimTemplate))]
+    [CollectionDefinition(nameof(TestWimTemplate), DisableParallelization = true)]
     public class TestWimTemplateCollectionDefinition : ICollectionFixture<TestWimTemplate>
     {
     }

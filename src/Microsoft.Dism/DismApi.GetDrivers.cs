@@ -13,7 +13,7 @@ namespace Microsoft.Dism
         /// Gets the drivers in an image.
         /// </summary>
         /// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
-        /// <param name="allDrivers">true or false to specify to retrieve all drivers or just out-of-box drivers.</param>
+        /// <param name="allDrivers"><see langword="true" /> to retrieve all drivers or <see langword="false" /> to retrieve just out-of-box drivers.</param>
         /// <returns>A <see cref="DismDriverPackageCollection" /> object containing a collection of <see cref="DismDriverPackage" /> objects.</returns>
         /// <exception cref="DismException">When a failure occurs.</exception>
         public static DismDriverPackageCollection GetDrivers(DismSession session, bool allDrivers)
@@ -49,11 +49,16 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetDrivers(DismSession Session, [MarshalAs(UnmanagedType.Bool)] bool AllDrivers, out IntPtr DriverPackage, out UInt32 Count);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismGetDrivers(DismSession Session, [MarshalAs(UnmanagedType.Bool)] bool AllDrivers, out IntPtr DriverPackage, out UInt32 Count);
-            #endif
+            public static extern
+#endif
+            int DismGetDrivers(
+                DismSession Session,
+                [MarshalAs(UnmanagedType.Bool)] bool AllDrivers,
+                out IntPtr DriverPackage,
+                out UInt32 Count);
         }
     }
 }

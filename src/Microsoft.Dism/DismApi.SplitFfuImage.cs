@@ -30,11 +30,15 @@ namespace Microsoft.Dism
             /// <returns>Retrusn S_OK on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int _DismSplitFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath, ulong PartSize);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int _DismSplitFfuImage([MarshalAs(UnmanagedType.LPWStr)] string ImagePath, [MarshalAs(UnmanagedType.LPWStr)] string PartPath, ulong PartSize);
-            #endif
+            public static extern
+#endif
+            int _DismSplitFfuImage(
+                [MarshalAs(UnmanagedType.LPWStr)] string ImagePath,
+                [MarshalAs(UnmanagedType.LPWStr)] string PartPath,
+                ulong PartSize);
         }
     }
 }

@@ -45,11 +45,14 @@ namespace Microsoft.Dism
             /// </returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, EntryPoint = "_DismValidateProductKey", StringMarshalling = DismStringMarshalling)]
-            public static partial int DismValidateProductKey(DismSession session, string productKey);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, EntryPoint = "_DismValidateProductKey", CharSet = DismCharacterSet)]
-            public static extern int DismValidateProductKey(DismSession session, string productKey);
-            #endif
+            public static extern
+#endif
+            int DismValidateProductKey(
+                DismSession session,
+                string productKey);
         }
     }
 }

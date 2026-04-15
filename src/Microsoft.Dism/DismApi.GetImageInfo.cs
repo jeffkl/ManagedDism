@@ -51,11 +51,15 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismGetImageInfo(string imageFilePath, out IntPtr imageInfo, out UInt32 count);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismGetImageInfo(string imageFilePath, out IntPtr imageInfo, out UInt32 count);
-            #endif
+            public static extern
+#endif
+            int DismGetImageInfo(
+                string imageFilePath,
+                out IntPtr imageInfo,
+                out UInt32 count);
         }
     }
 }

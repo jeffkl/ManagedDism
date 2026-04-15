@@ -11,7 +11,7 @@ namespace Microsoft.Dism.Tests
 {
     public class DismFeatureCollectionTest : DismCollectionTest<DismFeatureCollection, DismFeature>
     {
-        private static readonly List<DismApi.DismFeature_> Items = new List<DismApi.DismFeature_>
+        private static readonly List<DismApi.DismFeature_> Items = new()
         {
             new DismApi.DismFeature_
             {

@@ -33,11 +33,13 @@ namespace Microsoft.Dism
             /// </remarks>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int DismDelete(IntPtr dismStructure);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int DismDelete(IntPtr dismStructure);
-            #endif
+            public static extern
+#endif
+            int DismDelete(
+                IntPtr dismStructure);
         }
     }
 }

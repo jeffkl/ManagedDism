@@ -31,11 +31,14 @@ namespace Microsoft.Dism
             /// <returns>Returns S_OK on success.</returns>
             #if NET7_0_OR_GREATER
             [LibraryImport(DismDllName, StringMarshalling = DismStringMarshalling)]
-            public static partial int _DismRemoveProvisionedAppxPackage(DismSession session, [MarshalAs(UnmanagedType.LPWStr)] string packageName);
-            #else
+            public static partial
+#else
             [DllImport(DismDllName, CharSet = DismCharacterSet)]
-            public static extern int _DismRemoveProvisionedAppxPackage(DismSession session, [MarshalAs(UnmanagedType.LPWStr)] string packageName);
-            #endif
+            public static extern
+#endif
+            int _DismRemoveProvisionedAppxPackage(
+                DismSession session,
+                [MarshalAs(UnmanagedType.LPWStr)] string packageName);
         }
     }
 }
