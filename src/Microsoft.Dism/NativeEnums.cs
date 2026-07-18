@@ -525,4 +525,48 @@ namespace Microsoft.Dism
         /// </summary>
         Path,
     }
+
+	/// <summary>
+	/// Specifies the type of image cleanup to perform.
+	/// </summary>
+	[Flags]
+	public enum DismCleanImageType : uint
+	{
+		/// <summary>
+		/// Clean up Windows Update files.
+		/// </summary>
+		WindowsUpdate = DismApi.DISM_CLEAN_TYPE_WINDOWS_UPDATE,
+
+		/// <summary>
+		/// Clean up service pack files.
+		/// </summary>
+		ServicePack = DismApi.DISM_CLEAN_TYPE_SERVICE_PACK,
+
+		/// <summary>
+		/// Clean up component store files.
+        /// </summary>
+		Component = DismApi.DISM_CLEAN_TYPE_COMPONENT
+	}
+
+	/// <summary>
+	/// Specifies the flags for the DismCleanImage function.
+	/// </summary>
+	[Flags]
+	public enum DismCleanImageFlags : uint
+	{
+		/// <summary>
+		/// No flags are specified.
+		/// </summary>
+		None = DismApi.DISM_CLEAN_FLAGS_NONE,
+
+		/// <summary>
+		/// Indicates that the cleanup operation should remove all superseded versions of every component in the component store.
+		/// </summary>
+		ResetBase = DismApi.DISM_CLEAN_FLAGS_RESET_BASE,
+
+		/// <summary>
+		/// Indicates that the cleanup operation should remove all superseded versions of every component in the component store, but defer any long-running cleanup operations to the next automatic maintenance. Only use Defer as an option in the factory where Resetbase requires more than 30 minutes to complete.
+		/// </summary>
+		ResetBaseDefer = DismApi.DISM_CLEAN_FLAGS_RESET_BASE_DEFER
+	}
 }
