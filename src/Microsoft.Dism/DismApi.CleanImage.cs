@@ -18,9 +18,9 @@ namespace Microsoft.Dism
 		/// <param name="session">A valid DISM Session. The DISM Session must be associated with an image. You can associate a session with an image by using the <see cref="OpenOfflineSession(string)" /> method.</param>
 		/// <param name="type">The <see cref="DismCleanImageType"/> operation to perform.</param>
 		/// <exception cref="DismException">When a failure occurs.</exception>
-		public static void CleanupImage(DismSession session, DismCleanImageType type)
+		public static void CleanImage(DismSession session, DismCleanImageType type)
 		{
-			CleanupImage(session, type, DismCleanImageFlags.None);
+			CleanImage(session, type, DismCleanImageFlags.None);
 		}
 
 		/// <summary>
@@ -30,9 +30,9 @@ namespace Microsoft.Dism
 		/// <param name="type">The <see cref="DismCleanImageType"/> operation to perform.</param>
 		/// <param name="flags">The <see cref="DismCleanImageFlags"/> options to apply. Only valid for Component cleanup.</param>
 		/// <exception cref="DismException">When a failure occurs.</exception>
-		public static void CleanupImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags)
+		public static void CleanImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags)
 		{
-			CleanupImage(session, type, flags, progressCallback: null);
+			CleanImage(session, type, flags, progressCallback: null);
 		}
 
 		/// <summary>
@@ -43,9 +43,9 @@ namespace Microsoft.Dism
 		/// <param name="flags">The <see cref="DismCleanImageFlags"/> options to apply. Only valid for Component cleanup.</param>
 		/// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
 		/// <exception cref="DismException">When a failure occurs.</exception>
-		public static void CleanupImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, DismProgressCallback? progressCallback)
+		public static void CleanImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, DismProgressCallback? progressCallback)
 		{
-			CleanupImage(session, type, flags, progressCallback, userData: null);
+			CleanImage(session, type, flags, progressCallback, userData: null);
 		}
 
 		/// <summary>
@@ -57,11 +57,11 @@ namespace Microsoft.Dism
 		/// <param name="progressCallback">A progress callback method to invoke when progress is made.</param>
 		/// <param name="userData">Optional user data to pass to the DismProgressCallback method.</param>
 		/// <exception cref="DismException">When a failure occurs.</exception>
-		public static void CleanupImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, DismProgressCallback? progressCallback, object? userData)
+		public static void CleanImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, DismProgressCallback? progressCallback, object? userData)
 		{
 			using DismProgress progress = new(progressCallback, userData);
 
-			CleanupImage(session, type, flags, progress);
+			CleanImage(session, type, flags, progress);
 		}
 
 		/// <summary>
@@ -73,9 +73,9 @@ namespace Microsoft.Dism
 		/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
 		/// <exception cref="DismException">When a failure occurs.</exception>
 		/// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-		public static Task CleanupImageAsync(DismSession session, DismCleanImageType type, CancellationToken cancellationToken = default)
+		public static Task CleanImageAsync(DismSession session, DismCleanImageType type, CancellationToken cancellationToken = default)
 		{
-			return CleanupImageAsync(session, type, DismCleanImageFlags.None, cancellationToken);
+			return CleanImageAsync(session, type, DismCleanImageFlags.None, cancellationToken);
 		}
 
 		/// <summary>
@@ -88,9 +88,9 @@ namespace Microsoft.Dism
 		/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
 		/// <exception cref="DismException">When a failure occurs.</exception>
 		/// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-		public static Task CleanupImageAsync(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, CancellationToken cancellationToken = default)
+		public static Task CleanImageAsync(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, CancellationToken cancellationToken = default)
 		{
-			return CleanupImageAsync(session, type, flags, progress: null, cancellationToken);
+			return CleanImageAsync(session, type, flags, progress: null, cancellationToken);
 		}
 
 		/// <summary>
@@ -104,9 +104,9 @@ namespace Microsoft.Dism
 		/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
 		/// <exception cref="DismException">When a failure occurs.</exception>
 		/// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-		public static Task CleanupImageAsync(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
+		public static Task CleanImageAsync(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, IProgress<DismProgress>? progress, CancellationToken cancellationToken = default)
 		{
-			return CleanupImageAsync(session, type, flags, progress, userData: null, cancellationToken);
+			return CleanImageAsync(session, type, flags, progress, userData: null, cancellationToken);
 		}
 
 		/// <summary>
@@ -121,12 +121,12 @@ namespace Microsoft.Dism
 		/// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
 		/// <exception cref="DismException">When a failure occurs.</exception>
 		/// <exception cref="OperationCanceledException">When the operation is canceled.</exception>
-		public static Task CleanupImageAsync(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
+		public static Task CleanImageAsync(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, IProgress<DismProgress>? progress, object? userData, CancellationToken cancellationToken = default)
 		{
 			return DismUtilities.RunAsync(
 				static (state, progress) =>
 				{
-					CleanupImage(state.session, state.type, state.flags, progress);
+					CleanImage(state.session, state.type, state.flags, progress);
 
 					return true;
 				},
@@ -136,7 +136,7 @@ namespace Microsoft.Dism
 				cancellationToken);
 		}
 
-		private static void CleanupImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, DismProgress progress)
+		private static void CleanImage(DismSession session, DismCleanImageType type, DismCleanImageFlags flags, DismProgress progress)
 		{
 			int hresult = NativeMethods.DismCleanImage(session, type, flags, progress.EventHandle, progress.DismProgressCallbackNative, IntPtr.Zero);
 

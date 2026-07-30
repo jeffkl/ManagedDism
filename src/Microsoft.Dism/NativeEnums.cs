@@ -533,12 +533,12 @@ namespace Microsoft.Dism
 	public enum DismCleanImageType : uint
 	{
 		/// <summary>
-		/// Clean up Windows Update files.
+		/// Clean up Windows Update files. This is an undocumented cleanup type, and should be used with caution.
 		/// </summary>
 		WindowsUpdate = DismApi.DISM_CLEAN_TYPE_WINDOWS_UPDATE,
 
 		/// <summary>
-		/// Clean up service pack files.
+		/// Clean up service pack files. This cleanup type was removed in newer versions of DISM (as service packs are no longer used in Windows) and should be used with caution.  
 		/// </summary>
 		ServicePack = DismApi.DISM_CLEAN_TYPE_SERVICE_PACK,
 
