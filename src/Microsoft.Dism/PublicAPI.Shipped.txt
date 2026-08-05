@@ -16,6 +16,12 @@ const Microsoft.Dism.DismApi.DISMAPI_E_SHUTDOWN_IN_PROGRESS = 3221487618 -> uint
 const Microsoft.Dism.DismApi.DISMAPI_E_UNABLE_TO_UNMOUNT_IMAGE_PATH = 3221487623 -> uint
 const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_FEATURE = 2148468748 -> uint
 const Microsoft.Dism.DismApi.DISMAPI_E_UNKNOWN_PRODUCT = 2147944005 -> uint
+const Microsoft.Dism.DismApi.DISM_CLEAN_FLAGS_NONE = 0 -> uint
+const Microsoft.Dism.DismApi.DISM_CLEAN_FLAGS_RESET_BASE = 1 -> uint
+const Microsoft.Dism.DismApi.DISM_CLEAN_FLAGS_RESET_BASE_DEFER = 2 -> uint
+const Microsoft.Dism.DismApi.DISM_CLEAN_TYPE_WINDOWS_UPDATE = 1 -> uint
+const Microsoft.Dism.DismApi.DISM_CLEAN_TYPE_SERVICE_PACK = 2 -> uint
+const Microsoft.Dism.DismApi.DISM_CLEAN_TYPE_COMPONENT = 4 -> uint
 const Microsoft.Dism.DismApi.DISM_COMMIT_APPEND = 131072 -> uint
 const Microsoft.Dism.DismApi.DISM_COMMIT_GENERATE_INTEGRITY = 65536 -> uint
 const Microsoft.Dism.DismApi.DISM_COMMIT_IMAGE = 0 -> uint
@@ -51,6 +57,14 @@ Microsoft.Dism.DismCapabilityInfo.Equals(Microsoft.Dism.DismCapabilityInfo? othe
 Microsoft.Dism.DismCapabilityInfo.InstallSize.get -> uint
 Microsoft.Dism.DismCapabilityInfo.Name.get -> string!
 Microsoft.Dism.DismCapabilityInfo.State.get -> Microsoft.Dism.DismPackageFeatureState
+Microsoft.Dism.DismCleanImageFlags
+Microsoft.Dism.DismCleanImageFlags.None = 0 -> Microsoft.Dism.DismCleanImageFlags
+Microsoft.Dism.DismCleanImageFlags.ResetBase = 1 -> Microsoft.Dism.DismCleanImageFlags
+Microsoft.Dism.DismCleanImageFlags.ResetBaseDefer = 2 -> Microsoft.Dism.DismCleanImageFlags
+Microsoft.Dism.DismCleanImageType
+Microsoft.Dism.DismCleanImageType.WindowsUpdate = 1 -> Microsoft.Dism.DismCleanImageType
+Microsoft.Dism.DismCleanImageType.ServicePack = 2 -> Microsoft.Dism.DismCleanImageType
+Microsoft.Dism.DismCleanImageType.Component = 4 -> Microsoft.Dism.DismCleanImageType
 Microsoft.Dism.DismCustomProperty
 Microsoft.Dism.DismCustomProperty.Equals(Microsoft.Dism.DismCustomProperty? other) -> bool
 Microsoft.Dism.DismCustomProperty.Name.get -> string!
@@ -355,6 +369,14 @@ static Microsoft.Dism.DismApi.CheckImageHealth(Microsoft.Dism.DismSession! sessi
 static Microsoft.Dism.DismApi.CheckImageHealthAsync(Microsoft.Dism.DismSession! session, bool scanImage, System.IProgress<Microsoft.Dism.DismProgress!>? progress, object? userData, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Microsoft.Dism.DismImageHealthState>!
 static Microsoft.Dism.DismApi.CheckImageHealthAsync(Microsoft.Dism.DismSession! session, bool scanImage, System.IProgress<Microsoft.Dism.DismProgress!>? progress, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Microsoft.Dism.DismImageHealthState>!
 static Microsoft.Dism.DismApi.CheckImageHealthAsync(Microsoft.Dism.DismSession! session, bool scanImage, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Microsoft.Dism.DismImageHealthState>!
+static Microsoft.Dism.DismApi.CleanImage(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type) -> void
+static Microsoft.Dism.DismApi.CleanImage(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, Microsoft.Dism.DismCleanImageFlags flags) -> void
+static Microsoft.Dism.DismApi.CleanImage(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, Microsoft.Dism.DismCleanImageFlags flags, Microsoft.Dism.DismProgressCallback? progressCallback) -> void
+static Microsoft.Dism.DismApi.CleanImage(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, Microsoft.Dism.DismCleanImageFlags flags, Microsoft.Dism.DismProgressCallback? progressCallback, object? userData) -> void
+static Microsoft.Dism.DismApi.CleanImageAsync(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Microsoft.Dism.DismApi.CleanImageAsync(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, Microsoft.Dism.DismCleanImageFlags flags, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Microsoft.Dism.DismApi.CleanImageAsync(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, Microsoft.Dism.DismCleanImageFlags flags, System.IProgress<Microsoft.Dism.DismProgress!>? progress, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Microsoft.Dism.DismApi.CleanImageAsync(Microsoft.Dism.DismSession! session, Microsoft.Dism.DismCleanImageType type, Microsoft.Dism.DismCleanImageFlags flags, System.IProgress<Microsoft.Dism.DismProgress!>? progress, object? userData, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
 static Microsoft.Dism.DismApi.CleanupMountpoints() -> void
 static Microsoft.Dism.DismApi.CloseSession(Microsoft.Dism.DismSession! session) -> void
 static Microsoft.Dism.DismApi.CommitImage(Microsoft.Dism.DismSession! session, bool discardChanges) -> void

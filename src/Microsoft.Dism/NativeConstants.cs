@@ -190,6 +190,36 @@ namespace Microsoft.Dism
         /// The specified package is not applicable.
         /// </summary>
         internal const uint CBS_E_NOT_APPLICABLE = 0x800F081E;
-    }
+
+		/// <summary>
+		/// Indicates to the DismCleanImage Function that the Windows Update cleanup option should be used.
+		/// </summary>
+		public const uint DISM_CLEAN_TYPE_WINDOWS_UPDATE = 0x00000001;
+
+		/// <summary>
+		/// Indicates to the DismCleanImage Function that the Service Pack cleanup option should be used.
+		/// </summary>
+		public const uint DISM_CLEAN_TYPE_SERVICE_PACK = 0x00000002;
+
+		/// <summary>
+		/// Indicates to the DismCleanImage Function that the Component Store cleanup option should be used.
+		/// </summary>
+		public const uint DISM_CLEAN_TYPE_COMPONENT = 0x00000004;
+
+		/// <summary>
+		/// Indicates to the DismCleanImage Function that the ResetBase flag should not be used.
+		/// </summary>
+		public const uint DISM_CLEAN_FLAGS_NONE = 0x00000000;
+
+		/// <summary>
+		/// Indicates to the DismCleanImage Function that the ResetBase flag should be used.
+		/// </summary>
+		public const uint DISM_CLEAN_FLAGS_RESET_BASE = 0x00000001;
+
+		/// <summary>
+		/// Indicates to the DismCleanImage Function that the ResetBase flag should be used and that the cleanup should be deferred until the next servicing operation.
+		/// </summary>
+		public const uint DISM_CLEAN_FLAGS_RESET_BASE_DEFER = 0x00000002;
+	}
 }
 #pragma warning restore SA1310 // Field names must not contain underscore
