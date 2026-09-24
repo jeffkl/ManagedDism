@@ -263,6 +263,7 @@ Microsoft.Dism.DismProgress.Dispose() -> void
 Microsoft.Dism.DismProgress.Total.get -> int
 Microsoft.Dism.DismProgress.UserData.get -> object?
 Microsoft.Dism.DismProgressCallback
+virtual Microsoft.Dism.DismProgressCallback.Invoke(Microsoft.Dism.DismProgress! progress) -> void
 Microsoft.Dism.DismRebootRequiredException
 Microsoft.Dism.DismRebootRequiredException.DismRebootRequiredException() -> void
 Microsoft.Dism.DismRebootRequiredException.DismRebootRequiredException(string! message) -> void
