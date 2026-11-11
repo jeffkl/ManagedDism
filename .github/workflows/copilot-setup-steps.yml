@@ -25,8 +25,8 @@ jobs:
     # You can define any steps you want, and they will run before the agent starts.
     # If you do not check out your code, Copilot will do this for you.
     steps:
-      - name: Install .NET 10.x
+      - name: Install .NET 11.x
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            10.x
+            11.x
