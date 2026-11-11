@@ -39,8 +39,8 @@ After a successful build, run tests without rebuilding:
 
 ```powershell
 dotnet test Microsoft.Dism.sln --no-restore --no-build --framework net472
-dotnet test Microsoft.Dism.sln --no-restore --no-build --framework net8.0
 dotnet test Microsoft.Dism.sln --no-restore --no-build --framework net10.0
+dotnet test Microsoft.Dism.sln --no-restore --no-build --framework net11.0
 ```
 
 The DISM integration tests are Windows-specific and require an elevated Administrator process. Do not describe a skipped or unrun test as passing. If elevation, Windows APIs, or test image prerequisites are unavailable, report that limitation explicitly and still run the smallest applicable build or static validation.
@@ -49,8 +49,8 @@ Before running tests derived from `DismInstallWimTestBase`, check for existing m
 
 ## Target Frameworks and Compatibility
 
-- The library targets `net472`, `netstandard2.0`, `net8.0`, and `net10.0`.
-- Tests target `net472`, `net8.0`, and `net10.0`.
+- The library targets `net472`, `netstandard2.0`, and `net10.0`.
+- Tests target `net472`, `net10.0`, and `net11.0`.
 - Preserve compatibility with every target framework. Do not use an API unavailable on older targets without an appropriate conditional implementation.
 - Existing native declarations use `LibraryImport` for `NET7_0_OR_GREATER` and `DllImport` for older targets. Follow that pattern when adding P/Invoke declarations.
 - The library declares `IsAotCompatible` for modern target frameworks. Preserve AOT compatibility when adding interop, marshalling, callbacks, reflection, or dynamically accessed code.

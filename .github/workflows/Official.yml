@@ -14,7 +14,7 @@ env:
   BuildConfiguration: 'Release'
   BuildPlatform: 'Any CPU'
   ContinuousIntegrationBuild: 'true'
-  DotNet10Version: '10.x'
+  DotNet11Version: '11.x'
   IsOfficialBuild: 'true'
 
 jobs:
@@ -28,11 +28,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install .NET ${{ env.DotNet10Version }}
+    - name: Install .NET ${{ env.DotNet11Version }}
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: |
-          ${{ env.DotNet10Version }}
+          ${{ env.DotNet11Version }}
 
     - name: Build Solution
       run: dotnet build "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}\build.binlog"

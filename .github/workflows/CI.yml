@@ -16,8 +16,8 @@ env:
   BuildConfiguration: 'Debug'
   BuildPlatform: 'Any CPU'
   ContinuousIntegrationBuild: 'true'
-  DotNet8Version: '8.x'
   DotNet10Version: '10.x'
+  DotNet11Version: '11.x'
 
 jobs:
   BuildAndTest:
@@ -30,12 +30,12 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install .NET ${{ env.DotNet8Version }} and ${{ env.DotNet10Version }}
+    - name: Install .NET ${{ env.DotNet10Version }} and ${{ env.DotNet11Version }}
       uses: actions/setup-dotnet@v6
       with:
         dotnet-version: |
-          ${{ env.DotNet8Version }}
           ${{ env.DotNet10Version }}
+          ${{ env.DotNet11Version }}
 
     - name: Build Solution
       run: dotnet build "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/build.binlog"
@@ -43,11 +43,11 @@ jobs:
     - name: Run Unit Tests (.NET Framework)
       run: dotnet test --no-restore --no-build --framework net472 "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/test-net472.binlog"
 
-    - name: Run Unit Tests (.NET 8)
-      run: dotnet test --no-restore --no-build --framework net8.0 "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/test-net8.0.binlog"
-
     - name: Run Unit Tests (.NET 10)
       run: dotnet test --no-restore --no-build --framework net10.0 "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/test-net10.0.binlog"
+
+    - name: Run Unit Tests (.NET 11)
+      run: dotnet test --no-restore --no-build --framework net11.0 "/Property:Platform=${{ env.BuildPlatform }};Configuration=${{ env.BuildConfiguration }}" "/BinaryLogger:${{ env.ArtifactsDirectoryName }}/test-net11.0.binlog"
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v7
